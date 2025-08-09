@@ -82,6 +82,9 @@
     <activity
         android:name=".DiscorverActivity"
         android:theme="@style/AppTheme"/>
+      <activity
+          android:name=".DanceWithMusicActivity"
+          android:theme="@style/AppTheme"/>
     <activity
         android:name=".PhoneCallApiActivity"
         android:theme="@style/AppTheme"/>

@@ -67,7 +67,7 @@ public class MouthLedApiActivity extends Activity {
    * 开灯,呼吸效果
    */
   public void startBreathModel(View view) {
-    mouthLedApi.startBreathModel(Color.argb(0, 0, 255, 0), 10000, Priority.NORMAL, null);
+    mouthLedApi.startBreathModel(Color.argb(100, 100, 255, 0), 10000, Priority.NORMAL, null);
     Log.i(TAG, "startNormalModel接口调用成功!");
   }
 

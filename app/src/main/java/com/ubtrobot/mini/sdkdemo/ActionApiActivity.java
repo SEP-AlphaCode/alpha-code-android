@@ -91,6 +91,38 @@ public class ActionApiActivity extends Activity {
         }
     }
 
+    public void playActionsInSequence(View view) {
+        String actionIdsStr = "action_013, action_015, action_007, action_019"; // Chuỗi chứa các actionId
+        String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
+        playNextAction(actionIds, 0);
+    }
+
+    private void playNextAction(String[] actionIds, int index) {
+        if (index >= actionIds.length) {
+            Log.i(TAG, "All actions completed!");
+            return;
+        }
+
+        String actionId = actionIds[index].trim();
+
+        actionApi.playAction(actionId, new ResponseListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void aVoid) {
+                Log.i(TAG, "Action " + actionId + " done!");
+                // Chạy action tiếp theo sau khi cái hiện tại xong
+                playNextAction(actionIds, index + 1);
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+                Log.e(TAG, "Action " + actionId + " failed: " + s);
+                // Vẫn tiếp tục chạy cái tiếp theo
+                playNextAction(actionIds, index + 1);
+            }
+        });
+    }
+
+
     /**
      * 执行自定义动作
      *

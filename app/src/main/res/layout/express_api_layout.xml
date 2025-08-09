@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <Button
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="getExpressList"
@@ -13,7 +12,6 @@
         android:textAllCaps="false"/>
 
     <Button
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="getCustomizeExpressList"

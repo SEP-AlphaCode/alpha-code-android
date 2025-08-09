@@ -29,6 +29,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="playActionsInSequence"
+        android:text="play Action in sequence"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="playCustomizeAction"
         android:text="play Customize Action"
         android:textAllCaps="false"/>

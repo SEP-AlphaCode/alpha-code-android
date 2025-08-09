@@ -24,6 +24,12 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    public void musicApiTest(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, DanceWithMusicActivity.class);
+        startActivity(intent);
+    }
+
     public void expressApiTest(View view) {
         Intent intent = new Intent();
         intent.setClass(this, ExpressApiActivity.class);

@@ -2,6 +2,7 @@ package com.ubtrobot.mini.sdkdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,11 @@ import com.ubtrobot.commons.Priority;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.express.protos.Express;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -39,11 +45,29 @@ public class ExpressApiActivity extends Activity {
    * 获取表情列表
    */
   public void getExpressList(View view) {
-    List<Express.ExpressInfo> expressList = expressApi.getExpressList();
-    for (Express.ExpressInfo expressInfo : expressList) {
-      Log.i(TAG, expressInfo.toString());
-    }
-    Log.i(TAG, "getExpressList接口调用成功！");
+      List<Express.ExpressInfo> expressList = expressApi.getExpressList();
+
+      // Tạo nội dung text từ expressList
+      StringBuilder sb = new StringBuilder();
+      for (Express.ExpressInfo expressInfo : expressList) {
+          sb.append(expressInfo.toString()).append("\n");
+      }
+
+      // File lưu vào thư mục Download
+      File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+      if (!downloadsDir.exists()) {
+          downloadsDir.mkdirs();
+      }
+      File outFile = new File(downloadsDir, "express_list.txt");
+
+      try (FileOutputStream fos = new FileOutputStream(outFile);
+           OutputStreamWriter writer = new OutputStreamWriter(fos)) {
+          writer.write(sb.toString());
+          writer.flush();
+          Log.i(TAG, "File saved to " + outFile.getAbsolutePath());
+      } catch (IOException e) {
+          Log.e(TAG, "Error saving file: " + e.getMessage(), e);
+      }
   }
 
   /**
