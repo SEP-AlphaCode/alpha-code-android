@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+
 import com.ubtrobot.mini.pkgservice.ApkInstaller;
+import com.ubtrobot.mini.sdkdemo.R;
 
 public class ApkSilentInstallerApiActivity extends Activity {
 

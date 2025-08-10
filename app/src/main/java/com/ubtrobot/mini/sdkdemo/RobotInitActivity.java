@@ -10,6 +10,8 @@ import com.ubtrobot.robotinit.BootMediaHelper;
 import com.ubtrobot.robotinit.PowerKeyManager;
 import com.ubtrobot.robotinit.RobotInitApi;
 import com.ubtrobot.robotinit.VolumeManager;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 
 public class RobotInitActivity extends Activity {

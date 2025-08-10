@@ -13,6 +13,8 @@ import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtechinc.sauron.api.FaceTrackListener;
 import com.ubtechinc.sauron.api.SauronApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import java.util.List;
 

@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.ubt.power.PowerApi;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 
 public class PowerApiActivity extends Activity {

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
+import com.ubtrobot.mini.sdkdemo.R;
 
 /**
  * MouthLedApi的测试方法

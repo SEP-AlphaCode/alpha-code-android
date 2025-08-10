@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.ubtrobot.small.action.SmallAction;
 import com.ubtrobot.small.action.SmallActionApi;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import java.util.List;
 

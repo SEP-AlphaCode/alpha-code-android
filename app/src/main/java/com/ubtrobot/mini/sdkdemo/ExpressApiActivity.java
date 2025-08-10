@@ -18,6 +18,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 /**
  * ExpressApi的测试方法
@@ -87,7 +89,7 @@ public class ExpressApiActivity extends Activity {
    * 执行表情
    */
   public void doExpress(View view) {
-    expressApi.doExpress("wakeup", 4, Priority.HIGH, new AnimationListener() {
+    expressApi.doExpress("wakeup", 2, Priority.HIGH, new AnimationListener() {
       @Override public void onAnimationStart() {
         Log.i(TAG, "doExpress开始执行表情!");
       }

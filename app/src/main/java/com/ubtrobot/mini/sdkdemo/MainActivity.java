@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.ubtrobot.mini.sdkdemo.R;
+
 /**
  * Created by lulin.wu on 2018/6/19.
  */

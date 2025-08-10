@@ -16,6 +16,8 @@ import com.ubtrobot.motor.receiver.MotorStatus;
 import com.ubtrobot.motor.receiver.MotorStatusReceiver;
 import java.util.ArrayList;
 import java.util.List;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 /**
  * MotorApi的测试方法

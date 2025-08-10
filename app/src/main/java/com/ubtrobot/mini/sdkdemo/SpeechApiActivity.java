@@ -15,6 +15,8 @@ import com.ubtrobot.speech.receivers.AsrStateReceiver;
 import com.ubtrobot.speech.receivers.InitResultReceiver;
 import com.ubtrobot.speech.receivers.WakeupAngelReceiver;
 import com.ubtrobot.speech.receivers.WakeupReceiver;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import com.ubtrobot.teach.receivers.WakeupAngleReceiver;
 
