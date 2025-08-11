@@ -22,6 +22,8 @@ import com.ubtrobot.mini.sysevent.receiver.CommonSystemEventReceiver;
 import com.ubtrobot.mini.sysevent.receiver.KeyEventReceiver;
 import com.ubtrobot.mini.sysevent.receiver.SingleClickReceiver;
 import com.ubtrobot.transport.message.CallException;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 
 /**

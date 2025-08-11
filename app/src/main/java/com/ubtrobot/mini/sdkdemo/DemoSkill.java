@@ -5,12 +5,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.protobuf.StringValue;
-import com.ubtech.utilcode.utils.LogUtils;
 import com.ubtech.utilcode.utils.thread.HandlerUtils;
 import com.ubtechinc.skill.MiniMasterSkill;
-import com.ubtechinc.skill.ProxySkill;
 import com.ubtechinc.skill.SkillHelper;
-import com.ubtechinc.skill.SkillType;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.master.Master;
 import com.ubtrobot.master.annotation.Call;

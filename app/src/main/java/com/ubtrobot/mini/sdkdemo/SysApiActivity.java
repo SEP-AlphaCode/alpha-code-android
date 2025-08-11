@@ -8,6 +8,8 @@ import android.view.View;
 import com.ubtrobot.motion.protos.Sys;
 import com.ubtrobot.motor.receiver.SubsystemErrorReceiver;
 import com.ubtrobot.sys.SysApi;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 /**
  * SysApi的测试方法

@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
   <application
-      android:name=".DemoApp"
+      android:name="com.ubtrobot.mini.sdkdemo.DemoApp"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
@@ -30,7 +30,7 @@
       android:theme="@style/AppTheme">
 <!--    <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>-->
 
-    <activity android:name=".MainActivity">
+    <activity android:name="com.ubtrobot.mini.sdkdemo.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <action android:name="android.intent.action.VIEW"/>
@@ -39,102 +39,102 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".ActionApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.ActionApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".ExpressApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.ExpressApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".SpeechApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.SpeechApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".MotorApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.MotorApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".FaceApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.FaceApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".ObjectDetectApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.ObjectDetectApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".TakePicApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".MouthLedApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.MouthLedApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".SysEventApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.SysEventApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".SysApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.SysApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".StandupApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.StandupApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".SkillApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.SkillApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".PowerApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.PowerApiActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".BehaviorActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.BehaviorActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".RobotInitActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.RobotInitActivity"
         android:theme="@style/AppTheme"/>
     <activity
-        android:name=".DiscorverActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.DiscorverActivity"
         android:theme="@style/AppTheme"/>
       <activity
-          android:name=".DanceWithMusicActivity"
+          android:name="com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity"
           android:theme="@style/AppTheme"/>
     <activity
-        android:name=".PhoneCallApiActivity"
+        android:name="com.ubtrobot.mini.sdkdemo.PhoneCallApiActivity"
         android:theme="@style/AppTheme"/>
 
-    <activity android:name=".ApkSilentInstallerApiActivity"
+    <activity android:name="com.ubtrobot.mini.sdkdemo.ApkSilentInstallerApiActivity"
         android:theme="@style/AppTheme"/>
-    <activity android:name=".BuiltInSkillCallTestActivity"
+    <activity android:name="com.ubtrobot.mini.sdkdemo.BuiltInSkillCallTestActivity"
         android:theme="@style/AppTheme"/>
 
-    <service android:name=".DemoSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.DemoSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_skill_path" />
     </service>
 
-    <service android:name=".skills.InterruptibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.InterruptibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_interruptible_skill" />
     </service>
 
-    <service android:name=".skills.UnInterruptibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.UnInterruptibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_uninterruptible_skill" />
     </service>
 
 
-    <service android:name=".skills.ParallelSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.ParallelSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_parallel_skill" />
     </service>
 
-    <service android:name=".skills.NoRecordInterrutibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.NoRecordInterrutibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_norecord_in_skill" />
     </service>
 
-    <service android:name=".skills.NoRecordUnInterrutibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.NoRecordUnInterrutibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_norecord_unin_skill" />
     </service>
 
-    <service android:name=".skills.LowpowerInterruptibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.LowpowerInterruptibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_lp_interruptible_skill" />
     </service>
 
-    <service android:name=".skills.LowpowerUnInterruptibleSkill"
+    <service android:name="com.ubtrobot.mini.sdkdemo.skills.LowpowerUnInterruptibleSkill"
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_lp_uninterruptible_skill" />
     </service>

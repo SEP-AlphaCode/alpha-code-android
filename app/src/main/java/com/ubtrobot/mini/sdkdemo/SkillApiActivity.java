@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.ubtechinc.skill.Paths;
 import com.ubtechinc.skill.SkillApi;
 import com.ubtechinc.skill.SkillHelper;
 import com.ubtrobot.commons.ResponseListener;
@@ -17,6 +16,8 @@ import com.ubtrobot.mini.sdkdemo.skills.NoRecordInterrutibleSkill;
 import com.ubtrobot.mini.sdkdemo.skills.NoRecordUnInterrutibleSkill;
 import com.ubtrobot.mini.sdkdemo.skills.ParallelSkill;
 import com.ubtrobot.mini.sdkdemo.skills.UnInterruptibleSkill;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import java.util.List;
 

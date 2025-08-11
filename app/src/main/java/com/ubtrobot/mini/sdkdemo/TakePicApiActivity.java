@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 /**
  * TakePicApi的测试方法

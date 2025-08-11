@@ -11,6 +11,8 @@ import com.ubtrobot.transport.message.CallException;
 import com.ubtrobot.transport.message.Request;
 import com.ubtrobot.transport.message.Response;
 import com.ubtrobot.transport.message.ResponseCallback;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 public class BuiltInSkillCallTestActivity extends Activity {
   private static final String TAG = "BuiltInSkillCallTest";

@@ -12,6 +12,8 @@ import com.ubtrobot.communication.robot.callback.ResultCallback;
 import com.ubtrobot.discover.DiscoverManager;
 import com.ubtrobot.lib.robot.proto.ProtoClass;
 import com.ubtrobot.master.param.ProtoParam;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import java.util.ArrayList;
 

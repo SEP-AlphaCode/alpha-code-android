@@ -13,6 +13,8 @@ import com.ubtrobot.transport.message.ResponseCallback;
 import ubtechinc.com.standupsdk.FallClimbEventReceiver;
 import ubtechinc.com.standupsdk.GetRobotGestureCallback;
 import ubtechinc.com.standupsdk.StandUpApi;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 /**
  * Created by lulin.wu on 2018/6/19.

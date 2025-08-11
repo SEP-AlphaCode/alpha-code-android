@@ -1,101 +1,186 @@
 package com.ubtrobot.mini.sdkdemo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.speech.tts.Voice;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
-import com.ubtrobot.master.Master;
-import com.ubtrobot.master.context.GlobalContext;
+import com.ubtrobot.action.ActionApi;
+import com.ubtrobot.commons.Priority;
+import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.express.ExpressApi;
+import com.ubtrobot.express.listeners.AnimationListener;
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.master.context.MasterContext;
+import com.ubtrobot.mini.sdkdemo.utils.RobotUtils;
 import com.ubtrobot.mini.voice.MiniMediaPlayer;
-import com.ubtrobot.mini.voice.VoicePool;
 import com.ubtrobot.mini.voice.protos.VoiceProto;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 public class DanceWithMusicActivity extends Activity {
 
     private MiniMediaPlayer miniPlayer;
+    private ActionApi actionApi;
+    private ExpressApi expressApi;
+    private MouthLedApi mouthLedApi;
+    private static final String TAG = "DanceWithMusic";
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dance_with_music);
-
-        // Giả sử bạn có hàm hoặc cách lấy MasterContext và VoiceProto.Source
-        MasterContext context = getMasterContext();
-        VoiceProto.Source source = getVoiceProtoSource();
-
-        // Đường dẫn file âm thanh bạn muốn phát
-        String audioPath = "https://storage.googleapis.com/alphamini-music-configs/music/starboy_dance.wav?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=alpha-mini-stt-service%40alphamini-465103.iam.gserviceaccount.com%2F20250809%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250809T082627Z&X-Goog-Expires=604800&X-Goog-SignedHeaders=host&X-Goog-Signature=3665cfb6e9aec45b71b0561ec34474824b28d379a1c2e5d2f4d9f86452cd5dcf5332453b62f382fcf4dc1a74c528c808e43b90de88c8f6f75efc97ee38c0f24bd0c29c00f80f15a059e9910bd132e3ae3c969a7bfb1e7337c490c334aa7f59fb2a8d631117cc3ac51481f6e5cb441fe71e2b2ed158e66ceca75fc63408332daa8cd735653ba5974b8ee1aa8c74da7d744f4647321c43542db8ccb0834fbb760b7727e358c34cbcc1e3224a09091e62e0742dd124ce33426dc9e52381b4ef7af94aef71bbcd7ec4db6acfadcbcf026c1b3234f63922a13a321f5f069dd4332e93958a222dab780be216d6dce78f73dd7444368a25773b2746e12fb37765f2742e";
-
-        // Gọi initPlayer với tham số đúng
-        initPlayer(context, source, audioPath);
+    private void initRobot() {
+        actionApi = ActionApi.get();
+        expressApi = ExpressApi.get();
+        mouthLedApi = MouthLedApi.get();
     }
 
-    // Hàm lấy MasterContext - bạn cần thay bằng cách lấy thật trong SDK của bạn
-    private MasterContext getMasterContext() {
-        Master master = Master.get();
-        return master.getGlobalContext();
+    public static DanceWithMusicActivity get() {
+        return DanceWithMusicActivity.Holder._api;
     }
 
-    // Hàm lấy VoiceProto.Source - bạn cần thay bằng cách lấy thật trong SDK của bạn
-    private VoiceProto.Source getVoiceProtoSource() {
-        VoiceProto.Source voiceProto = VoiceProto.Source.MUSIC;
-        return voiceProto;
+    private static final class Holder {
+        @SuppressLint({"StaticFieldLeak"})
+        private static DanceWithMusicActivity _api = new DanceWithMusicActivity();
     }
 
-    public void initPlayer(MasterContext context, VoiceProto.Source source, String audioPath) {
+    public void JumpWithMusic(JSONObject jsonObject) {
+        MasterContext context = RobotUtils.getMasterContext();
+        VoiceProto.Source source = RobotUtils.getVoiceProtoSource();
+
+        initRobot();
+        initPlayer(context, source, jsonObject);
+    }
+
+    private void initPlayer(MasterContext context, VoiceProto.Source source, JSONObject jsonObject) {
         try {
+            String audioPath = jsonObject.getJSONObject("music_info").getString("music_file_url");
             miniPlayer = MiniMediaPlayer.create(context, source);
-
             miniPlayer.setDataSource(audioPath);
 
             miniPlayer.setOnPreparedListener(mp -> {
-                Log.i("DanceWithMusic", "Media ready, start playing");
+                Log.i(TAG, "Media ready, start playing");
                 mp.start();
+                // Chạy script JSON khi nhạc bắt đầu
+                try {
+                    playScriptFromJson(jsonObject);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error parsing JSON", e);
+                }
             });
 
-            miniPlayer.setOnCompletionListener(mp -> Log.i("DanceWithMusic", "Playback completed"));
+            miniPlayer.setOnCompletionListener(mp -> Log.i(TAG, "Playback completed"));
 
             miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                Log.e("DanceWithMusic", "Error playing media: " + what + ", " + extra);
-                return true; // lỗi đã xử lý
+                Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                return true;
             });
 
             miniPlayer.prepareAsync();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error initializing player", e);
         }
     }
 
-    // Hàm tạm dừng phát
-    public void pausePlayer() {
-        if (miniPlayer != null && miniPlayer.isPlaying()) {
-            miniPlayer.pause();
+    private void playScriptFromJson(JSONObject script) {
+        try {
+            JSONArray actions = script.getJSONObject("activity").getJSONArray("actions");
+
+            Log.i(TAG, "Playing script with " + actions.length() + " actions");
+
+            for (int i = 0; i < actions.length(); i++) {
+                JSONObject action = actions.getJSONObject(i);
+                String actionId = action.getString("action_id");
+                double startTime = action.getDouble("start_time");
+                double duration = action.getDouble("duration");
+                String type = action.getString("action_type");
+
+                // Read color information from JSON
+                JSONObject colorObj = action.optJSONObject("color");
+                int a = 0, r = 255, g = 255, b = 255;
+                if (colorObj != null) {
+                    a = colorObj.optInt("a", 0);
+                    r = colorObj.optInt("r", 255);
+                    g = colorObj.optInt("g", 255);
+                    b = colorObj.optInt("b", 255);
+                }
+                int finalA = a, finalR = r, finalG = g, finalB = b;
+
+                handler.postDelayed(() -> {
+                    Log.i(TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
+
+                    // Set LED color with activity duration time
+                    try {
+                        mouthLedApi.startNormalModel(Color.argb(finalA, finalR, finalG, finalB),
+                                (int) (duration * 1000), Priority.NORMAL, null);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error setting LED color", e);
+                    }
+
+                    // Run action based on type
+                    switch (type) {
+                        case "dance":
+                            actionApi.playAction(actionId ,new ResponseListener<Void>() {
+                                @Override
+                                public void onResponseSuccess(Void aVoid) {
+                                    Log.i(TAG, "Action " + actionId + " completed successfully");
+                                }
+
+                                @Override
+                                public void onFailure(int errorCode, @NonNull String errorMessage) {
+                                    Log.e(TAG, "Action " + actionId + " failed: " + errorMessage);
+                                }
+                            });
+                            break;
+                        case "expression":
+                            try {
+                                Log.i(TAG, "Executing expression: " + actionId);
+                                expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
+                                    @Override public void onAnimationStart() {
+                                        Log.i(TAG, "doExpress开始执行表情!");
+                                    }
+
+                                    @Override public void onAnimationEnd(int i) {
+                                        Log.i(TAG, "doExpress表情执行结束!");
+                                    }
+
+                                    @Override public void onAnimationRepeat(int loopNumber) {
+                                        Log.i(TAG, "doExpress重复执行表情,重复次数:" + loopNumber);
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error executing expression " + actionId, e);
+                            }
+                            break;
+                        default:
+                            Log.w(TAG, "Unknown action type: " + type + " for action: " + actionId);
+                            break;
+                    }
+
+                }, (long) (startTime * 1000));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in playScriptFromJson", e);
         }
     }
 
-    // Hàm dừng phát
-    public void stopPlayer() {
-        if (miniPlayer != null) {
-            miniPlayer.stop();
-            miniPlayer.reset();
-        }
-    }
 
-    // Giải phóng tài nguyên khi không dùng nữa
-    public void releasePlayer() {
-        if (miniPlayer != null) {
-            miniPlayer.release();
-            miniPlayer = null;
-        }
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        releasePlayer();
+        if (miniPlayer != null) {
+            miniPlayer.release();
+        }
+        handler.removeCallbacksAndMessages(null);
     }
 }

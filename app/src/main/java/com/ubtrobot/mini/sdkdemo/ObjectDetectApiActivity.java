@@ -12,6 +12,8 @@ import com.ubtechinc.sauron.api.ObjectType;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.voice.VoicePool;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 import java.util.List;
 

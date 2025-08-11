@@ -21,6 +21,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import com.ubtrobot.mini.sdkdemo.R;
+
 
 public final class BehaviorActivity extends Activity {
   private static final String TAG = DemoApp.DEBUG_TAG;
