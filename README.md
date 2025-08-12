@@ -14,7 +14,7 @@
 2. **Rebuild Project**  
    In Android Studio, do the following
     - Build > Clean Project
-    - Build > Rebuild Project
+    - Build > Compile All Sources
 
 ### To obtain your device's IP address
 - Open Command Prompt and type in
