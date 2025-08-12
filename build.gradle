@@ -1,4 +1,15 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    localProperties = new Properties()
+    localPropertiesFile = rootProject.file('local.properties')
+    if (localPropertiesFile.exists()) {
+        localProperties.load(new FileInputStream(localPropertiesFile))
+    }
+
+    getLocalProperty = { String key, String defaultValue = "" ->
+        return localProperties.getProperty(key, defaultValue)
+    }
+}
+
 
 buildscript {
     

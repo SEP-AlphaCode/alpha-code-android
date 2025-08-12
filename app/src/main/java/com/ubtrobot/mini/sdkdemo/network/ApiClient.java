@@ -1,5 +1,7 @@
 package com.ubtrobot.mini.sdkdemo.network;
 
+import com.ubtrobot.mini.sdkdemo.BuildConfig;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.SSLContext;
@@ -13,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://192.168.1.233:8080/api/v1/"; // Your computer's IP address
+    private static final String BASE_URL = BuildConfig.API_PATH; // Your computer's IP address
     private static Retrofit retrofit;
 
     private static OkHttpClient getUnsafeOkHttpClient() {

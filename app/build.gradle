@@ -10,7 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        buildConfigField "String", "API_PATH", "\"${getLocalProperty('api.path', '')}\""
+        buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
         // Bật MultiDex
         multiDexEnabled true
     }
