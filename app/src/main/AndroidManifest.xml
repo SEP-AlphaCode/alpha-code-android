@@ -34,7 +34,7 @@
               <action android:name="android.intent.action.BOOT_COMPLETED" />
           </intent-filter>
       </receiver>
-    <activity android:name="com.ubtrobot.mini.sdkdemo.AnotherActivity">
+    <activity android:name="com.ubtrobot.mini.sdkdemo.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <action android:name="android.intent.action.VIEW"/>
@@ -144,7 +144,7 @@
     </service>
 
       <service
-          android:name=".service.RobotWebSocketService"
+          android:name=".socket.RobotSocketClient"
           android:enabled="true"
           android:exported="false" />
 
