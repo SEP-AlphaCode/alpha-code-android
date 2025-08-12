@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
@@ -22,10 +24,17 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        Button forceConnect = (Button) findViewById(R.id.force_connect);
         DanceWithMusicActivity danceActivity = DanceWithMusicActivity.get();
         RobotSocketController robotSocketController = new RobotSocketController(danceActivity);
         wsClient = new RobotSocketClient(robotSocketController);
-        wsClient.connect();
+        forceConnect.setOnClickListener(l -> {
+            try{
+                wsClient.forceConnect();
+            } catch (Exception e) {
+                Log.e("WebSocketManager", e.toString());
+            }
+        });
     }
 
     public void actionApiTest(View view) {

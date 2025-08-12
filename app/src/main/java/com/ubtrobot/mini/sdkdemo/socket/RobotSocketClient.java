@@ -8,71 +8,45 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ubtrobot.commons.Priority;
+//import com.ubtrobot.mini.sdkdemo.BuildConfig;
+import com.ubtrobot.mini.sdkdemo.BuildConfig;
 import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
 import com.ubtrobot.mini.voice.VoicePool;
 
 import okhttp3.*;
 
 public class RobotSocketClient extends Service {
-    private WebSocket webSocket;
     private RobotSocketController robotController;
+    private RobotSocketManager manager;
+    private void init(){
+        Log.i("RobotSocketClient", "Connecting...");
+        DanceWithMusicActivity activity = new DanceWithMusicActivity();
+        robotController = new RobotSocketController(activity);
+        VoicePool vp = VoicePool.get();
+        vp.playTTs("Connecting...", Priority.HIGH, null);
+        String path = BuildConfig.API_WEBSOCKET;
+        manager = new RobotSocketManager(path, vp, robotController);
+    }
+
+    /**
+     * Used for registering the service
+     */
     public RobotSocketClient(){
-        DanceWithMusicActivity act = new DanceWithMusicActivity();
-        robotController = new RobotSocketController(act);
     }
     public RobotSocketClient(RobotSocketController robotController) {
         this.robotController = robotController;
+        init();
     }
 
-    public void connect() {
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("ws://192.168.1.233:8000/websocket/ws")
-                .build();
-
-        webSocket = client.newWebSocket(request, new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                VoicePool vp = VoicePool.get();
-                vp.playTTs("I am connected to the server", Priority.HIGH, null);
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                VoicePool vp = VoicePool.get();
-                vp.playTTs("I got a command", Priority.HIGH, null);
-                if (robotController != null) {
-                    robotController.handleCommand(text);
-                }
-            }
-
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                Log.i("Error", "Got error: ");
-            }
-        });
-    }
-
-    public void sendMessage(String msg) {
-        if (webSocket != null) {
-            boolean sent = webSocket.send(msg);
-            System.out.println("Send message: " + msg + " success=" + sent);
-        } else {
-            System.err.println("Cannot send message, WebSocket null");
-        }
-    }
-
-    public void close() {
-        if (webSocket != null) {
-            webSocket.close(1000, "Client closed");
-        }
+    public void forceConnect(){
+        manager.connect();
+        Log.i("WebSocketManager", "Done");
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        connect();
+        init();
     }
 
     @Nullable

@@ -29,9 +29,11 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
 <!--    <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>-->
-      <receiver android:name=".receiver.BootReceiver">
+      <receiver android:name=".receiver.BootReceiver"
+          android:exported="false">
           <intent-filter>
               <action android:name="android.intent.action.BOOT_COMPLETED" />
+              <action android:name="android.intent.action." />
           </intent-filter>
       </receiver>
     <activity android:name="com.ubtrobot.mini.sdkdemo.MainActivity">

@@ -1,0 +1,176 @@
+package com.ubtrobot.mini.sdkdemo.socket;
+
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
+import com.ubtrobot.mini.voice.VoicePool;
+import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import com.ubtrobot.commons.Priority;
+
+public class RobotSocketManager {
+    private static final String TAG = "WebSocketManager";
+    private static final long RECONNECT_DELAY_MS = 5000;
+    private static final long PING_INTERVAL_MS = 15000; // 30 seconds ping interval
+
+    private OkHttpClient client;
+    private WebSocket webSocket;
+    private Request request;
+    private boolean isConnected = false;
+    private boolean shouldReconnect = true;
+    private VoicePool vp;
+    private RobotSocketController robotController;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable connectionChecker;
+    private long lastMessageReceivedTime = 0;
+    private MouthLedApi led;
+    /**
+     * 0 = OK (green), 1 = WAIT (yellow), 2 = FAIL (red)
+     * */
+    private void notifyState(int state){
+        int color = -1;
+        switch (state){
+            case 0: color = Color.argb(0,0, 255, 0); break;
+            case 1: color = Color.argb(0,255, 255, 0); break;
+            case 2: color = Color.argb(0,255, 0, 0); break;
+        }
+        Log.i(TAG, "State is " + state);
+        led.startNormalModel(color, 2000, Priority.HIGH, null);
+    }
+    public RobotSocketManager(String serverUrl, VoicePool vp, RobotSocketController robotController) {
+        this.vp = vp;
+        this.robotController = robotController;
+        led = MouthLedApi.get();
+        client = new OkHttpClient.Builder()
+                .readTimeout(0, TimeUnit.MILLISECONDS)
+                .pingInterval(PING_INTERVAL_MS, TimeUnit.MILLISECONDS) // Enable automatic pings
+                .retryOnConnectionFailure(true)
+                .build();
+
+        request = new Request.Builder()
+                .url(serverUrl)
+                .build();
+
+        setupConnectionChecker();
+        connect();
+    }
+
+    private void setupConnectionChecker() {
+        connectionChecker = new Runnable() {
+            @Override
+            public void run() {
+                if (isConnected) {
+                    // Check if we haven't received any messages in a while
+                    long timeSinceLastMessage = System.currentTimeMillis() - lastMessageReceivedTime;
+                    if (timeSinceLastMessage > PING_INTERVAL_MS * 2) {
+                        Log.w(TAG, "No messages received in " + timeSinceLastMessage + "ms - assuming connection lost");
+                        //vp.playTTs("Connection may be lost", Priority.HIGH, null);
+                        notifyState(2);
+                        forceReconnect();
+                    }
+                }
+                handler.postDelayed(this, PING_INTERVAL_MS); // Check every ping interval
+            }
+        };
+    }
+
+    public void connect() {
+        if (isConnected) return;
+
+        handler.removeCallbacks(connectionChecker);
+        handler.post(connectionChecker);
+
+        webSocket = client.newWebSocket(request, new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, Response response) {
+                isConnected = true;
+                lastMessageReceivedTime = System.currentTimeMillis();
+                Log.d(TAG, "WebSocket connected");
+                //vp.playTTs("Connected to server", Priority.HIGH, null);
+                notifyState(0);
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+                lastMessageReceivedTime = System.currentTimeMillis();
+                Log.d(TAG, "Received message: " + text);
+                vp.playTTs("Command received", Priority.HIGH, null);
+                notifyState(0);
+                if (robotController != null) {
+                    robotController.handleCommand(text);
+                }
+            }
+
+            @Override
+            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+                handleConnectionFailure(t.getMessage());
+            }
+
+            @Override
+            public void onClosed(WebSocket webSocket, int code, String reason) {
+                handleConnectionFailure("Connection closed: " + reason);
+            }
+        });
+    }
+
+    private void handleConnectionFailure(String error) {
+        isConnected = false;
+        Log.e(TAG, "WebSocket error: " + error);
+        notifyState(2);
+        vp.playTTs("Connection error", Priority.HIGH, null);
+
+        if (shouldReconnect) {
+            scheduleReconnect();
+        }
+    }
+
+    private void forceReconnect() {
+        Log.d(TAG, "Forcing reconnection");
+        if (webSocket != null) {
+            webSocket.close(1000, "Forcing reconnect");
+        }
+        isConnected = false;
+        scheduleReconnect();
+    }
+
+    private void scheduleReconnect() {
+        try {
+            Log.i(TAG, "Scheduling reconnect in " + RECONNECT_DELAY_MS + "ms");
+            //vp.playTTs("Reconnecting soon", Priority.LOW, null);
+
+            handler.removeCallbacksAndMessages(null); // Clear any pending reconnects
+            handler.postDelayed(() -> {
+                //notifyState(1);
+                if (!isConnected && shouldReconnect) {
+                    Log.i(TAG, "Attempting to reconnect");
+                    //vp.playTTs("Attempting to reconnect", Priority.HIGH, null);
+                    connect();
+                }
+            }, RECONNECT_DELAY_MS);
+        } catch (Exception e) {
+            Log.e(TAG, "Reconnect scheduling error: " + e.toString());
+        }
+    }
+
+    public void disconnect() {
+        shouldReconnect = false;
+        handler.removeCallbacksAndMessages(null);
+        if (webSocket != null) {
+            webSocket.close(1000, "Disconnected by user");
+        }
+        if (client != null) {
+            client.dispatcher().executorService().shutdown();
+        }
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
