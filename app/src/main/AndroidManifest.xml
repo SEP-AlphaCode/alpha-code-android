@@ -29,8 +29,12 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
 <!--    <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>-->
-
-    <activity android:name="com.ubtrobot.mini.sdkdemo.MainActivity">
+      <receiver android:name=".receiver.BootReceiver">
+          <intent-filter>
+              <action android:name="android.intent.action.BOOT_COMPLETED" />
+          </intent-filter>
+      </receiver>
+    <activity android:name="com.ubtrobot.mini.sdkdemo.AnotherActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <action android:name="android.intent.action.VIEW"/>
@@ -138,6 +142,12 @@
         android:exported="true">
       <meta-data android:name="master.skill" android:resource="@xml/demo_lp_uninterruptible_skill" />
     </service>
+
+      <service
+          android:name=".service.RobotWebSocketService"
+          android:enabled="true"
+          android:exported="false" />
+
   </application>
 
 </manifest>
