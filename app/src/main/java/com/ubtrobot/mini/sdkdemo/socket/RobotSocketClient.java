@@ -28,7 +28,7 @@ public class RobotSocketClient extends Service {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://192.168.1.177:8000/websocket/ws")
+                .url("ws://192.168.1.233:8000/websocket/ws")
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
