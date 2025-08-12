@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -20,9 +22,16 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
-import com.ubtrobot.mini.sdkdemo.R;
+import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
+import com.ubtrobot.mini.sdkdemo.models.QRCodeDetectResponse;
+import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.voice.VoicePool;
 
 import java.io.File;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -32,6 +41,9 @@ import java.io.File;
 public class TakePicApiActivity extends Activity {
     private static final String TAG = DemoApp.DEBUG_TAG;
     private TakePicApi takePicApi;
+    private QrCodeActivity qrCodeActivity;
+    QRCodeApi qrCodeApi = ApiClient.getInstance().create(QRCodeApi.class);
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +57,7 @@ public class TakePicApiActivity extends Activity {
      */
     private void initRobot() {
         takePicApi = TakePicApi.get();
+        qrCodeActivity = QrCodeActivity.get();
     }
 
     /**
@@ -73,7 +86,34 @@ public class TakePicApiActivity extends Activity {
                 String qrContent = decodeQRCodeFromFile(realPath);
                 if (qrContent != null) {
                     Log.i(TAG, "Nội dung QR code: " + qrContent);
-                    Toast.makeText(getApplicationContext(), "QR code: " + qrContent, Toast.LENGTH_LONG).show();
+                    // Gọi API để lấy danh mục theo ID từ QR code
+                    qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
+                        @Override
+                        public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                // Xử lý phản hồi thành công
+                                try {
+                                    JsonObject jsonObject = response.body().getData();
+
+                                    // Chuyển JsonObject (Gson) -> JSON string
+                                    String jsonString = new Gson().toJson(jsonObject);
+
+                                    // Truyền string JSON vào DoActivity
+                                    qrCodeActivity.DoActivity(jsonString);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i(TAG, "Danh mục: " + response.body().getData());
+                            } else {
+                                Log.e(TAG, "Không tìm thấy danh mục hoặc phản hồi không hợp lệ");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
+                            Log.e(TAG, "Lỗi khi gọi API: " + t.getMessage());
+                        }
+                    });
                 } else {
                     Log.i(TAG, "Không đọc được QR code trong ảnh");
                 }

@@ -93,7 +93,7 @@ public class ActionApiActivity extends Activity {
     }
 
     public void playActionsInSequence(View view) {
-        String actionIdsStr = "action_013, action_015, action_007, action_019"; // Chuỗi chứa các actionId
+        String actionIdsStr = "bow_avatar"; // Chuỗi chứa các actionId
         String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
         playNextAction(actionIds, 0);
     }
