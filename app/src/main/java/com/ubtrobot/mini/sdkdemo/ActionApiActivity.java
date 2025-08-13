@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 public class ActionApiActivity extends Activity {
-    private static final String TAG = DemoApp.DEBUG_TAG;
+    private static final String TAG = "ActionApiActivity";
     private ActionApi actionApi;
     private ActionStoppedReceiver receiver;
 
@@ -93,7 +93,7 @@ public class ActionApiActivity extends Activity {
     }
 
     public void playActionsInSequence(View view) {
-        String actionIdsStr = "bow_avatar"; // Chuỗi chứa các actionId
+        String actionIdsStr = "baby_shark_dance"; // Chuỗi chứa các actionId
         String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
         playNextAction(actionIds, 0);
     }
