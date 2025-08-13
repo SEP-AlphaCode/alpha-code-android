@@ -7,17 +7,20 @@ import android.util.Log;
 
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.mini.voice.VoicePool;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+
 import com.ubtrobot.commons.Priority;
 
 public class RobotSocketManager {
     private static final String TAG = "WebSocketManager";
-    private static final long RECONNECT_DELAY_MS = 5000;
+    private static final long RECONNECT_DELAY_MS = 7500;
     private static final long PING_INTERVAL_MS = 15000; // 30 seconds ping interval
 
     private OkHttpClient client;
@@ -31,19 +34,27 @@ public class RobotSocketManager {
     private Runnable connectionChecker;
     private long lastMessageReceivedTime = 0;
     private MouthLedApi led;
+
     /**
      * 0 = OK (green), 1 = WAIT (yellow), 2 = FAIL (red)
-     * */
-    private void notifyState(int state){
+     */
+    private void notifyState(int state) {
         int color = -1;
-        switch (state){
-            case 0: color = Color.argb(0,0, 255, 0); break;
-            case 1: color = Color.argb(0,255, 255, 0); break;
-            case 2: color = Color.argb(0,255, 0, 0); break;
+        switch (state) {
+            case 0:
+                color = Color.argb(0, 0, 255, 0);
+                break;
+            case 1:
+                color = Color.argb(0, 255, 255, 0);
+                break;
+            case 2:
+                color = Color.argb(0, 255, 0, 0);
+                break;
         }
         Log.i(TAG, "State is " + state);
         led.startNormalModel(color, 2000, Priority.HIGH, null);
     }
+
     public RobotSocketManager(String serverUrl, VoicePool vp, RobotSocketController robotController) {
         this.vp = vp;
         this.robotController = robotController;
@@ -67,14 +78,8 @@ public class RobotSocketManager {
             @Override
             public void run() {
                 if (isConnected) {
-                    // Check if we haven't received any messages in a while
-                    long timeSinceLastMessage = System.currentTimeMillis() - lastMessageReceivedTime;
-                    if (timeSinceLastMessage > PING_INTERVAL_MS * 2) {
-                        Log.w(TAG, "No messages received in " + timeSinceLastMessage + "ms - assuming connection lost");
-                        //vp.playTTs("Connection may be lost", Priority.HIGH, null);
-                        notifyState(2);
-                        forceReconnect();
-                    }
+                    notifyState(1);
+                    connect();
                 }
                 handler.postDelayed(this, PING_INTERVAL_MS); // Check every ping interval
             }
@@ -101,7 +106,6 @@ public class RobotSocketManager {
             public void onMessage(WebSocket webSocket, String text) {
                 lastMessageReceivedTime = System.currentTimeMillis();
                 Log.d(TAG, "Received message: " + text);
-                vp.playTTs("Command received", Priority.HIGH, null);
                 notifyState(0);
                 if (robotController != null) {
                     robotController.handleCommand(text);
@@ -124,20 +128,11 @@ public class RobotSocketManager {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
         notifyState(2);
-        vp.playTTs("Connection error", Priority.HIGH, null);
+        vp.playTTs("Could not connect. I'll try again later" , Priority.HIGH, null);
 
         if (shouldReconnect) {
             scheduleReconnect();
         }
-    }
-
-    private void forceReconnect() {
-        Log.d(TAG, "Forcing reconnection");
-        if (webSocket != null) {
-            webSocket.close(1000, "Forcing reconnect");
-        }
-        isConnected = false;
-        scheduleReconnect();
     }
 
     private void scheduleReconnect() {

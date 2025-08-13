@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
+import com.ubtrobot.mini.voice.VoicePool;
 
 // Create a BroadcastReceiver to start service on boot
 public class BootReceiver extends BroadcastReceiver {
@@ -13,7 +15,6 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             context.startService(new Intent(context, RobotSocketClient.class));
-            Log.i("ACTION_BOOT", "Init service");
         }
     }
 }

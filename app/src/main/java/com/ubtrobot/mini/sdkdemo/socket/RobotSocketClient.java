@@ -23,7 +23,6 @@ public class RobotSocketClient extends Service {
         DanceWithMusicActivity activity = new DanceWithMusicActivity();
         robotController = new RobotSocketController(activity);
         VoicePool vp = VoicePool.get();
-        vp.playTTs("Connecting...", Priority.HIGH, null);
         String path = BuildConfig.API_WEBSOCKET;
         manager = new RobotSocketManager(path, vp, robotController);
     }
