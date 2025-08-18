@@ -93,7 +93,7 @@ public class ActionApiActivity extends Activity {
     }
 
     public void playActionsInSequence(View view) {
-        String actionIdsStr = "baby_shark_dance"; // Chuỗi chứa các actionId
+        String actionIdsStr = "action_021"; // Chuỗi chứa các actionId
         String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
         playNextAction(actionIds, 0);
     }
@@ -106,7 +106,7 @@ public class ActionApiActivity extends Activity {
 
         String actionId = actionIds[index].trim();
 
-        actionApi.playAction(actionId, new ResponseListener<Void>() {
+        actionApi.playCustomizeAction(actionId, new ResponseListener<Void>() {
             @Override
             public void onResponseSuccess(Void aVoid) {
                 Log.i(TAG, "Action " + actionId + " done!");
