@@ -9,8 +9,10 @@ import android.util.Log;
 
 import com.ubtrobot.commons.Priority;
 //import com.ubtrobot.mini.sdkdemo.BuildConfig;
+import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
 import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
+import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.voice.VoicePool;
 
 import okhttp3.*;
@@ -20,8 +22,10 @@ public class RobotSocketClient extends Service {
     private RobotSocketManager manager;
     private void init(){
         Log.i("RobotSocketClient", "Connecting...");
-        DanceWithMusicActivity activity = new DanceWithMusicActivity();
-        robotController = new RobotSocketController(activity);
+        DanceWithMusicActivity danceWithMusicActivity = DanceWithMusicActivity.get();
+        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
+        ActionApiActivity actionApiActivity = ActionApiActivity.get();
+        robotController = new RobotSocketController(danceWithMusicActivity, takePicApiActivity, actionApiActivity);
         VoicePool vp = VoicePool.get();
         String path = BuildConfig.API_WEBSOCKET;
         manager = new RobotSocketManager(path, vp, robotController);

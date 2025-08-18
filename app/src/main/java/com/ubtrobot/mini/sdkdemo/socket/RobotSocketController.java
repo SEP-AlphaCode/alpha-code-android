@@ -1,8 +1,18 @@
 package com.ubtrobot.mini.sdkdemo.socket;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import com.ubtrobot.action.ActionApi;
+import com.ubtrobot.commons.Priority;
+import com.ubtrobot.express.ExpressApi;
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
+import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
+import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
+import com.ubtrobot.mini.voice.VoiceListener;
+import com.ubtrobot.mini.voice.VoicePool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,14 +21,23 @@ public class RobotSocketController {
     private static final String TAG = "RobotSocketController";
 
     private DanceWithMusicActivity danceWithMusicActivity;
-
-    public RobotSocketController(DanceWithMusicActivity danceWithMusicActivity) {
+    private TakePicApiActivity takePicApiActivity;
+    private VoicePool voicePool;
+    private ActionApiActivity actionApiActivity;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    public RobotSocketController(DanceWithMusicActivity danceWithMusicActivity, TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
         this.danceWithMusicActivity = danceWithMusicActivity;
+        this.takePicApiActivity = takePicApiActivity;
+        this.actionApiActivity = actionApiActivity;
+    }
+
+    private void initRobot() {
+        voicePool = VoicePool.get();
     }
 
     public void handleCommand(String command) {
         if (command == null) return;
-
+        initRobot();
         try {
             JSONObject json = new JSONObject(command);
             String type = json.optString("type");
@@ -32,6 +51,27 @@ public class RobotSocketController {
                         danceWithMusicActivity.JumpWithMusic(data);
                     }
                     break;
+                case"qr-code":
+                    if (data != null) {
+                        String tts = data.optString("text");
+                        voicePool.playTTs(tts, Priority.MAXHIGH, new VoiceListener() {
+                            @Override
+                            public void onCompleted() {
+                                Log.i(TAG, "After voice played successfully");
+                                actionApiActivity.playActionToTakeQR("takelowpic");
+
+                                handler.postDelayed(() -> {
+                                    takePicApiActivity.takePicImmediately();
+                                }, (long) (5 * 1000) + 1000);
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                Log.e(TAG, "Error playing after voice: " + s);
+                            }
+                        });
+
+                    }
                 case "say":
                     if (data != null) {
                         String textToSay = data.optString("text");

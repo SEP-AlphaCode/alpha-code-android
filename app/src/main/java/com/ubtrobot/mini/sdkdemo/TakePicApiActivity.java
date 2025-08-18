@@ -1,5 +1,6 @@
 package com.ubtrobot.mini.sdkdemo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,6 +53,15 @@ public class TakePicApiActivity extends Activity {
         initRobot();
     }
 
+    public static TakePicApiActivity get() {
+        return TakePicApiActivity.Holder._api;
+    }
+
+    private static final class Holder {
+        @SuppressLint({"StaticFieldLeak"})
+        private static TakePicApiActivity _api = new TakePicApiActivity();
+    }
+
     /**
      * 初始化接口类实例
      */
@@ -63,67 +73,84 @@ public class TakePicApiActivity extends Activity {
     /**
      * 拍照(立即)
      *
-     * @param view
+     *
      */
-    public void takePicImmediately(View view) {
-        takePicApi.takePicImmediately(new ResponseListener<String>() {
-            @Override
-            public void onResponseSuccess(String imagePath) {
-                Log.i(TAG, "Ảnh lưu tại: " + imagePath);
-                Toast.makeText(getApplicationContext(), "saving " + imagePath, Toast.LENGTH_LONG).show();
+    public void takePicImmediately() {
+        // Ensure takePicApi is initialized
+        if (takePicApi == null) {
+            initRobot();
+        }
 
-                // Chuyển đổi đường dẫn từ "/ubtrobot/camera/xxx" sang "/sdcard/ubtrobot/camera/xxx"
-                String realPath = imagePath.replaceFirst("^/ubtrobot", "/sdcard/ubtrobot");
+        if (takePicApi != null) {
+            takePicApi.takePicImmediately(new ResponseListener<String>() {
+                @Override
+                public void onResponseSuccess(String imagePath) {
+                    Log.i(TAG, "Ảnh lưu tại: " + imagePath);
 
-                File file = new File(realPath);
-                if (file.exists()) {
-                    Log.i(TAG, "File tồn tại");
-                } else {
-                    Log.e(TAG, "File không tồn tại: " + realPath);
-                }
+                    // Check if context is available before showing toast
+                    try {
+                        if (getApplicationContext() != null) {
+                            Toast.makeText(getApplicationContext(), "saving " + imagePath, Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        Log.w(TAG, "Cannot show toast, context not available: " + e.getMessage());
+                    }
 
-                // Giải mã QR code từ ảnh, dùng realPath
-                String qrContent = decodeQRCodeFromFile(realPath);
-                if (qrContent != null) {
-                    Log.i(TAG, "Nội dung QR code: " + qrContent);
-                    // Gọi API để lấy danh mục theo ID từ QR code
-                    qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
-                        @Override
-                        public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                // Xử lý phản hồi thành công
-                                try {
-                                    JsonObject jsonObject = response.body().getData();
+                    // Chuyển đổi đường dẫn từ "/ubtrobot/camera/xxx" sang "/sdcard/ubtrobot/camera/xxx"
+                    String realPath = imagePath.replaceFirst("^/ubtrobot", "/sdcard/ubtrobot");
 
-                                    // Chuyển JsonObject (Gson) -> JSON string
-                                    String jsonString = new Gson().toJson(jsonObject);
+                    File file = new File(realPath);
+                    if (file.exists()) {
+                        Log.i(TAG, "File tồn tại");
+                    } else {
+                        Log.e(TAG, "File không tồn tại: " + realPath);
+                    }
 
-                                    // Truyền string JSON vào DoActivity
-                                    qrCodeActivity.DoActivity(jsonString);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                    // Giải mã QR code từ ảnh, dùng realPath
+                    String qrContent = decodeQRCodeFromFile(realPath);
+                    if (qrContent != null) {
+                        Log.i(TAG, "Nội dung QR code: " + qrContent);
+                        // Gọi API để lấy danh mục theo ID từ QR code
+                        qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
+                            @Override
+                            public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    // Xử lý phản hồi thành công
+                                    try {
+                                        JsonObject jsonObject = response.body().getData();
+
+                                        // Chuyển JsonObject (Gson) -> JSON string
+                                        String jsonString = new Gson().toJson(jsonObject);
+
+                                        // Truyền string JSON vào DoActivity
+                                        qrCodeActivity.DoActivity(jsonString);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.i(TAG, "Danh mục: " + response.body().getData());
+                                } else {
+                                    Log.e(TAG, "Không tìm thấy danh mục hoặc phản hồi không hợp lệ");
                                 }
-                                Log.i(TAG, "Danh mục: " + response.body().getData());
-                            } else {
-                                Log.e(TAG, "Không tìm thấy danh mục hoặc phản hồi không hợp lệ");
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
-                            Log.e(TAG, "Lỗi khi gọi API: " + t.getMessage());
-                        }
-                    });
-                } else {
-                    Log.i(TAG, "Không đọc được QR code trong ảnh");
+                            @Override
+                            public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
+                                Log.e(TAG, "Lỗi khi gọi API: " + t.getMessage());
+                            }
+                        });
+                    } else {
+                        Log.i(TAG, "Không đọc được QR code trong ảnh");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int errorCode, @NonNull String errorMsg) {
-                Log.i(TAG, "Chụp ảnh thất bại, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
-            }
-        });
+                @Override
+                public void onFailure(int errorCode, @NonNull String errorMsg) {
+                    Log.i(TAG, "Chụp ảnh thất bại, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
+                }
+            });
+        } else {
+            Log.e(TAG, "TakePicApi is still null after initialization attempt");
+        }
     }
 
 

@@ -26,7 +26,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_layout);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
         DanceWithMusicActivity danceActivity = DanceWithMusicActivity.get();
-        RobotSocketController robotSocketController = new RobotSocketController(danceActivity);
+        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
+        ActionApiActivity actionApiActivity = ActionApiActivity.get();
+        RobotSocketController robotSocketController = new RobotSocketController(danceActivity, takePicApiActivity, actionApiActivity);
         wsClient = new RobotSocketClient(robotSocketController);
         forceConnect.setOnClickListener(l -> {
             try{

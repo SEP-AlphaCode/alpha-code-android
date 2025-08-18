@@ -1,5 +1,6 @@
 package com.ubtrobot.mini.sdkdemo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +34,15 @@ public class ActionApiActivity extends Activity {
         setContentView(R.layout.action_api_layout);
 
         initRobot();
+    }
+
+    public static ActionApiActivity get() {
+        return ActionApiActivity.Holder._api;
+    }
+
+    private static final class Holder {
+        @SuppressLint({"StaticFieldLeak"})
+        private static ActionApiActivity _api = new ActionApiActivity();
     }
 
     /**
@@ -93,14 +103,38 @@ public class ActionApiActivity extends Activity {
     }
 
     public void playActionsInSequence(View view) {
-        String actionIdsStr = "action_021"; // Chuỗi chứa các actionId
+        String actionIdsStr = "takelowpic"; // Chuỗi chứa các actionId
         String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
         playNextAction(actionIds, 0);
+    }
+
+    public void playActionToTakeQR(String action) {
+        // Ensure actionApi is initialized
+        if (actionApi == null) {
+            initRobot();
+        }
+
+        if (actionApi != null) {
+            String[] actionIds = action.split(","); // tách chuỗi thành mảng
+            playNextAction(actionIds, 0);
+        } else {
+            Log.e(TAG, "ActionApi is still null after initialization attempt");
+        }
     }
 
     private void playNextAction(String[] actionIds, int index) {
         if (index >= actionIds.length) {
             Log.i(TAG, "All actions completed!");
+            return;
+        }
+
+        // Ensure actionApi is initialized before each action
+        if (actionApi == null) {
+            initRobot();
+        }
+
+        if (actionApi == null) {
+            Log.e(TAG, "ActionApi is null, cannot play action");
             return;
         }
 
