@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
 
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
@@ -25,7 +24,8 @@ import com.ubtrobot.mini.voice.protos.VoiceProto;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
+
+import java.io.InputStream;
 
 public class DanceWithMusicActivity extends Activity {
 
@@ -46,6 +46,22 @@ public class DanceWithMusicActivity extends Activity {
         return DanceWithMusicActivity.Holder._api;
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dance_with_music);
+        initRobot();
+        String jsonScript = loadScriptJson();
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonScript);
+            Log.e(TAG, jsonObject.toString());
+            playScriptFromJson(jsonObject);
+        } catch (Exception e) {
+        Log.e(TAG, "Error parsing JSON", e);
+    }
+    }
+
     private static final class Holder {
         @SuppressLint({"StaticFieldLeak"})
         private static DanceWithMusicActivity _api = new DanceWithMusicActivity();
@@ -57,6 +73,21 @@ public class DanceWithMusicActivity extends Activity {
 
         initRobot();
         initPlayer(context, source, jsonObject);
+    }
+
+    private String loadScriptJson() {
+        // Load JSON from res/raw/dance_with_music.json
+        try {
+            InputStream is = getResources().openRawResource(R.raw.dance_with_music);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            return new String(buffer, "UTF-8");
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading JSON from resource", e);
+            return null;
+        }
     }
 
     private void initPlayer(MasterContext context, VoiceProto.Source source, JSONObject jsonObject) {

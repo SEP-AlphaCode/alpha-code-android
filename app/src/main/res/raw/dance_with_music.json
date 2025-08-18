@@ -1,0 +1,5771 @@
+{
+    "music_info": {
+      "name": "string",
+      "music_file_url": "https://alpha-mini-qrcodes.s3.ap-southeast-2.amazonaws.com/music/VIỆT NAM TÔI - ICM x JACK ft. TRUNG LƯƠNG x CHẤN QUỐC - OFFICIAL MV_1755499023837.wav",
+      "duration": 304.18
+    },
+    "activity": {
+      "actions": [
+        {
+          "action_id": "dance_0002en",
+          "start_time": 4.74,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao4",
+          "start_time": 4.99,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 96,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 6.18,
+          "duration": 0.93,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 162,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 6.43,
+          "duration": 0.63,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 216
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 7.11,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 202
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 7.57,
+          "duration": 0.93,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 155,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_032",
+          "start_time": 7.82,
+          "duration": 0.63,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 87,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 8.5,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 75,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0011_1",
+          "start_time": 8.75,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 105
+          }
+        },
+        {
+          "action_id": "Surveillance_006",
+          "start_time": 9.91,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 169,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao10",
+          "start_time": 10.16,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 225,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 11.35,
+          "duration": 1.39,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 195,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 11.6,
+          "duration": 1.09,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 138
+          }
+        },
+        {
+          "action_id": "action_019",
+          "start_time": 12.75,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 102,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao19",
+          "start_time": 13,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 53,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 13.7,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 129,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 14.19,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 176
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 14.44,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 234,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 15.14,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 188,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 15.39,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 130,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 16.58,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 95
+          }
+        },
+        {
+          "action_id": "codemao14",
+          "start_time": 16.83,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 62
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 17.55,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 136,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 17.8,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 182,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 18.99,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 19.24,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 181
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 19.95,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 135,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0007_1",
+          "start_time": 20.2,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 61,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 21.39,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 96,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "009",
+          "start_time": 21.87,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 143
+          }
+        },
+        {
+          "action_id": "emo_029",
+          "start_time": 22.12,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 191,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_020",
+          "start_time": 22.83,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 222,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao3",
+          "start_time": 23.08,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 172,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_006",
+          "start_time": 24.26,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 128
+          }
+        },
+        {
+          "action_id": "037",
+          "start_time": 24.75,
+          "duration": 1.39,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 81,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao17",
+          "start_time": 25,
+          "duration": 1.09,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 80,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 26.15,
+          "duration": 1.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 149,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao13",
+          "start_time": 26.4,
+          "duration": 1.19,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 200
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 27.63,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 215
+          }
+        },
+        {
+          "action_id": "random_short3",
+          "start_time": 28.12,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 168,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 28.37,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 103,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 29.07,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 74
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 29.32,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 88
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 30.53,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 156,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "random_short3",
+          "start_time": 31.02,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 203,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 31.27,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 215,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 32.44,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 161
+          }
+        },
+        {
+          "action_id": "emo_015",
+          "start_time": 32.69,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 95,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "017",
+          "start_time": 33.41,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 69,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 33.66,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 97,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 34.83,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 163
+          }
+        },
+        {
+          "action_id": "emo_014",
+          "start_time": 35.08,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 217,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 35.81,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 201,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 36.06,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 146,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_016",
+          "start_time": 36.76,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 107
+          }
+        },
+        {
+          "action_id": "emo_026",
+          "start_time": 37.01,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 46
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 38.22,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 123,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0003_1",
+          "start_time": 38.47,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 166,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_004",
+          "start_time": 39.66,
+          "duration": 1.39,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 217
+          }
+        },
+        {
+          "action_id": "emo_032",
+          "start_time": 39.91,
+          "duration": 1.09,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 197
+          }
+        },
+        {
+          "action_id": "038",
+          "start_time": 41.05,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 147,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao15",
+          "start_time": 41.3,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 77,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_004",
+          "start_time": 42.03,
+          "duration": 1.39,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 83,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 42.28,
+          "duration": 1.09,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 115
+          }
+        },
+        {
+          "action_id": "action_018",
+          "start_time": 43.42,
+          "duration": 1.51,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 177,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao4",
+          "start_time": 43.67,
+          "duration": 1.21,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 235,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 44.93,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 187,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao5",
+          "start_time": 45.18,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 128
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 46.35,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 94,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao18",
+          "start_time": 46.6,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 63,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_018",
+          "start_time": 47.3,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 137,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_020",
+          "start_time": 47.55,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 184
+          }
+        },
+        {
+          "action_id": "028",
+          "start_time": 48.76,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 228
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 49.01,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 180,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_012",
+          "start_time": 49.71,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 134,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 50.18,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 87
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 50.43,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 72
+          }
+        },
+        {
+          "action_id": "028",
+          "start_time": 51.15,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 144,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_009",
+          "start_time": 51.4,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 192,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 52.59,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 221,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_029",
+          "start_time": 52.84,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 171
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 53.55,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 127,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao7",
+          "start_time": 53.8,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 51,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 55.01,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 104,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 55.26,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 141
+          }
+        },
+        {
+          "action_id": "Surveillance_006",
+          "start_time": 55.96,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 197,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao8",
+          "start_time": 56.21,
+          "duration": 1.08,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 222,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 57.4,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 167,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao2",
+          "start_time": 57.65,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 102
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 58.84,
+          "duration": 0.93,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 73,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 59.09,
+          "duration": 0.63,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 90,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 59.77,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 157,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_015",
+          "start_time": 60.02,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 210
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 61.23,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 207
+          }
+        },
+        {
+          "action_id": "emo_019",
+          "start_time": 61.48,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 153,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 62.18,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 113,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao3",
+          "start_time": 62.43,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 38,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_012",
+          "start_time": 63.14,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 117
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 63.39,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 159,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_011",
+          "start_time": 64.11,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 211,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 64.36,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 205,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_013",
+          "start_time": 65.55,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 153
+          }
+        },
+        {
+          "action_id": "emo_019",
+          "start_time": 65.8,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 85,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 66.97,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 77,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 67.22,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 107,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_015",
+          "start_time": 67.94,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 171
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 68.43,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 218,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_020",
+          "start_time": 68.68,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 196,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 69.38,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 146,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_011",
+          "start_time": 69.63,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 76
+          }
+        },
+        {
+          "action_id": "action_005",
+          "start_time": 70.84,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 84
+          }
+        },
+        {
+          "action_id": "codemao16",
+          "start_time": 71.09,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 116,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "random_short2",
+          "start_time": 71.82,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 178,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 72.07,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 236
+          }
+        },
+        {
+          "action_id": "action_016",
+          "start_time": 72.77,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 186
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 73.02,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 127,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "010",
+          "start_time": 74.19,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 93,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 74.44,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 65,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 75.16,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 138
+          }
+        },
+        {
+          "action_id": "emo_030",
+          "start_time": 75.41,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 185,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 76.58,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 227,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_027",
+          "start_time": 76.83,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 178,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 78.02,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 133
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 78.27,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 58,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_014",
+          "start_time": 79.48,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 98,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao20",
+          "start_time": 79.73,
+          "duration": 1.04,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 134,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 80.92,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 191
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 81.39,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 220
+          }
+        },
+        {
+          "action_id": "emo_007",
+          "start_time": 81.64,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 170,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 82.83,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 126,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao11",
+          "start_time": 83.08,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 50
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 84.29,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 105
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 84.75,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 151,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_008",
+          "start_time": 85,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 202,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 86.17,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 213,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 86.42,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 161
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 87.63,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 119,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_032",
+          "start_time": 87.88,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 41,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_004",
+          "start_time": 89.07,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 111,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 89.32,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 151
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 90.53,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 205,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 90.78,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 212,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 91.95,
+          "duration": 0.93,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 159,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 92.2,
+          "duration": 0.63,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 92
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 92.88,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 71
+          }
+        },
+        {
+          "action_id": "w_basic_0011_1",
+          "start_time": 93.13,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 100,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_019",
+          "start_time": 94.34,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 165,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao10",
+          "start_time": 94.59,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 220
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 95.78,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 199
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 96.03,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 143,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 97.22,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 105,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao19",
+          "start_time": 97.47,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 48,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 98.68,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 125
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 98.93,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 169,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 100.12,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 219,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 100.37,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 195,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "009",
+          "start_time": 101.08,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 145
+          }
+        },
+        {
+          "action_id": "codemao2",
+          "start_time": 101.33,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 75,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 102.52,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 85,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 102.77,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 117,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "038",
+          "start_time": 103.47,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 179
+          }
+        },
+        {
+          "action_id": "emo_008",
+          "start_time": 103.72,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 237,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_020",
+          "start_time": 104.93,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 185,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao14",
+          "start_time": 105.18,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 126,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_006",
+          "start_time": 106.35,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 92
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 106.6,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 66
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 107.32,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 139,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 107.57,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 186,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "037",
+          "start_time": 108.27,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 226,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0007_1",
+          "start_time": 108.52,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 177
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 109.25,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 132,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao17",
+          "start_time": 109.5,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 57,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "009",
+          "start_time": 110.67,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 99,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao13",
+          "start_time": 110.92,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 135
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 112.11,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 192,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 112.59,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 219,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 112.84,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 168,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 114.03,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 125
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 114.28,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 48,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 115.01,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 106,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_014",
+          "start_time": 115.26,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 144,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "random_short3",
+          "start_time": 116.47,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 199
+          }
+        },
+        {
+          "action_id": "017",
+          "start_time": 116.94,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 212
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 117.19,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 160,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_004",
+          "start_time": 118.38,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 118,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 118.63,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 39
+          }
+        },
+        {
+          "action_id": "038",
+          "start_time": 119.79,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 112
+          }
+        },
+        {
+          "action_id": "emo_026",
+          "start_time": 120.04,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 152,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 121.25,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 206,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 121.72,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 205,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 122.18,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 158
+          }
+        },
+        {
+          "action_id": "w_basic_0003_1",
+          "start_time": 122.43,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 91,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_018",
+          "start_time": 123.14,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 72,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0011_1",
+          "start_time": 123.39,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 101,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "028",
+          "start_time": 124.09,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 166
+          }
+        },
+        {
+          "action_id": "codemao18",
+          "start_time": 124.34,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 221,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 125.06,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 198,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao15",
+          "start_time": 125.31,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 142,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 126.5,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 104
+          }
+        },
+        {
+          "action_id": "codemao4",
+          "start_time": 126.75,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 50
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 127.94,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 126,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao5",
+          "start_time": 128.19,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 170,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 129.38,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 220
+          }
+        },
+        {
+          "action_id": "codemao18",
+          "start_time": 129.63,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 193
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 130.33,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 144,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_020",
+          "start_time": 130.58,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 73,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_012",
+          "start_time": 131.8,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 86,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 132.05,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 119
+          }
+        },
+        {
+          "action_id": "action_012",
+          "start_time": 132.77,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 180,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao2",
+          "start_time": 133.02,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 239,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 133.72,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 184,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_009",
+          "start_time": 133.97,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 125
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 135.16,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 91,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 135.41,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 67,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 136.12,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 140,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_019",
+          "start_time": 136.37,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 187
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 137.56,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 225
+          }
+        },
+        {
+          "action_id": "emo_029",
+          "start_time": 137.81,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 176,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 139.02,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 131,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao7",
+          "start_time": 139.27,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 56
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 140.43,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 100
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 140.68,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 136,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 141.39,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 193,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao8",
+          "start_time": 141.64,
+          "duration": 1.08,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 227,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 142.85,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 171
+          }
+        },
+        {
+          "action_id": "codemao2",
+          "start_time": 143.1,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 107,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 143.8,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 77,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 144.05,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 85,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 145.22,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 153
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 145.47,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 205,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_011",
+          "start_time": 146.66,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 211,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 146.91,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 158,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 148.1,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 117
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 148.35,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 38,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_013",
+          "start_time": 149.54,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 113,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "action_015",
+          "start_time": 150.02,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 160,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 150.27,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 214
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 151,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 204
+          }
+        },
+        {
+          "action_id": "action_005",
+          "start_time": 151.46,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 157,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_015",
+          "start_time": 151.71,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 90,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "random_short2",
+          "start_time": 152.42,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 73,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao3",
+          "start_time": 152.67,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 102
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 153.37,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 167,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 153.86,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 214,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 154.11,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 201,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 155.3,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 150
+          }
+        },
+        {
+          "action_id": "emo_019",
+          "start_time": 155.55,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 81,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 156.27,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 80,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_011",
+          "start_time": 156.52,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 111,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 157.22,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 174
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 157.47,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 231,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_016",
+          "start_time": 158.2,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 190,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao16",
+          "start_time": 158.45,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 132,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 159.61,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 97
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 159.86,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 60
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 160.59,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 134,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 160.84,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 180,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 162.03,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 228
+          }
+        },
+        {
+          "action_id": "emo_030",
+          "start_time": 162.28,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 183
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 162.98,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 137,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_027",
+          "start_time": 163.23,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 63,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 164.42,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 94,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao20",
+          "start_time": 164.67,
+          "duration": 1.04,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 129
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 165.88,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 188,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_014",
+          "start_time": 166.13,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 235,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 167.3,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 177,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_007",
+          "start_time": 167.55,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 115
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 168.76,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 83,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "010",
+          "start_time": 169.23,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 101,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 169.48,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 137,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 170.67,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 194
+          }
+        },
+        {
+          "action_id": "codemao11",
+          "start_time": 170.92,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 226
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 172.11,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 170,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 172.59,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 123,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_008",
+          "start_time": 172.84,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 46
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 173.55,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 108
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 173.8,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 146,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 174.99,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 201,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_032",
+          "start_time": 175.24,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 217,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 175.96,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 163
+          }
+        },
+        {
+          "action_id": "w_basic_0011_1",
+          "start_time": 176.21,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 97,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 177.4,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 69,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 177.86,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 114,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 178.35,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 161
+          }
+        },
+        {
+          "action_id": "emo_008",
+          "start_time": 178.6,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 215,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 179.79,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 203,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao10",
+          "start_time": 180.04,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 148,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_014",
+          "start_time": 180.74,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 109
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 180.99,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 44
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 182.18,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 121,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao19",
+          "start_time": 182.43,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 164,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_004",
+          "start_time": 183.16,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 215
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 183.41,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 200
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 184.11,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 149,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 184.6,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 102,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 184.85,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 52,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 185.55,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 128
+          }
+        },
+        {
+          "action_id": "codemao14",
+          "start_time": 185.8,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 172,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 186.99,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 222,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 187.24,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 191,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 187.97,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 142
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 188.22,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 71,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 189.38,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 88,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 189.63,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 121,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "028",
+          "start_time": 190.36,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 182
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 190.61,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 241,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 191.8,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 182,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 192.05,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 122,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_019",
+          "start_time": 192.75,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 89
+          }
+        },
+        {
+          "action_id": "w_basic_0007_1",
+          "start_time": 193,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 70
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 194.19,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 142,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 194.44,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 190,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "random_short2",
+          "start_time": 195.63,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 223,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao17",
+          "start_time": 195.88,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 173
+          }
+        },
+        {
+          "action_id": "010",
+          "start_time": 197.07,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 129,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao13",
+          "start_time": 197.32,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 53,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "009",
+          "start_time": 198.02,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 102,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 198.27,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 139
+          }
+        },
+        {
+          "action_id": "action_020",
+          "start_time": 199.46,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 195,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_014",
+          "start_time": 199.71,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 225,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_006",
+          "start_time": 200.9,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 169,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 201.15,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 105
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 201.87,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 75,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 202.36,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 109,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_026",
+          "start_time": 202.61,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 147,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 203.78,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 202
+          }
+        },
+        {
+          "action_id": "w_basic_0003_1",
+          "start_time": 204.03,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 216
+          }
+        },
+        {
+          "action_id": "037",
+          "start_time": 205.22,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 162,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao15",
+          "start_time": 205.47,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 96,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 206.66,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao4",
+          "start_time": 206.91,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 96
+          }
+        },
+        {
+          "action_id": "Surveillance_004",
+          "start_time": 207.63,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 162,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao5",
+          "start_time": 207.88,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 216,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "random_short3",
+          "start_time": 209.07,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 202,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao7",
+          "start_time": 209.32,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 147
+          }
+        },
+        {
+          "action_id": "017",
+          "start_time": 210.49,
+          "duration": 0.51,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 108,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 211,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 75,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao18",
+          "start_time": 211.25,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 105,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 212.44,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 169
+          }
+        },
+        {
+          "action_id": "codemao20",
+          "start_time": 212.69,
+          "duration": 1.04,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 225,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 213.86,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 195,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_020",
+          "start_time": 214.11,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 138,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_004",
+          "start_time": 214.83,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 101
+          }
+        },
+        {
+          "action_id": "codemao1",
+          "start_time": 215.08,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 54
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 215.81,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 129,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 216.06,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 174,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "038",
+          "start_time": 216.76,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 223
+          }
+        },
+        {
+          "action_id": "emo_009",
+          "start_time": 217.01,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 190
+          }
+        },
+        {
+          "action_id": "action_018",
+          "start_time": 218.2,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 141,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_029",
+          "start_time": 218.45,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 69,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 219.15,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 89,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 219.4,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 122
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 220.59,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 183,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao7",
+          "start_time": 220.84,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 241,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "028",
+          "start_time": 221.56,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 181,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_011",
+          "start_time": 221.81,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 121
+          }
+        },
+        {
+          "action_id": "action_012",
+          "start_time": 222.52,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 88,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 222.77,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 71,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 223.47,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 143,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 223.72,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 191
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 224.44,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 222
+          }
+        },
+        {
+          "action_id": "codemao8",
+          "start_time": 224.69,
+          "duration": 1.08,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 172,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 225.86,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 128,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao2",
+          "start_time": 226.11,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 52
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 227.3,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 103
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 227.55,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 140,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 228.76,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 196,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_015",
+          "start_time": 229.01,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 223,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_011",
+          "start_time": 230.2,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 168
+          }
+        },
+        {
+          "action_id": "w_basic_0012_1",
+          "start_time": 230.45,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 103,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 231.62,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 74,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 232.11,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 110,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao3",
+          "start_time": 232.36,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 149
+          }
+        },
+        {
+          "action_id": "017",
+          "start_time": 233.06,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 203,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 233.31,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 215,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 234.5,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 161,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_019",
+          "start_time": 234.75,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 94
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 235.47,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 69
+          }
+        },
+        {
+          "action_id": "codemao10",
+          "start_time": 235.72,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 97,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 236.91,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 163,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0003_1",
+          "start_time": 237.16,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 218
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 237.87,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 201
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 238.12,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 146,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_013",
+          "start_time": 239.3,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 107,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 239.79,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 76,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_011",
+          "start_time": 240.04,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 106
+          }
+        },
+        {
+          "action_id": "011",
+          "start_time": 241.23,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 170,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_011",
+          "start_time": 241.48,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 226,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_015",
+          "start_time": 242.65,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 194,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao16",
+          "start_time": 242.9,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 137
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 243.62,
+          "duration": 0.91,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 100,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 243.87,
+          "duration": 0.61,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 55,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_015",
+          "start_time": 244.53,
+          "duration": 0.93,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 130,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 244.78,
+          "duration": 0.63,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 175
+          }
+        },
+        {
+          "action_id": "action_005",
+          "start_time": 245.46,
+          "duration": 1.51,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 224,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_013",
+          "start_time": 245.71,
+          "duration": 1.21,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 188,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 246.97,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 140,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 247.22,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "random_short2",
+          "start_time": 248.41,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 90
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 248.66,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 124,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 249.87,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 184,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_029",
+          "start_time": 250.12,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 240,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "Surveillance_004",
+          "start_time": 251.31,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 180
+          }
+        },
+        {
+          "action_id": "emo_030",
+          "start_time": 251.56,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 119,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_016",
+          "start_time": 252.28,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 87,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_027",
+          "start_time": 252.53,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 72,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "010",
+          "start_time": 253.7,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 144
+          }
+        },
+        {
+          "action_id": "codemao20",
+          "start_time": 253.95,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 193,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_018",
+          "start_time": 254.68,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 221,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 254.93,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 171,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "015",
+          "start_time": 256.12,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 127
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 256.37,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 51,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_014",
+          "start_time": 257.56,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 104,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_007",
+          "start_time": 257.81,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 141,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "random_short4",
+          "start_time": 259,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 197
+          }
+        },
+        {
+          "action_id": "codemao11",
+          "start_time": 259.25,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 222
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 259.95,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 167,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 260.2,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 102,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 260.9,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 73
+          }
+        },
+        {
+          "action_id": "emo_008",
+          "start_time": 261.15,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 90
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 261.87,
+          "duration": 0.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 157,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "dance_0003en",
+          "start_time": 262.34,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 204,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 262.59,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 213,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 263.78,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 160
+          }
+        },
+        {
+          "action_id": "emo_032",
+          "start_time": 264.03,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 93,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 265.24,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 70,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0011_1",
+          "start_time": 265.49,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 99,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0004en",
+          "start_time": 266.19,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 164
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 266.68,
+          "duration": 1.42,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 211,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_023",
+          "start_time": 266.93,
+          "duration": 1.12,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 205,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0008en",
+          "start_time": 268.1,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 153,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao10",
+          "start_time": 268.35,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 84
+          }
+        },
+        {
+          "action_id": "Surveillance_004",
+          "start_time": 269.07,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 77
+          }
+        },
+        {
+          "action_id": "emo_028",
+          "start_time": 269.32,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 107,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0009en",
+          "start_time": 270.51,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 171,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao19",
+          "start_time": 270.76,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 228
+          }
+        },
+        {
+          "action_id": "action_005",
+          "start_time": 271.95,
+          "duration": 0.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 193
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 272.44,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 146,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_010",
+          "start_time": 272.69,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 76,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_019",
+          "start_time": 273.39,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 84,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_031",
+          "start_time": 273.64,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 116
+          }
+        },
+        {
+          "action_id": "dance_0006en",
+          "start_time": 274.34,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 178,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 274.59,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 236,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_004",
+          "start_time": 275.78,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 186,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao14",
+          "start_time": 276.03,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 127
+          }
+        },
+        {
+          "action_id": "Surveillance_001",
+          "start_time": 277.22,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 93,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao12",
+          "start_time": 277.47,
+          "duration": 0.84,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 65,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 278.69,
+          "duration": 1.46,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 138,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 278.94,
+          "duration": 1.16,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 185
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 280.15,
+          "duration": 1.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 226
+          }
+        },
+        {
+          "action_id": "emo_016",
+          "start_time": 280.4,
+          "duration": 1.19,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 178,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_019",
+          "start_time": 281.63,
+          "duration": 1.49,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 133,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0007_1",
+          "start_time": 281.88,
+          "duration": 1.19,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 58
+          }
+        },
+        {
+          "action_id": "Surveillance_003",
+          "start_time": 283.12,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 98
+          }
+        },
+        {
+          "action_id": "codemao17",
+          "start_time": 283.37,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 134,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0005en",
+          "start_time": 284.07,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 192,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao13",
+          "start_time": 284.32,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 230,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 285.51,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 173
+          }
+        },
+        {
+          "action_id": "w_basic_0010_1",
+          "start_time": 285.76,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 109,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "009",
+          "start_time": 286.95,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 79,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "emo_014",
+          "start_time": 287.2,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 82,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0011en",
+          "start_time": 288.39,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 152
+          }
+        },
+        {
+          "action_id": "emo_022",
+          "start_time": 288.64,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 203,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_014",
+          "start_time": 289.83,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 213,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "emo_026",
+          "start_time": 290.08,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 161,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "dance_0010en",
+          "start_time": 291.27,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 229,
+            "b": 119
+          }
+        },
+        {
+          "action_id": "codemao6",
+          "start_time": 291.52,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 41,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0002en",
+          "start_time": 292.71,
+          "duration": 0.98,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 112,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "w_basic_0003_1",
+          "start_time": 292.96,
+          "duration": 0.68,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 151,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "dance_0001en",
+          "start_time": 293.69,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 68,
+            "b": 205
+          }
+        },
+        {
+          "action_id": "codemao15",
+          "start_time": 293.94,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 212
+          }
+        },
+        {
+          "action_id": "dance_0007en",
+          "start_time": 294.64,
+          "duration": 1.44,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 229,
+            "g": 159,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao4",
+          "start_time": 294.89,
+          "duration": 1.14,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 92,
+            "g": 36,
+            "b": 242
+          }
+        },
+        {
+          "action_id": "action_020",
+          "start_time": 296.08,
+          "duration": 0.95,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 71,
+            "g": 229,
+            "b": 68
+          }
+        },
+        {
+          "action_id": "codemao5",
+          "start_time": 296.33,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 36,
+            "b": 100
+          }
+        },
+        {
+          "action_id": "action_016",
+          "start_time": 297.03,
+          "duration": 0.9,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 68,
+            "g": 165,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao7",
+          "start_time": 297.28,
+          "duration": 0.65,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 220,
+            "g": 242,
+            "b": 36
+          }
+        },
+        {
+          "action_id": "action_020",
+          "start_time": 297.98,
+          "duration": 6.2,
+          "action_type": "dance",
+          "color": {
+            "a": 0,
+            "r": 199,
+            "g": 68,
+            "b": 229
+          }
+        },
+        {
+          "action_id": "codemao9",
+          "start_time": 298.23,
+          "duration": 2.5,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 36,
+            "g": 242,
+            "b": 143
+          }
+        },
+        {
+          "action_id": "w_basic_0005_1",
+          "start_time": 301.03,
+          "duration": 2.5,
+          "action_type": "expression",
+          "color": {
+            "a": 0,
+            "r": 242,
+            "g": 83,
+            "b": 36
+          }
+        }
+      ]
+    }
+}
