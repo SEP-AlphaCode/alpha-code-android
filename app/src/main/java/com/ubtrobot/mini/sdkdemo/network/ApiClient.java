@@ -15,8 +15,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = BuildConfig.API_PATH; // Your computer's IP address
-    private static Retrofit retrofit;
+    private static Retrofit springRetrofit;
+    private static Retrofit pythonRetrofit;
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
@@ -47,14 +47,27 @@ public class ApiClient {
         }
     }
 
-    public static Retrofit getInstance() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+    // Cho Spring API
+    public static Retrofit getSpringInstance() {
+        if (springRetrofit == null) {
+            springRetrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_SPRING_PATH)
                     .client(getUnsafeOkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit;
+        return springRetrofit;
+    }
+
+    // Cho Python API
+    public static Retrofit getPythonInstance() {
+        if (pythonRetrofit == null) {
+            pythonRetrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_PYTHON_PATH)
+                    .client(getUnsafeOkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return pythonRetrofit;
     }
 }

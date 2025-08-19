@@ -8,7 +8,13 @@ import android.util.Log;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.mini.voice.VoicePool;
 
+import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -55,15 +61,40 @@ public class RobotSocketManager {
         led.startNormalModel(color, 2000, Priority.HIGH, null);
     }
 
+    private static OkHttpClient getUnsafeOkHttpClient() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
+                    }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+            builder.hostnameVerifier((hostname, session) -> true);
+            builder.readTimeout(0, TimeUnit.MILLISECONDS);
+            builder.pingInterval(PING_INTERVAL_MS, TimeUnit.MILLISECONDS);
+            builder.retryOnConnectionFailure(true);
+
+            return builder.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public RobotSocketManager(String serverUrl, VoicePool vp, RobotSocketController robotController) {
         this.vp = vp;
         this.robotController = robotController;
         led = MouthLedApi.get();
-        client = new OkHttpClient.Builder()
-                .readTimeout(0, TimeUnit.MILLISECONDS)
-                .pingInterval(PING_INTERVAL_MS, TimeUnit.MILLISECONDS) // Enable automatic pings
-                .retryOnConnectionFailure(true)
-                .build();
+
+        // Sử dụng unsafe client để bỏ qua SSL certificate validation
+        client = getUnsafeOkHttpClient();
 
         request = new Request.Builder()
                 .url(serverUrl)

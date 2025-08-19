@@ -40,10 +40,11 @@ import retrofit2.Response;
  */
 
 public class TakePicApiActivity extends Activity {
-    private static final String TAG = DemoApp.DEBUG_TAG;
+    private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    QRCodeApi qrCodeApi = ApiClient.getInstance().create(QRCodeApi.class);
+    private VoicePool voicePool;
+    QRCodeApi qrCodeApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
 
 
     @Override
@@ -68,6 +69,7 @@ public class TakePicApiActivity extends Activity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
+        voicePool = VoicePool.get();
     }
 
     /**
@@ -85,7 +87,7 @@ public class TakePicApiActivity extends Activity {
             takePicApi.takePicImmediately(new ResponseListener<String>() {
                 @Override
                 public void onResponseSuccess(String imagePath) {
-                    Log.i(TAG, "Ảnh lưu tại: " + imagePath);
+                    Log.i(TAG, "Save image at: " + imagePath);
 
                     // Check if context is available before showing toast
                     try {
@@ -96,56 +98,55 @@ public class TakePicApiActivity extends Activity {
                         Log.w(TAG, "Cannot show toast, context not available: " + e.getMessage());
                     }
 
-                    // Chuyển đổi đường dẫn từ "/ubtrobot/camera/xxx" sang "/sdcard/ubtrobot/camera/xxx"
+                    // Change the path from "/ubtrobot/camera/xxx" to "/sdcard/ubtrobot/camera/xxx"
                     String realPath = imagePath.replaceFirst("^/ubtrobot", "/sdcard/ubtrobot");
 
                     File file = new File(realPath);
                     if (file.exists()) {
-                        Log.i(TAG, "File tồn tại");
+                        Log.i(TAG, "File exists: " + realPath);
                     } else {
-                        Log.e(TAG, "File không tồn tại: " + realPath);
+                        Log.e(TAG, "File not exists: " + realPath);
                     }
 
-                    // Giải mã QR code từ ảnh, dùng realPath
+                    // Decode the QR code from the image file
                     String qrContent = decodeQRCodeFromFile(realPath);
                     if (qrContent != null) {
-                        Log.i(TAG, "Nội dung QR code: " + qrContent);
-                        // Gọi API để lấy danh mục theo ID từ QR code
+                        Log.i(TAG, "Qr Code content: " + qrContent);
+                        // Call api to get QR code details
                         qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
                             @Override
                             public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
                                 if (response.isSuccessful() && response.body() != null) {
-                                    // Xử lý phản hồi thành công
                                     try {
                                         JsonObject jsonObject = response.body().getData();
 
-                                        // Chuyển JsonObject (Gson) -> JSON string
+                                        // Change JsonObject (Gson) -> JSON string
                                         String jsonString = new Gson().toJson(jsonObject);
 
-                                        // Truyền string JSON vào DoActivity
+                                        // Put string JSON to DoActivity
                                         qrCodeActivity.DoActivity(jsonString);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    Log.i(TAG, "Danh mục: " + response.body().getData());
+                                    Log.i(TAG, "Data: " + response.body().getData());
                                 } else {
-                                    Log.e(TAG, "Không tìm thấy danh mục hoặc phản hồi không hợp lệ");
+                                    Log.e(TAG, "Data is null or response is not successful");
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
-                                Log.e(TAG, "Lỗi khi gọi API: " + t.getMessage());
+                                Log.e(TAG, "Error when call API: " + t.getMessage());
                             }
                         });
                     } else {
-                        Log.i(TAG, "Không đọc được QR code trong ảnh");
+                        Log.i(TAG, "Cannot decode QR code, file does not exist: " + realPath);
                     }
                 }
 
                 @Override
                 public void onFailure(int errorCode, @NonNull String errorMsg) {
-                    Log.i(TAG, "Chụp ảnh thất bại, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
+                    Log.i(TAG, "Take picture failed, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
                 }
             });
         } else {
@@ -177,7 +178,7 @@ public class TakePicApiActivity extends Activity {
     private String decodeQRCodeFromFile(String filePath) {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         if (bitmap == null) {
-            Log.e(TAG, "Không thể load ảnh từ file: " + filePath);
+            Log.e(TAG, "Can not load file from path: " + filePath);
             return null;
         }
 
@@ -194,10 +195,11 @@ public class TakePicApiActivity extends Activity {
             Result result = reader.decode(binaryBitmap);
             return result.getText();
         } catch (NotFoundException e) {
-            Log.e(TAG, "QR code không tìm thấy trong ảnh");
+            Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
+            voicePool.playTTs("Qr code not found in the image, please try again.", null, null);
             return null;
         } catch (Exception e) {
-            Log.e(TAG, "Lỗi khi giải mã QR code: " + e.getMessage());
+            Log.e(TAG, "Error when decode QR Code: " + e.getMessage());
             return null;
         }
     }

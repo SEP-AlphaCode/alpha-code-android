@@ -62,7 +62,7 @@ public class RobotSocketController {
 
                                 handler.postDelayed(() -> {
                                     takePicApiActivity.takePicImmediately();
-                                }, (long) (5 * 1000) + 1000);
+                                }, 3000); // Delay 3 seconds before taking picture
                             }
 
                             @Override
@@ -72,12 +72,6 @@ public class RobotSocketController {
                         });
 
                     }
-                case "say":
-                    if (data != null) {
-                        String textToSay = data.optString("text");
-                        say(textToSay);
-                    }
-                    break;
                 default:
                     Log.w(TAG, "Unknown command type: " + type);
                     break;
@@ -85,11 +79,5 @@ public class RobotSocketController {
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON command: " + command, e);
         }
-    }
-
-
-    private void say(String text) {
-        // TODO: Thêm code gọi TTS hoặc API nói chuyện
-        Log.i(TAG, "Robot says: " + text);
     }
 }

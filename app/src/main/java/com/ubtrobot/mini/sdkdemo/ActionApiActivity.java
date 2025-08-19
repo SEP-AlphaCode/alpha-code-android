@@ -113,7 +113,7 @@ public class ActionApiActivity extends Activity {
         if (actionApi == null) {
             initRobot();
         }
-
+        
         if (actionApi != null) {
             String[] actionIds = action.split(","); // tách chuỗi thành mảng
             playNextAction(actionIds, 0);
@@ -132,7 +132,7 @@ public class ActionApiActivity extends Activity {
         if (actionApi == null) {
             initRobot();
         }
-
+        
         if (actionApi == null) {
             Log.e(TAG, "ActionApi is null, cannot play action");
             return;

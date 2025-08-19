@@ -99,7 +99,8 @@ public class DanceWithMusicActivity extends Activity {
             miniPlayer.setOnPreparedListener(mp -> {
                 Log.i(TAG, "Media ready, start playing");
                 mp.start();
-                // Chạy script JSON khi nhạc bắt đầu
+                // Run the script after the media is prepared
+                // This ensures the media is ready before executing actions
                 try {
                     playScriptFromJson(jsonObject);
                 } catch (Exception e) {

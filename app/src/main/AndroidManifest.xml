@@ -50,71 +50,11 @@
             android:name="com.ubtrobot.mini.sdkdemo.ActionApiActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.ubtrobot.mini.sdkdemo.ExpressApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.SpeechApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.MotorApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.FaceApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.ObjectDetectApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.MouthLedApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.SysEventApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.SysApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.StandupApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.SkillApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.PowerApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.BehaviorActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.RobotInitActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.DiscorverActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.PhoneCallApiActivity"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.ApkSilentInstallerApiActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.BuiltInSkillCallTestActivity"
-            android:theme="@style/AppTheme" />
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.DemoSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_skill_path" />
-        </service>
 
         <service
             android:name="com.ubtrobot.mini.sdkdemo.skills.InterruptibleSkill"

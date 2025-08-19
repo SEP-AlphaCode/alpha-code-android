@@ -70,7 +70,7 @@ public class QrCodeActivity {
                 public void onCompleted() {
                     Log.i(TAG, "Pre voice played successfully");
 
-                    // Delay 1s rồi mới chạy actions
+                    // Delay 1s then start playing actions
                     handler.postDelayed(() -> {
                         Log.i(TAG, "Playing script with " + actions.length() + " actions");
 
