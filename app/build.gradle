@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-
 android {
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.ubtrobot.mini.sdkdemo"
         minSdkVersion 19
@@ -10,10 +10,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         buildConfigField "String", "API_SPRING_PATH", "\"${getLocalProperty('api.spring.path', '')}\""
         buildConfigField "String", "API_PYTHON_PATH", "\"${getLocalProperty('api.python.path', '')}\""
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
-        // Bật MultiDex
+
         multiDexEnabled true
     }
 
@@ -22,50 +23,67 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
     }
 
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
-
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-
-    lintOptions {
-        abortOnError false
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libtvad.so'
+        pickFirst 'lib/armeabi-v7a/libtvad.so'
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    repositories {
+        flatDir { dirs 'libs' }
+    }
+
+    lintOptions { abortOnError false }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // Android Support
     implementation 'com.android.support:appcompat-v7:28.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Local AARs
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation(name: 'phonecall-sdk-release', ext: 'aar')
     implementation(name: 'utillib-1.2.8', ext: 'aar')
-    implementation 'com.google.code.gson:gson:2.7'
-    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-    implementation 'com.google.zxing:core:3.3.0'
+    implementation(name: 'speechFramework-oversea-release', ext: 'aar')
+    implementation(name: 'behavior-lib-1.0.0', ext: 'aar')
+    implementation(name: 'impl-wakeup-dingdang-1.0.0', ext: 'aar')
+    implementation(name: 'sal-speech-1.0.0', ext: 'aar')
+    implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
+    implementation(name: 'weinalib-5.0.1', ext: 'aar')
+    implementation(name: 'wakeup-5.0.0', ext: 'aar')
+
+    // Networking
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation "org.java-websocket:Java-WebSocket:1.5.2"
+
+    // QR Code
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation 'com.google.zxing:core:3.5.0'
-    implementation "org.java-websocket:Java-WebSocket:1.5.2"
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21"
+
+    // AI / Speech
+    implementation 'org.tensorflow:tensorflow-lite:2.4.0'
+    implementation 'com.alphacephei:vosk-android:0.3.47'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
