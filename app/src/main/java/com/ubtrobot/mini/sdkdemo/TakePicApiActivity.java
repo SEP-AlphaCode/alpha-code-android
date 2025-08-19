@@ -23,13 +23,17 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
 import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
+import com.ubtrobot.mini.sdkdemo.models.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.QRCodeDetectResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 import com.ubtrobot.mini.voice.VoicePool;
-
 import java.io.File;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +49,7 @@ public class TakePicApiActivity extends Activity {
     private QrCodeActivity qrCodeActivity;
     private VoicePool voicePool;
     QRCodeApi qrCodeApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
+    OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
 
     @Override
@@ -77,7 +82,7 @@ public class TakePicApiActivity extends Activity {
      *
      *
      */
-    public void takePicImmediately() {
+    public void takePicImmediately(String action) {
         // Ensure takePicApi is initialized
         if (takePicApi == null) {
             initRobot();
@@ -108,39 +113,76 @@ public class TakePicApiActivity extends Activity {
                         Log.e(TAG, "File not exists: " + realPath);
                     }
 
-                    // Decode the QR code from the image file
-                    String qrContent = decodeQRCodeFromFile(realPath);
-                    if (qrContent != null) {
-                        Log.i(TAG, "Qr Code content: " + qrContent);
-                        // Call api to get QR code details
-                        qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
-                            @Override
-                            public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    try {
-                                        JsonObject jsonObject = response.body().getData();
+                    switch (action){
+                        case "osmo-card":
+                            RequestBody requestFile = RequestBody.create(
+                                    MediaType.parse("image/jpeg"),
+                                    file
+                            );
 
-                                        // Change JsonObject (Gson) -> JSON string
-                                        String jsonString = new Gson().toJson(jsonObject);
+                            // Create MultipartBody.Part to send
+                            MultipartBody.Part body =
+                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-                                        // Put string JSON to DoActivity
-                                        qrCodeActivity.DoActivity(jsonString);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                            // Call API
+                            osmoApi.recognizeActionCardFromImage(body).enqueue(new Callback<ActionResponseDto>() {
+                                @Override
+                                public void onResponse(Call<ActionResponseDto> call, Response<ActionResponseDto> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        try {
+                                            Log.i(TAG, "Action cards: " + response.body().action_cards);
+                                            Log.i(TAG, "Actions: " + response.body().actions);
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        Log.e(TAG, "Data is null or response is not successful");
                                     }
-                                    Log.i(TAG, "Data: " + response.body().getData());
-                                } else {
-                                    Log.e(TAG, "Data is null or response is not successful");
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
-                                Log.e(TAG, "Error when call API: " + t.getMessage());
+                                @Override
+                                public void onFailure(Call<ActionResponseDto> call, Throwable t) {
+                                    Log.e(TAG, "Error when call API: " + t.getMessage());
+                                }
+                            });
+                            break;
+                        case "qr-code":
+                            // Decode the QR code from the image file
+                            String qrContent = decodeQRCodeFromFile(realPath);
+                            if (qrContent != null) {
+                                Log.i(TAG, "Qr Code content: " + qrContent);
+                                // Call api to get QR code details
+                                qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
+                                    @Override
+                                    public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
+                                        if (response.isSuccessful() && response.body() != null) {
+                                            try {
+                                                JsonObject jsonObject = response.body().getData();
+
+                                                // Change JsonObject (Gson) -> JSON string
+                                                String jsonString = new Gson().toJson(jsonObject);
+
+                                                // Put string JSON to DoActivity
+                                                qrCodeActivity.DoActivity(jsonString);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            Log.i(TAG, "Data: " + response.body().getData());
+                                        } else {
+                                            Log.e(TAG, "Data is null or response is not successful");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
+                                        Log.e(TAG, "Error when call API: " + t.getMessage());
+                                    }
+                                });
+                            } else {
+                                Log.i(TAG, "Cannot decode QR code, file does not exist: " + realPath);
                             }
-                        });
-                    } else {
-                        Log.i(TAG, "Cannot decode QR code, file does not exist: " + realPath);
+                            break;
                     }
                 }
 

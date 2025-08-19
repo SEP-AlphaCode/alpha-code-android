@@ -51,9 +51,9 @@ public class RobotSocketController {
                         danceWithMusicActivity.JumpWithMusic(data);
                     }
                     break;
-                case"qr-code":
+                case "osmo-card":
                     if (data != null) {
-                        String tts = data.optString("text");
+                        String tts = "Start capture OSMO card";
                         voicePool.playTTs(tts, Priority.MAXHIGH, new VoiceListener() {
                             @Override
                             public void onCompleted() {
@@ -61,7 +61,7 @@ public class RobotSocketController {
                                 actionApiActivity.playActionToTakeQR("takelowpic");
 
                                 handler.postDelayed(() -> {
-                                    takePicApiActivity.takePicImmediately();
+                                    takePicApiActivity.takePicImmediately("osmo-card");
                                 }, 3000); // Delay 3 seconds before taking picture
                             }
 
@@ -72,6 +72,29 @@ public class RobotSocketController {
                         });
 
                     }
+                    break;
+                case "qr-code":
+                    if (data != null) {
+                        String tts = data.optString("text");
+                        voicePool.playTTs(tts, Priority.MAXHIGH, new VoiceListener() {
+                            @Override
+                            public void onCompleted() {
+                                Log.i(TAG, "After voice played successfully");
+                                actionApiActivity.playActionToTakeQR("takelowpic");
+
+                                handler.postDelayed(() -> {
+                                    takePicApiActivity.takePicImmediately("qr-code");
+                                }, 3000); // Delay 3 seconds before taking picture
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                Log.e(TAG, "Error playing after voice: " + s);
+                            }
+                        });
+
+                    }
+                    break;
                 default:
                     Log.w(TAG, "Unknown command type: " + type);
                     break;
