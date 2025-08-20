@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ubtrobot.mini.sdkdemo"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -15,9 +15,6 @@ android {
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
         // Bật MultiDex
         multiDexEnabled true
-        ndk {
-            abiFilters 'arm64-v8a'
-        }
     }
 
     buildTypes {
@@ -26,11 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-    }
-
-    packagingOptions {
-        pickFirst 'lib/arm64-v8a/libtvad.so'
-        pickFirst 'lib/armeabi-v7a/libtvad.so'
     }
 
     compileOptions {
@@ -77,12 +69,4 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
-
-    //Speech
-    implementation(name: 'impl-wakeup-dingdang-1.0.0', ext: 'aar')
-    implementation(name: 'sal-speech-1.0.0', ext: 'aar')
-    implementation(name: 'speechFramework-oversea-release', ext: 'aar')
-    implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
-    implementation(name: 'weinalib-5.0.1', ext: 'aar')
-    implementation(name: 'wakeup-5.0.0', ext: 'aar')
 }
