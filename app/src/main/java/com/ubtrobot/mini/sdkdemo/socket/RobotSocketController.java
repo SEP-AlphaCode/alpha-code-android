@@ -29,15 +29,13 @@ public class RobotSocketController {
         this.danceWithMusicActivity = danceWithMusicActivity;
         this.takePicApiActivity = takePicApiActivity;
         this.actionApiActivity = actionApiActivity;
-    }
-
-    private void initRobot() {
-        voicePool = VoicePool.get();
+        // Initialize voicePool once in constructor instead of every handleCommand call
+        this.voicePool = VoicePool.get();
     }
 
     public void handleCommand(String command) {
         if (command == null) return;
-        initRobot();
+        // Remove initRobot() call
         try {
             JSONObject json = new JSONObject(command);
             String type = json.optString("type");
