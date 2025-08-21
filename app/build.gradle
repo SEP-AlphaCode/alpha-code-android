@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 
 android {
@@ -15,6 +16,7 @@ android {
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
         // Bật MultiDex
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'arm64-v8a'
         }
@@ -24,6 +26,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
     }
@@ -47,6 +50,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -58,6 +64,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation files('libs\\classes.jar')
+    implementation files('libs\\parcelable_lite.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -80,7 +88,6 @@ dependencies {
 
     //Speech
     implementation(name: 'impl-wakeup-dingdang-1.0.0', ext: 'aar')
-    implementation(name: 'sal-speech-1.0.0', ext: 'aar')
     implementation(name: 'speechFramework-oversea-release', ext: 'aar')
     implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
     implementation(name: 'weinalib-5.0.1', ext: 'aar')

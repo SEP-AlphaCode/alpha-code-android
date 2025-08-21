@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo.models;
+package com.ubtrobot.mini.sdkdemo.models.response;
 import lombok.Data;
 import java.util.List;
 

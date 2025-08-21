@@ -35,7 +35,6 @@ public class RobotSocketController {
 
     public void handleCommand(String command) {
         if (command == null) return;
-        // Remove initRobot() call
         try {
             JSONObject json = new JSONObject(command);
             String type = json.optString("type");
