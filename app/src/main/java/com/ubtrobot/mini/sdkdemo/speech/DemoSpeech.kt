@@ -14,14 +14,12 @@ import com.ubtrobot.action.ActionApi
 import com.ubtrobot.master.param.ProtoParam
 import com.ubtrobot.master.service.MasterSystemService
 import com.ubtrobot.master.transport.message.parcel.ParcelableParam
-import com.ubtrobot.mini.iflytek.wakeup.IflytekWakeUpDetector
 import com.ubtrobot.mini.speech.framework.DingDangManager
 import com.ubtrobot.mini.speech.framework.ResourceLoader
 import com.ubtrobot.mini.speech.framework.ServiceConstants
 import com.ubtrobot.mini.speech.framework.SpeechModuleFactory
 import com.ubtrobot.mini.speech.framework.SpeechSettingStub
 import com.ubtrobot.mini.speech.framework.WakeupAudioPlayer
-import com.ubtrobot.mini.speech.framework.demo.R
 import com.ubtrobot.mini.speech.framework.skill.SkillManager
 import com.ubtrobot.mini.speech.framework.utils.MicApiHelper
 import com.ubtrobot.mini.speech.framework.utils.ShakeHeadUtils
@@ -265,12 +263,6 @@ object DemoSpeech : SpeechModuleFactory() {
         //If you want to use the WeiNa wake-up module, please call the initialization method first
         val wakeUpDetector = WeiNaWakeUpDetector(WeiNaRecorder(false))
         wakeUpDetector.registerListener { wakeUp ->
-            handleWakeup(hostService, wakeUp, service)
-        }
-
-        val iflytekWakeUpDetector = IflytekWakeUpDetector.Builder(WeiNaRecorder(false),
-                Utils.getContext().getString(R.string.app_id)).build()
-        iflytekWakeUpDetector.registerListener { wakeUp ->
             handleWakeup(hostService, wakeUp, service)
         }
 
