@@ -129,14 +129,12 @@ public class RobotSocketManager {
                 isConnected = true;
                 lastMessageReceivedTime = System.currentTimeMillis();
                 Log.d(TAG, "WebSocket connected");
-                //vp.playTTs("Connected to server", Priority.HIGH, null);
                 notifyState(0);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 lastMessageReceivedTime = System.currentTimeMillis();
-                Log.d(TAG, "Received message: " + text);
                 notifyState(0);
                 if (robotController != null) {
                     robotController.handleCommand(text);
@@ -159,7 +157,6 @@ public class RobotSocketManager {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
         notifyState(2);
-        vp.playTTs("Could not connect. I'll try again later" , Priority.HIGH, null);
 
         if (shouldReconnect) {
             scheduleReconnect();
@@ -169,8 +166,6 @@ public class RobotSocketManager {
     private void scheduleReconnect() {
         try {
             Log.i(TAG, "Scheduling reconnect in " + RECONNECT_DELAY_MS + "ms");
-            //vp.playTTs("Reconnecting soon", Priority.LOW, null);
-
             handler.removeCallbacksAndMessages(null); // Clear any pending reconnects
             handler.postDelayed(() -> {
                 //notifyState(1);
