@@ -1,6 +1,60 @@
 apply plugin: 'com.android.application'
-
-
+//
+//import java.util.zip.ZipFile
+//import java.util.zip.ZipEntry
+//
+//def outerJar = file("$projectDir/libs/mini-outer-sdk-2.4.2.jar")
+//def liteJar  = file("$projectDir/libs/mini-outer-sdk-lite.jar")
+//def prunedJar = file("$buildDir/libs/speech-sdk.jar")
+//
+//tasks.register("pruneLiteJar") {
+//    inputs.files(outerJar, liteJar)
+//    outputs.file(prunedJar)
+//
+//    doLast {
+//        if (!outerJar.exists()) throw new GradleException("Missing outer.jar at $outerJar")
+//        if (!liteJar.exists()) throw new GradleException("Missing lite.jar at $liteJar")
+//
+//        // Collect class entries in outer.jar
+//        def outerEntries = new ZipFile(outerJar).withCloseable { zip ->
+//            zip.entries().findAll { !it.isDirectory() && it.name.endsWith(".class") }
+//                    .collect { it.name } as Set
+//        }
+//
+//        // Create pruned.jar with only classes not in outer
+//        ant.zip(destfile: prunedJar) {
+//            zipfileset(src: liteJar) {
+//                // include only exclusive classes
+//                exclude(name: "**/*.class") // start by excluding all
+//            }
+//        }
+//
+//        // Rebuild pruned.jar properly
+//        def tempDir = file("$buildDir/tmp/pruned")
+//        tempDir.deleteDir()
+//        tempDir.mkdirs()
+//
+//        // Extract lite.jar
+//        copy {
+//            from zipTree(liteJar)
+//            into tempDir
+//        }
+//
+//        // Delete duplicates (anything that exists in outer.jar)
+//        outerEntries.each { dup ->
+//            def f = new File(tempDir, dup)
+//            if (f.exists()) {
+//                f.delete()
+//            }
+//        }
+//
+//        // Rebuild jar from remaining
+//        ant.zip(destfile: prunedJar, basedir: tempDir)
+//        println "✅ Pruned jar created at: $prunedJar"
+//    }
+//}
+//
+//
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -58,6 +112,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation files('libs\\speech-sdk.jar')
+    implementation files('libs\\Msc.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
