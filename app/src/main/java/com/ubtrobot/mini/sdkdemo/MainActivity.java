@@ -27,13 +27,11 @@ import java.util.Arrays;
 public class MainActivity extends Activity {
     public static final String TAG = "DEBUG";
     private RobotSocketClient wsClient;
-    private VP vp;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vp = VP.get();
         setContentView(R.layout.main_layout);
         checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
