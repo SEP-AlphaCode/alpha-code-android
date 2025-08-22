@@ -159,7 +159,7 @@ public class RobotSocketManager {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
         notifyState(2);
-        vp.playTTs("Could not connect. I'll try again later" , Priority.HIGH, null);
+        //vp.playTTs("Could not connect. I'll try again later" , Priority.HIGH, null);
 
         if (shouldReconnect) {
             scheduleReconnect();

@@ -36,37 +36,17 @@ public class MainActivity extends Activity {
         vp = VP.get();
         setContentView(R.layout.main_layout);
         checkWriteSettingsPermission(this);
-//        Button forceConnect = (Button) findViewById(R.id.force_connect);
-//        DanceWithMusicActivity danceActivity = DanceWithMusicActivity.get();
-//        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
-//        ActionApiActivity actionApiActivity = ActionApiActivity.get();
-//        RobotSocketController robotSocketController = new RobotSocketController(danceActivity, takePicApiActivity, actionApiActivity);
-//        wsClient = new RobotSocketClient(robotSocketController);
-//        forceConnect.setOnClickListener(l -> {
-//            try{
-//                wsClient.forceConnect();
-//            } catch (Exception e) {
-//                Log.e("WebSocketManager", e.toString());
-//            }
-//        });
-        vp.playTTs("Text to speech", Priority.HIGH, new VP.Listener() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Request req, CallException var2) {
-                Log.e(TAG, "Error: " + var2.getCode() + ", " + var2.getSubCode() + ", " + var2.getParam());
-                Log.e(TAG, "Error string: " + var2);
-                Log.e(TAG, "Error msg: " + var2.getMessage() + ", localised: " + var2.getLocalizedMessage());
-                Log.e(TAG, "Req id: " + req.getId());
-                Log.e(TAG, "Req path: " + req.getPath());
-                Log.e(TAG, "Req time: " + req.getWhen());
-                Log.e(TAG, "Req param: " + req.getParam());
-                Log.e(TAG, "Cause: " + var2.getCause());
-                Log.e(TAG, Log.getStackTraceString(var2));
-                Log.e(TAG, Arrays.toString(var2.getSuppressed()));
+        Button forceConnect = (Button) findViewById(R.id.force_connect);
+        DanceWithMusicActivity danceActivity = DanceWithMusicActivity.get();
+        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
+        ActionApiActivity actionApiActivity = ActionApiActivity.get();
+        RobotSocketController robotSocketController = new RobotSocketController(danceActivity, takePicApiActivity, actionApiActivity);
+        wsClient = new RobotSocketClient(robotSocketController);
+        forceConnect.setOnClickListener(l -> {
+            try{
+                wsClient.forceConnect();
+            } catch (Exception e) {
+                Log.e("WebSocketManager", e.toString());
             }
         });
     }

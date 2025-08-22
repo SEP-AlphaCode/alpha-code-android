@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo.models;
+package com.ubtrobot.mini.sdkdemo.models.response;
 
 
 import com.google.gson.JsonObject;
