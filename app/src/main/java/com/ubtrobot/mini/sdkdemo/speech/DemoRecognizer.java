@@ -138,19 +138,18 @@ public class DemoRecognizer extends AbstractRecognizer {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String type = response.body().getType();
+                        NLPResponse.WavContainer wav = response.body().getData().getWav();
+                        miniPlayer = MiniMediaPlayer.create(context, source);
+                        miniPlayer.setDataSource(wav.getUrl());
+                        miniPlayer.prepareAsync();
+                        miniPlayer.setOnPreparedListener(mp -> {
+                            Log.i(TAG, "Media ready, start playing");
+                            mp.start();
+                        });
                         if (response.body().getType() != null) {
                             switch (type) {
                                 case "qr-code":
                                     if (response.body().getData() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
-
                                         miniPlayer.setOnCompletionListener(mp -> {
                                             // Step 1: Play action to take QR code picture
                                             actionApiActivity.playActionToTakeQR("takelowpic");
@@ -159,11 +158,13 @@ public class DemoRecognizer extends AbstractRecognizer {
                                             handler.postDelayed(() -> {
                                                 takePicApiActivity.takePicImmediately("qr-code");
                                             }, 3000);
+                                            recorder.start();
                                         });
 
 
                                         miniPlayer.setOnErrorListener((mp, what, extra) -> {
                                             Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                                            recorder.start();
                                             return true;
                                         });
 
@@ -171,15 +172,6 @@ public class DemoRecognizer extends AbstractRecognizer {
                                     break;
                                 case "osmo-card":
                                     if (response.body().getData() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
-
                                         miniPlayer.setOnCompletionListener(mp -> {
                                             // Step 1: Play action to take QR code picture
                                             actionApiActivity.playActionToTakeQR("takelowpic");
@@ -188,11 +180,13 @@ public class DemoRecognizer extends AbstractRecognizer {
                                             handler.postDelayed(() -> {
                                                 takePicApiActivity.takePicImmediately("osmo-card");
                                             }, 3000);
+                                            recorder.start();
                                         });
 
 
                                         miniPlayer.setOnErrorListener((mp, what, extra) -> {
                                             Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                                            recorder.start();
                                             return true;
                                         });
 
@@ -200,22 +194,15 @@ public class DemoRecognizer extends AbstractRecognizer {
                                     break;
                                 default:
                                     if (response.body().getData().getWav() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
-
                                         miniPlayer.setOnCompletionListener(mp -> {
-                                           Log.i(TAG, "Playback completed");
+                                            Log.i(TAG, "Playback completed");
+                                            recorder.start();
                                         });
 
 
                                         miniPlayer.setOnErrorListener((mp, what, extra) -> {
                                             Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                                            recorder.start();
                                             return true;
                                         });
                                     }
@@ -225,9 +212,11 @@ public class DemoRecognizer extends AbstractRecognizer {
 
                     } catch (Exception e) {
                         Log.e(TAG, "Error processing response: " + e.getMessage());
+                        recorder.start();
                     }
                 } else {
                     Log.e(TAG, "Response data is null or response is not successful");
+                    recorder.start();
                 }
             }
 

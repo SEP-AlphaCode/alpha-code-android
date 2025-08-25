@@ -258,17 +258,17 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             }
         };
 
-        final WeiNaWakeUpDetector wakeUpDetector = new WeiNaWakeUpDetector(new WeiNaRecorder(false));
-        wakeUpDetector.registerListener(wakeUp -> {
-            handleWakeup(hostService, wakeUp, service);
-        });
-
-        final IflytekWakeUpDetector iflytekWakeUpDetector =
-                new IflytekWakeUpDetector.Builder(new WeiNaRecorder(false),
-                        Utils.getContext().getString(R.string.app_id)).build();
-        iflytekWakeUpDetector.registerListener(wakeUp -> {
-            handleWakeup(hostService, wakeUp, service);
-        });
+//        final WeiNaWakeUpDetector wakeUpDetector = new WeiNaWakeUpDetector(new WeiNaRecorder(false));
+//        wakeUpDetector.registerListener(wakeUp -> {
+//            handleWakeup(hostService, wakeUp, service);
+//        });
+//
+//        final IflytekWakeUpDetector iflytekWakeUpDetector =
+//                new IflytekWakeUpDetector.Builder(new WeiNaRecorder(false),
+//                        Utils.getContext().getString(R.string.app_id)).build();
+//        iflytekWakeUpDetector.registerListener(wakeUp -> {
+//            handleWakeup(hostService, wakeUp, service);
+//        });
 
         DingDangManager.INSTANCE.load(appContext, success -> {
             if (success) {
@@ -287,13 +287,21 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                         .setRecognizer(recognizer)
                         .setSynthesizer(synthesizer)
                         .setUnderstander(understander)
-                        .setWakeUpDetector(wakeUpDetector)
+                        //.setWakeUpDetector(wakeUpDetector)
                         .build();
 
                 hostService.publishCarefully(
                         ServiceConstants.ACTION_SPEECH_INIT_RESULT,
                         ParcelableParam.create(new InitResult(0))
                 );
+
+                hostService.publishCarefully(
+                        ServiceConstants.ACTION_SPEECH_WAKEUP,
+                        ProtoParam.create(Speech.WakeupParam.newBuilder().build())
+                );
+
+                hostService.publishCarefully(SpeechConstants.ACTION_WAKE_UP,
+                        ParcelableParam.create((new WakeUp.Builder()).build()));
 
                 NotificationCenter.defaultCenter().publish(
                         ServiceConstants.PATH_MICROPHONE_ARRAY_INIT_RESULT, DemoSpeechJava.this
