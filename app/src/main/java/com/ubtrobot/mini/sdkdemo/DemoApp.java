@@ -15,8 +15,8 @@ import com.ubtrobot.mini.properties.sdk.Path;
 import com.ubtrobot.mini.properties.sdk.PropertiesApi;
 import com.ubtrobot.mini.sdkdemo.speech.DemoMasterService;
 import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
+import com.ubtrobot.mini.sdkdemo.speech.SpeechServiceTest;
 import com.ubtrobot.service.ServiceModules;
-import com.ubtrobot.speech.SpeechService;
 import com.ubtrobot.speech.SpeechSettings;
 import com.ubtrobot.ulog.FwLoggerFactory2;
 import com.ubtrobot.ulog.logger.android.AndroidLoggerFactory;
@@ -52,7 +52,7 @@ public class DemoApp extends Application {
                                 DemoSpeechJava.getInstance().createSpeechSettings());
                     });
             Log.i(MainActivity.TAG, "Speech App: Declaring speech service");
-            ServiceModules.declare(SpeechService.class,
+            ServiceModules.declare(SpeechServiceTest.class,
                     (aClass, moduleCreatedNotifier) -> ThreadPool.runOnNonUIThread(() -> {
                         while (DemoSpeechJava.getInstance().createSpeechService() == null) {
                             Log.i(MainActivity.TAG, "Speech App: Cannot get service");

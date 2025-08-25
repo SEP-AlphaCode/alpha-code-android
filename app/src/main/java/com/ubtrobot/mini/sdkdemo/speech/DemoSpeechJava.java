@@ -2,6 +2,7 @@ package com.ubtrobot.mini.sdkdemo.speech;
 
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ubtech.utilcode.utils.LogUtils;
 import com.ubtech.utilcode.utils.Utils;
@@ -31,7 +32,6 @@ import com.ubtrobot.mini.speech.framework.utils.ShakeHeadUtils;
 import com.ubtrobot.motor.MotorApi;
 import com.ubtrobot.parcelable.BaseProgress;
 import com.ubtrobot.speech.AbstractRecognizer;
-import com.ubtrobot.speech.AbstractSynthesizer;
 import com.ubtrobot.speech.AbstractUnderstander;
 import com.ubtrobot.speech.CompositeSpeechService;
 import com.ubtrobot.speech.RecognitionException;
@@ -54,7 +54,7 @@ import com.ubtrobot.speech.parcelable.TTsState;
 import com.ubtrobot.speech.protos.Speech;
 import com.ubtrobot.ulog.FwLoggerFactory2;
 
-public final class DemoSpeechJava extends SpeechModuleFactory {
+public final class DemoSpeechJava extends SpeechModuleFactoryTest {
 
     private static final DemoSpeechJava INSTANCE = new DemoSpeechJava();
 
@@ -65,12 +65,10 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     private final SpeechSettingStub speechSettingStub = new SpeechSettingStub(appContext);
 
     private AbstractRecognizer recognizer;
-    private AbstractSynthesizer synthesizer;
     private AbstractUnderstander understander;
-    private CompositeSpeechService speechServiceStub;
+    private CompositeSpeechServiceTest speechServiceStub;
 
     private RecognizerListener mRecognizerListener;
-    private SynthesizerListener mSynthesizerListener;
     private UnderstanderListener mUnderstanderListener;
 
     private final SkillManager mSkillManager = new SkillManager();
@@ -79,12 +77,6 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
     private DemoSpeechJava() {
         // Private constructor for singleton
-    }
-
-
-    private DemoSpeechJava(TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
-        this.takePicApiActivity = takePicApiActivity;
-        this.actionApiActivity = actionApiActivity;
     }
 
     public static DemoSpeechJava getInstance() {
@@ -196,40 +188,6 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             }
         };
 
-        mSynthesizerListener = new SynthesizerListener() {
-            @Override
-            public void onSynthesizingProgress(SynthesisProgress progress) {
-                if (progress != null) {
-                    switch (progress.getProgress()) {
-                        case BaseProgress.PROGRESS_BEGAN:
-                            hostService.publishCarefully(
-                                    ServiceConstants.ACTION_SPEECH_TTS_STATE,
-                                    ParcelableParam.create(new TTsState(BaseProgress.PROGRESS_BEGAN))
-                            );
-                            break;
-
-                        case BaseProgress.PROGRESS_ENDED:
-                            hostService.publishCarefully(
-                                    ServiceConstants.ACTION_SPEECH_TTS_STATE,
-                                    ParcelableParam.create(new TTsState(BaseProgress.PROGRESS_ENDED))
-                            );
-                            mSkillManager.stopSkill(SkillManager.SKILL_CHAT);
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public void onSynthesizingResult() {
-            }
-
-            @Override
-            public void onSynthesizingFailure(SynthesisException e) {
-                LogUtils.w(TAG, "onSynthesizingFailure " + e);
-                mSkillManager.stopSkill(SkillManager.SKILL_CHAT);
-            }
-        };
-
         mUnderstanderListener = new UnderstanderListener() {
             @Override
             public void onUnderstandingFailure(UnderstandingException e) {
@@ -277,15 +235,12 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                 recognizer = new DemoRecognizer(asrRecorder, takePicApiActivity, actionApiActivity);
                 recognizer.registerListener(mRecognizerListener);
 
-                synthesizer = new DemoSynthesizer();
-                synthesizer.registerListener(mSynthesizerListener);
 
                 understander = new DemoUnderstander();
                 understander.registerListener(mUnderstanderListener);
 
-                speechServiceStub = new CompositeSpeechService.Builder()
+                speechServiceStub = new CompositeSpeechServiceTest.Builder()
                         .setRecognizer(recognizer)
-                        .setSynthesizer(synthesizer)
                         .setUnderstander(understander)
                         .setWakeUpDetector(wakeUpDetector)
                         .build();
@@ -328,7 +283,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     }
 
     @Override
-    public CompositeSpeechService createSpeechService() {
+    public CompositeSpeechServiceTest createSpeechService() {
         return speechServiceStub;
     }
 
@@ -338,9 +293,9 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     }
 
     @Override
-    public void refreshUnderstanderCode(AccessToken token, Callback callback) {
-        if (!TextUtils.isEmpty(token.getCode()) && !TextUtils.isEmpty(token.getCodeVerifier())) {
-            LOGGER.i("refresh Code: " + token.getCode() + ", codeVerifier:" + token.getCodeVerifier());
+    public void refreshUnderstanderCode(AccessToken var1, Callback var2) {
+        if (!TextUtils.isEmpty(var1.getCode()) && !TextUtils.isEmpty(var1.getCodeVerifier())) {
+            LOGGER.i("refresh Code: " + var1.getCode() + ", codeVerifier:" + var1.getCodeVerifier());
             // todo
         }
     }

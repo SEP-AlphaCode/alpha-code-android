@@ -21,6 +21,7 @@ import com.ubtrobot.mini.voice.protos.VoiceProto;
 import com.ubtrobot.speech.AbstractRecognizer;
 import com.ubtrobot.speech.RecognitionOption;
 import com.ubtrobot.speech.RecognitionResult;
+import com.ubtrobot.speech.SynthesisOption;
 
 import org.json.JSONObject;
 
@@ -47,16 +48,17 @@ public class DemoRecognizer extends AbstractRecognizer {
     private TakePicApiActivity takePicApiActivity;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
-
     // Initialize these only once in constructor
     private final MasterContext context;
     private final VoiceProto.Source source;
+    private VoicePool voicePool;
 
     public DemoRecognizer(TencentVadRecorder recorder, TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
         this.recorder = recorder;
         this.timeoutHandler = new Handler(Looper.getMainLooper());
         this.takePicApiActivity = takePicApiActivity;
         this.actionApiActivity = actionApiActivity;
+        this.voicePool = VoicePool.get();
 
         // Initialize context and source only once here
         this.context = RobotUtils.getMasterContext();
@@ -140,87 +142,102 @@ public class DemoRecognizer extends AbstractRecognizer {
                         String type = response.body().getType();
                         if (response.body().getType() != null) {
                             switch (type) {
-                                case "qr-code":
-                                    if (response.body().getData() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
-
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                            // Step 1: Play action to take QR code picture
-                                            actionApiActivity.playActionToTakeQR("takelowpic");
-
-                                            // Step 2: Delay 3 seconds before taking picture
-                                            handler.postDelayed(() -> {
-                                                takePicApiActivity.takePicImmediately("qr-code");
-                                            }, 3000);
-                                        });
-
-
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            return true;
-                                        });
-
-                                    }
-                                    break;
-                                case "osmo-card":
-                                    if (response.body().getData() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
-
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                            // Step 1: Play action to take QR code picture
-                                            actionApiActivity.playActionToTakeQR("takelowpic");
-
-                                            // Step 2: Delay 3 seconds before taking picture
-                                            handler.postDelayed(() -> {
-                                                takePicApiActivity.takePicImmediately("osmo-card");
-                                            }, 3000);
-                                        });
-
-
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            return true;
-                                        });
-
-                                    }
-                                    break;
+//                                case "qr-code":
+//                                    if (response.body().getData() != null) {
+//                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
+//                                        miniPlayer = MiniMediaPlayer.create(context, source);
+//                                        miniPlayer.setDataSource(wav.getUrl());
+//                                        miniPlayer.prepareAsync();
+//                                        miniPlayer.setOnPreparedListener(mp -> {
+//                                            Log.i(TAG, "Media ready, start playing");
+//                                            mp.start();
+//                                        });
+//
+//                                        miniPlayer.setOnCompletionListener(mp -> {
+//                                            // Step 1: Play action to take QR code picture
+//                                            actionApiActivity.playActionToTakeQR("takelowpic");
+//
+//                                            // Step 2: Delay 3 seconds before taking picture
+//                                            handler.postDelayed(() -> {
+//                                                takePicApiActivity.takePicImmediately("qr-code");
+//                                            }, 3000);
+//                                        });
+//
+//
+//                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
+//                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
+//                                            return true;
+//                                        });
+//
+//                                    }
+//                                    break;
+//                                case "osmo-card":
+//                                    if (response.body().getData() != null) {
+//                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
+//                                        miniPlayer = MiniMediaPlayer.create(context, source);
+//                                        miniPlayer.setDataSource(wav.getUrl());
+//                                        miniPlayer.prepareAsync();
+//                                        miniPlayer.setOnPreparedListener(mp -> {
+//                                            Log.i(TAG, "Media ready, start playing");
+//                                            mp.start();
+//                                        });
+//
+//                                        miniPlayer.setOnCompletionListener(mp -> {
+//                                            // Step 1: Play action to take QR code picture
+//                                            actionApiActivity.playActionToTakeQR("takelowpic");
+//
+//                                            // Step 2: Delay 3 seconds before taking picture
+//                                            handler.postDelayed(() -> {
+//                                                takePicApiActivity.takePicImmediately("osmo-card");
+//                                            }, 3000);
+//                                        });
+//
+//
+//                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
+//                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
+//                                            return true;
+//                                        });
+//
+//                                    }
+//                                    break;
                                 default:
                                     if (response.body().getData().getWav() != null) {
-                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                                        miniPlayer = MiniMediaPlayer.create(context, source);
-                                        miniPlayer.setDataSource(wav.getUrl());
-                                        miniPlayer.prepareAsync();
-                                        miniPlayer.setOnPreparedListener(mp -> {
-                                            Log.i(TAG, "Media ready, start playing");
-                                            mp.start();
-                                        });
+                                        String tts = "Start capture OSMO card";
+                                        voicePool.playTTs(tts, Priority.MINLOW, new VoiceListener() {
+                                            @Override
+                                            public void onCompleted() {
+                                                Log.i(TAG, "After voice played successfully");
+                                            }
 
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                           Log.i(TAG, "Playback completed");
+                                            @Override
+                                            public void onError(int i, String s) {
+                                                Log.e(TAG, "Error playing after voice 111: " + s);
+                                            }
                                         });
+                                        Log.i(TAG, "Received default command with TTS response");
 
-
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            return true;
-                                        });
+//                                        NLPResponse.WavContainer wav = response.body().getData().getWav();
+//                                        miniPlayer = MiniMediaPlayer.create(context, source);
+//                                        miniPlayer.setDataSource(wav.getUrl());
+//                                        miniPlayer.prepareAsync();
+//                                        miniPlayer.setOnPreparedListener(mp -> {
+//                                            Log.i(TAG, "Media ready, start playing");
+//                                            mp.start();
+//                                        });
+//
+//                                        miniPlayer.setOnCompletionListener(mp -> {
+//                                           Log.i(TAG, "Playback completed");
+//                                        });
+//
+//
+//                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
+//                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
+//                                            return true;
+//                                        });
                                     }
                                     break;
                             }
+
                         }
 
                     } catch (Exception e) {
