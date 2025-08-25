@@ -4,6 +4,7 @@ import android.util.Log;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.mini.weinalib.TencentVadRecorder;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.master.context.MasterContext;
@@ -24,9 +25,14 @@ import com.ubtrobot.speech.RecognitionResult;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -131,98 +137,79 @@ public class DemoRecognizer extends AbstractRecognizer {
 
         byte[] fullRecording = getFullRecording();
         outputStream.reset();
+        STTRequest request = new STTRequest(fullRecording);
 
-        sttApi.doSTT(new STTRequest(fullRecording)).enqueue(new Callback<NLPResponse>() {
+        sttApi.doSTT2(request).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        String type = response.body().getType();
-                        NLPResponse.WavContainer wav = response.body().getData().getWav();
-                        miniPlayer = MiniMediaPlayer.create(context, source);
-                        miniPlayer.setDataSource(wav.getUrl());
-                        miniPlayer.prepareAsync();
-                        miniPlayer.setOnPreparedListener(mp -> {
-                            Log.i(TAG, "Media ready, start playing");
-                            mp.start();
-                        });
-                        if (response.body().getType() != null) {
-                            switch (type) {
-                                case "qr-code":
-                                    if (response.body().getData() != null) {
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                            // Step 1: Play action to take QR code picture
-                                            actionApiActivity.playActionToTakeQR("takelowpic");
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    Log.e(TAG, "Response not successful or empty");
+                    recorder.start();
+                    return;
+                }
 
-                                            // Step 2: Delay 3 seconds before taking picture
-                                            handler.postDelayed(() -> {
-                                                takePicApiActivity.takePicImmediately("qr-code");
-                                            }, 3000);
-                                            recorder.start();
-                                        });
+                // --- Read metadata from headers ---
+                String type = response.headers().get("X-Type");
+                String text = response.headers().get("X-Text");
+                String fileName = response.headers().get("X-File-Name");
+                String duration = response.headers().get("X-Duration");
+                String voice = response.headers().get("X-Voice");
+                String textLength = response.headers().get("X-Text-Length");
 
+                File outFile = null;
+                try {
+                    // --- Save body to temp file ---
+                    File cacheDir = Utils.getContext().getCacheDir();
+                    outFile = new File(cacheDir, fileName != null ? fileName : "tts_" + System.currentTimeMillis() + ".wav");
 
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            recorder.start();
-                                            return true;
-                                        });
+                    BufferedInputStream in = new BufferedInputStream(response.body().byteStream());
+                    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFile));
 
-                                    }
-                                    break;
-                                case "osmo-card":
-                                    if (response.body().getData() != null) {
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                            // Step 1: Play action to take QR code picture
-                                            actionApiActivity.playActionToTakeQR("takelowpic");
-
-                                            // Step 2: Delay 3 seconds before taking picture
-                                            handler.postDelayed(() -> {
-                                                takePicApiActivity.takePicImmediately("osmo-card");
-                                            }, 3000);
-                                            recorder.start();
-                                        });
-
-
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            recorder.start();
-                                            return true;
-                                        });
-
-                                    }
-                                    break;
-                                default:
-                                    if (response.body().getData().getWav() != null) {
-                                        miniPlayer.setOnCompletionListener(mp -> {
-                                            Log.i(TAG, "Playback completed");
-                                            recorder.start();
-                                        });
-
-
-                                        miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                                            Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                                            recorder.start();
-                                            return true;
-                                        });
-                                    }
-                                    break;
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error processing response: " + e.getMessage());
-                        recorder.start();
+                    byte[] buffer = new byte[8 * 1024];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
                     }
-                } else {
-                    Log.e(TAG, "Response data is null or response is not successful");
+                    out.flush();
+                    out.close();
+                    in.close();
+
+                    Log.i(TAG, "Saved TTS file at: " + outFile.getAbsolutePath());
+
+                    // --- Play the file ---
+                    miniPlayer = MiniMediaPlayer.create(context, source);
+                    miniPlayer.setDataSource(outFile.getAbsolutePath());
+                    miniPlayer.prepareAsync();
+
+                    File finalOutFile = outFile; // capture for lambda
+                    miniPlayer.setOnPreparedListener(mp -> {
+                        Log.i(TAG, "Media ready, start playing");
+                        mp.start();
+                    });
+
+                    miniPlayer.setOnCompletionListener(mp -> {
+                        Log.i(TAG, "Playback completed, cleaning up");
+                        recorder.start();
+                        finalOutFile.delete();  // delete after play
+                    });
+
+                    miniPlayer.setOnErrorListener((mp, what, extra) -> {
+                        Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                        recorder.start();
+                        finalOutFile.delete();
+                        return true;
+                    });
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Error saving/playing audio: " + e.getMessage(), e);
                     recorder.start();
                 }
             }
 
             @Override
-            public void onFailure(Call<NLPResponse> call, Throwable t) {
-                Log.e(TAG, "48: " + t);
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "withAction2 failure: " + t);
+                recorder.start();
             }
         });
     }
