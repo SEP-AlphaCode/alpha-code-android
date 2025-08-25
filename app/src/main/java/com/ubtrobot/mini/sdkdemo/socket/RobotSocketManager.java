@@ -100,8 +100,8 @@ public class RobotSocketManager {
                 .url(serverUrl)
                 .build();
 
-        setupConnectionChecker();
-        connect();
+//        setupConnectionChecker();
+//        connect();
     }
 
     private void setupConnectionChecker() {

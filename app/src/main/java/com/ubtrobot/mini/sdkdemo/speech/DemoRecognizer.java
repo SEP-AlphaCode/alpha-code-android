@@ -8,6 +8,7 @@ import com.ubtechinc.mini.weinalib.TencentVadRecorder;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.master.context.MasterContext;
 import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
+import com.ubtrobot.mini.sdkdemo.MainActivity;
 import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.sdkdemo.apis.STTApi;
 import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
@@ -63,10 +64,12 @@ public class DemoRecognizer extends AbstractRecognizer {
         // Initialize context and source only once here
         this.context = RobotUtils.getMasterContext();
         this.source = RobotUtils.getVoiceProtoSource();
+        Log.i(MainActivity.TAG, "Init recognizer");
 
         recorder.registerRecordListener((asrData, length) -> {
             //asrData: pcm, 16000 sampleRate, 8bit
             //Receive the recording data of microphone output in line here
+            Log.i(MainActivity.TAG, "Recognizing");
             outputStream.write(asrData, 0, length);
 
             // Reset timeout when receiving audio data

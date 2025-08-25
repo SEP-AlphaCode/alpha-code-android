@@ -127,6 +127,13 @@
                 android:name="master.service"
                 android:resource="@xml/speech_demo" />
         </service>
+        <service
+            android:name=".speech.SpeechSystemServiceTest"
+            android:exported="true">
+            <meta-data
+                android:name="master.service"
+                android:resource="@xml/speech_system" />
+        </service>
         <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>
     </application>
 
