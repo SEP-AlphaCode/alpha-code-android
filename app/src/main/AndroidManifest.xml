@@ -4,9 +4,11 @@
     package="com.ubtrobot.mini.sdkdemo">
 
     <uses-permission android:name="com.ubtrobot.master.permission.MASTER" />
+    <uses-permission android:name="com.ubtrobot.master.permission.MASTER_SYSTEM_SERVICE" />
     <!-- 在SDCard中创建与删除文件权限 -->
-    <!--  <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!--      tools:ignore="ProtectedPermissions" />-->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,6 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -117,7 +120,14 @@
             android:name=".socket.RobotSocketClient"
             android:enabled="true"
             android:exported="true" />
-
+        <service
+            android:name=".speech.DemoMasterService"
+            android:exported="true">
+            <meta-data
+                android:name="master.service"
+                android:resource="@xml/speech_demo" />
+        </service>
+        <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>
     </application>
 
 </manifest>

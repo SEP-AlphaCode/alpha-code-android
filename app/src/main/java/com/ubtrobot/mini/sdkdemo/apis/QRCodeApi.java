@@ -1,5 +1,5 @@
 package com.ubtrobot.mini.sdkdemo.apis;
-import com.ubtrobot.mini.sdkdemo.models.QRCodeDetectResponse;
+import com.ubtrobot.mini.sdkdemo.models.response.QRCodeDetectResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

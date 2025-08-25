@@ -1,21 +1,77 @@
 apply plugin: 'com.android.application'
-
+//
+//import java.util.zip.ZipFile
+//import java.util.zip.ZipEntry
+//
+//def outerJar = file("$projectDir/libs/mini-outer-sdk-2.4.2.jar")
+//def liteJar  = file("$projectDir/libs/mini-outer-sdk-lite.jar")
+//def prunedJar = file("$buildDir/libs/speech-sdk.jar")
+//
+//tasks.register("pruneLiteJar") {
+//    inputs.files(outerJar, liteJar)
+//    outputs.file(prunedJar)
+//
+//    doLast {
+//        if (!outerJar.exists()) throw new GradleException("Missing outer.jar at $outerJar")
+//        if (!liteJar.exists()) throw new GradleException("Missing lite.jar at $liteJar")
+//
+//        // Collect class entries in outer.jar
+//        def outerEntries = new ZipFile(outerJar).withCloseable { zip ->
+//            zip.entries().findAll { !it.isDirectory() && it.name.endsWith(".class") }
+//                    .collect { it.name } as Set
+//        }
+//
+//        // Create pruned.jar with only classes not in outer
+//        ant.zip(destfile: prunedJar) {
+//            zipfileset(src: liteJar) {
+//                // include only exclusive classes
+//                exclude(name: "**/*.class") // start by excluding all
+//            }
+//        }
+//
+//        // Rebuild pruned.jar properly
+//        def tempDir = file("$buildDir/tmp/pruned")
+//        tempDir.deleteDir()
+//        tempDir.mkdirs()
+//
+//        // Extract lite.jar
+//        copy {
+//            from zipTree(liteJar)
+//            into tempDir
+//        }
+//
+//        // Delete duplicates (anything that exists in outer.jar)
+//        outerEntries.each { dup ->
+//            def f = new File(tempDir, dup)
+//            if (f.exists()) {
+//                f.delete()
+//            }
+//        }
+//
+//        // Rebuild jar from remaining
+//        ant.zip(destfile: prunedJar, basedir: tempDir)
+//        println "✅ Pruned jar created at: $prunedJar"
+//    }
+//}
+//
+//
 android {
     compileSdkVersion 28
-
     defaultConfig {
         applicationId "com.ubtrobot.mini.sdkdemo"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         buildConfigField "String", "API_SPRING_PATH", "\"${getLocalProperty('api.spring.path', '')}\""
         buildConfigField "String", "API_PYTHON_PATH", "\"${getLocalProperty('api.python.path', '')}\""
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
-
+        // Bật MultiDex
         multiDexEnabled true
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
     }
 
     buildTypes {
@@ -23,6 +79,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
 
     packagingOptions {
@@ -31,60 +88,57 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
     repositories {
-        flatDir { dirs 'libs' }
+        flatDir {
+            dirs 'libs'
+        }
     }
 
-    lintOptions { abortOnError false }
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    // Android Support
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:multidex:1.0.3'
-
-    // Testing
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation files('libs\\speech-sdk.jar')
+    implementation files('libs\\Msc.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-    // Local AARs
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation(name: 'phonecall-sdk-release', ext: 'aar')
     implementation(name: 'utillib-1.2.8', ext: 'aar')
-    implementation(name: 'speechFramework-oversea-release', ext: 'aar')
-    implementation(name: 'behavior-lib-1.0.0', ext: 'aar')
-    implementation(name: 'impl-wakeup-dingdang-1.0.0', ext: 'aar')
-    implementation(name: 'sal-speech-1.0.0', ext: 'aar')
-    implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
-    implementation(name: 'weinalib-5.0.1', ext: 'aar')
-    implementation(name: 'wakeup-5.0.0', ext: 'aar')
-
-    // Networking
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.7'
-    implementation "org.java-websocket:Java-WebSocket:1.5.2"
-
-    // QR Code
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation 'com.google.zxing:core:3.5.0'
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21"
-
-    // AI / Speech
-    implementation 'org.tensorflow:tensorflow-lite:2.4.0'
-    implementation 'com.alphacephei:vosk-android:0.3.47'
-
+    implementation "org.java-websocket:Java-WebSocket:1.5.2"
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    //Speech
+    implementation(name: 'impl-wakeup-dingdang-1.0.0', ext: 'aar')
+    implementation(name: 'sal-speech-1.0.0', ext: 'aar')
+    implementation(name: 'speechFramework-oversea-release', ext: 'aar')
+    implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
+    implementation(name: 'weinalib-5.0.1', ext: 'aar')
+    implementation(name: 'wakeup-5.0.0', ext: 'aar')
 }

@@ -1,6 +1,6 @@
 package com.ubtrobot.mini.sdkdemo.apis;
 
-import com.ubtrobot.mini.sdkdemo.models.ActionResponseDto;
+import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
