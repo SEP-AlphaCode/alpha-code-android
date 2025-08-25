@@ -16,7 +16,9 @@ import com.ubtrobot.master.param.ProtoParam;
 import com.ubtrobot.master.service.MasterSystemService;
 import com.ubtrobot.master.transport.message.parcel.ParcelableParam;
 import com.ubtrobot.mini.iflytek.wakeup.IflytekWakeUpDetector;
+import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.R;
+import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.speech.framework.DingDangManager;
 import com.ubtrobot.mini.speech.framework.ResourceLoader;
 import com.ubtrobot.mini.speech.framework.ServiceConstants;
@@ -72,9 +74,17 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     private UnderstanderListener mUnderstanderListener;
 
     private final SkillManager mSkillManager = new SkillManager();
+    private TakePicApiActivity takePicApiActivity;
+    private ActionApiActivity actionApiActivity;
 
     private DemoSpeechJava() {
         // Private constructor for singleton
+    }
+
+
+    private DemoSpeechJava(TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
+        this.takePicApiActivity = takePicApiActivity;
+        this.actionApiActivity = actionApiActivity;
     }
 
     public static DemoSpeechJava getInstance() {
@@ -264,7 +274,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             if (success) {
                 TencentVadRecorder asrRecorder = new TencentVadRecorder(ResourceLoader.INSTANCE.getVad_path());
 
-                recognizer = new DemoRecognizer(asrRecorder);
+                recognizer = new DemoRecognizer(asrRecorder, takePicApiActivity, actionApiActivity);
                 recognizer.registerListener(mRecognizerListener);
 
                 synthesizer = new DemoSynthesizer();
