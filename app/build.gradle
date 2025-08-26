@@ -141,4 +141,5 @@ dependencies {
     implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
     implementation(name: 'weinalib-5.0.1', ext: 'aar')
     implementation(name: 'wakeup-5.0.0', ext: 'aar')
+    implementation 'com.alphacephei:vosk-android:0.3.47'
 }

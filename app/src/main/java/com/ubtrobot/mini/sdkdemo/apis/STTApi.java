@@ -13,6 +13,6 @@ public interface STTApi {
     @POST("/stt/with-action")
     Call<NLPResponse> doSTT(@Body STTRequest request);
     @Streaming
-    @POST("/stt/with-action2")
+    @POST("/stt/with-action-wav")
     Call<ResponseBody> doSTT2(@Body STTRequest request);
 }
