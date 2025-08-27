@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
+import com.ubtrobot.mini.voice.VoicePool;
 import com.ubtrobot.transport.message.CallException;
 import com.ubtrobot.transport.message.Request;
 
@@ -41,11 +42,7 @@ public class MainActivity extends Activity {
         RobotSocketController robotSocketController = new RobotSocketController(danceActivity, takePicApiActivity, actionApiActivity);
         wsClient = new RobotSocketClient(robotSocketController);
         forceConnect.setOnClickListener(l -> {
-            try{
-                wsClient.forceConnect();
-            } catch (Exception e) {
-                Log.e("WebSocketManager", e.toString());
-            }
+            VoicePool.get().playTTs("Fuck you", Priority.HIGH, null);
         });
     }
 

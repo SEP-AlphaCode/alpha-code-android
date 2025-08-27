@@ -52,7 +52,7 @@ public class DemoRecognizer extends AbstractRecognizer {
     private ActionApiActivity actionApiActivity;
     private TakePicApiActivity takePicApiActivity;
     private final Handler handler = new Handler(Looper.getMainLooper());
-
+    private final VoicePool vp = VoicePool.get();
 
     // Initialize these only once in constructor
     private final MasterContext context;
@@ -139,77 +139,74 @@ public class DemoRecognizer extends AbstractRecognizer {
         outputStream.reset();
         STTRequest request = new STTRequest(fullRecording);
 
-        sttApi.doSTT2(request).enqueue(new Callback<ResponseBody>() {
+        sttApi.doSTT(request).enqueue(new Callback<NLPResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Log.e(TAG, "Response not successful or empty");
-                    recorder.start();
-                    return;
-                }
+            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        NLPResponse nlpResponse = response.body();
+                        String type = nlpResponse.getType();
+                        String text = nlpResponse.getData() != null ? nlpResponse.getData().getText() : "I didn't catch that. Could you please repeat?";
+                        if (type != null) {
+                            switch (type) {
+                                case "qr-code":
+                                    if (response.body().getData() != null) {
+                                        vp.playTTs(text, Priority.MAXHIGH, new VoiceListener() {
+                                            @Override
+                                            public void onCompleted() {
+                                                Log.i(TAG, "After voice played successfully");
+                                                actionApiActivity.playActionToTakeQR("takelowpic");
 
-                // --- Read metadata from headers ---
-                String type = response.headers().get("X-Type");
-                String text = response.headers().get("X-Text");
-                String fileName = response.headers().get("X-File-Name");
-                String duration = response.headers().get("X-Duration");
-                String voice = response.headers().get("X-Voice");
-                String textLength = response.headers().get("X-Text-Length");
+                                                handler.postDelayed(() -> {
+                                                    takePicApiActivity.takePicImmediately("qr-code");
+                                                }, 3000); // Delay 3 seconds before taking picture
+                                            }
 
-                File outFile = null;
-                try {
-                    // --- Save body to temp file ---
-                    File cacheDir = Utils.getContext().getCacheDir();
-                    outFile = new File(cacheDir, fileName != null ? fileName : "tts_" + System.currentTimeMillis() + ".wav");
+                                            @Override
+                                            public void onError(int i, String s) {
+                                                Log.e(TAG, "Error playing after voice: " + s);
+                                            }
+                                        });
+                                    }
+                                    break;
+                                case "osmo-card":
+                                    if (nlpResponse.getData() != null) {
+                                        vp.playTTs(text, Priority.MAXHIGH, new VoiceListener() {
+                                            @Override
+                                            public void onCompleted() {
+                                                Log.i(TAG, "After voice played successfully");
+                                                actionApiActivity.playActionToTakeQR("takelowpic");
 
-                    BufferedInputStream in = new BufferedInputStream(response.body().byteStream());
-                    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFile));
+                                                handler.postDelayed(() -> {
+                                                    takePicApiActivity.takePicImmediately("osmo-card");
+                                                }, 3000); // Delay 3 seconds before taking picture
+                                            }
 
-                    byte[] buffer = new byte[8 * 1024];
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
+                                            @Override
+                                            public void onError(int i, String s) {
+                                                Log.e(TAG, "Error playing after voice: " + s);
+                                            }
+                                        });
+                                    }
+                                    break;
+                                default:
+                                    if (text != null) {
+                                        vp.playTTs(text, Priority.HIGH, null);
+                                    }
+                                    break;
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error processing response: " + e.getMessage());
+                        recorder.start();
                     }
-                    out.flush();
-                    out.close();
-                    in.close();
-
-                    Log.i(TAG, "Saved TTS file at: " + outFile.getAbsolutePath());
-
-                    // --- Play the file ---
-                    miniPlayer = MiniMediaPlayer.create(context, source);
-                    miniPlayer.setDataSource(outFile.getAbsolutePath());
-                    miniPlayer.prepareAsync();
-
-                    File finalOutFile = outFile; // capture for lambda
-                    miniPlayer.setOnPreparedListener(mp -> {
-                        Log.i(TAG, "Media ready, start playing");
-                        mp.start();
-                    });
-
-                    miniPlayer.setOnCompletionListener(mp -> {
-                        Log.i(TAG, "Playback completed, cleaning up");
-                        recorder.start();
-                        finalOutFile.delete();  // delete after play
-                    });
-
-                    miniPlayer.setOnErrorListener((mp, what, extra) -> {
-                        Log.e(TAG, "Error playing media: " + what + ", " + extra);
-                        recorder.start();
-                        finalOutFile.delete();
-                        return true;
-                    });
-
-                } catch (Exception e) {
-                    Log.e(TAG, "Error saving/playing audio: " + e.getMessage(), e);
-                    recorder.start();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "withAction2 failure: " + t);
-                recorder.start();
+            public void onFailure(Call<NLPResponse> call, Throwable t) {
+                Log.e(TAG, "Response failure: " + t);
             }
         });
     }

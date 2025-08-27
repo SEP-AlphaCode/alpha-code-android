@@ -16,12 +16,9 @@ import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.master.param.ProtoParam;
 import com.ubtrobot.master.service.MasterSystemService;
 import com.ubtrobot.master.transport.message.parcel.ParcelableParam;
-import com.ubtrobot.mini.iflytek.wakeup.IflytekWakeUpDetector;
 import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.MainActivity;
-import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
-import com.ubtrobot.mini.sdkdemo.speech.custom.VoskRecognizerWrapper;
 import com.ubtrobot.mini.speech.framework.DingDangManager;
 import com.ubtrobot.mini.speech.framework.ResourceLoader;
 import com.ubtrobot.mini.speech.framework.ServiceConstants;
@@ -57,10 +54,7 @@ import com.ubtrobot.speech.parcelable.TTsState;
 import com.ubtrobot.speech.protos.Speech;
 import com.ubtrobot.ulog.FwLoggerFactory2;
 
-import java.io.IOException;
-
 public final class DemoSpeechJava extends SpeechModuleFactory {
-    private static final String SMALL_MODEL = "vosk-model-small-en-us-0.15";
 
     private static final DemoSpeechJava INSTANCE = new DemoSpeechJava();
 
@@ -264,53 +258,45 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             }
         };
 
-//        final WeiNaWakeUpDetector wakeUpDetector = new WeiNaWakeUpDetector(new WeiNaRecorder(false));
-//        wakeUpDetector.registerListener(wakeUp -> {
-//            handleWakeup(hostService, wakeUp, service);
-//        });
+        final WeiNaWakeUpDetector wakeUpDetector = new WeiNaWakeUpDetector(new WeiNaRecorder(false));
+        wakeUpDetector.registerListener(wakeUp -> {
+            handleWakeup(hostService, wakeUp, service);
+        });
 
         DingDangManager.INSTANCE.load(appContext, success -> {
             if (success) {
-//                TencentVadRecorder asrRecorder = new TencentVadRecorder(ResourceLoader.INSTANCE.getVad_path());
-//                recognizer = new DemoRecognizer(asrRecorder, takePicApiActivity, actionApiActivity);
-//                recognizer.registerListener(mRecognizerListener);
-                try {
-                    String modelPath = VoskRecognizerWrapper.copyAssets(appContext, "vosk/" + SMALL_MODEL);
-                    recognizer = new VoskRecognizerWrapper(appContext, modelPath);
-                    recognizer.registerListener(mRecognizerListener);
-                    synthesizer = new DemoSynthesizer();
-                    synthesizer.registerListener(mSynthesizerListener);
+                TencentVadRecorder asrRecorder = new TencentVadRecorder(ResourceLoader.INSTANCE.getVad_path());
+                recognizer = new DemoRecognizer(asrRecorder, takePicApiActivity, actionApiActivity);
+                recognizer.registerListener(mRecognizerListener);
+                //                    String modelPath = VoskRecognizerWrapper.copyAssets(appContext, "vosk/" + SMALL_MODEL);
+//                    File modelDir = new File(modelPath);
+//                    if (!modelDir.exists() || !modelDir.isDirectory()) {
+//                        Log.e(VoskRecognizerWrapper.TAG, "Model directory does not exist or is invalid: " + modelPath);
+//                    }
+//                    Log.i(VoskRecognizerWrapper.TAG, "Model directory validated: " + modelPath);
 
-                    understander = new DemoUnderstander();
-                    understander.registerListener(mUnderstanderListener);
+                synthesizer = new DemoSynthesizer(appContext);
+                synthesizer.registerListener(mSynthesizerListener);
 
-                    speechServiceStub = new CompositeSpeechService.Builder()
-                            .setRecognizer(recognizer)
-                            .setSynthesizer(synthesizer)
-                            .setUnderstander(understander)
-                            //.setWakeUpDetector(wakeUpDetector)
-                            .build();
+                understander = new DemoUnderstander();
+                understander.registerListener(mUnderstanderListener);
 
-                    hostService.publishCarefully(
-                            ServiceConstants.ACTION_SPEECH_INIT_RESULT,
-                            ParcelableParam.create(new InitResult(0))
-                    );
+                speechServiceStub = new CompositeSpeechService.Builder()
+                        .setRecognizer(recognizer)
+                        .setSynthesizer(synthesizer)
+                        .setUnderstander(understander)
+                        .setWakeUpDetector(wakeUpDetector)
+                        .build();
 
-                    hostService.publishCarefully(
-                            ServiceConstants.ACTION_SPEECH_WAKEUP,
-                            ProtoParam.create(Speech.WakeupParam.newBuilder().build())
-                    );
+                hostService.publishCarefully(
+                        ServiceConstants.ACTION_SPEECH_INIT_RESULT,
+                        ParcelableParam.create(new InitResult(0))
+                );
 
-                    hostService.publishCarefully(SpeechConstants.ACTION_WAKE_UP,
-                            ParcelableParam.create((new WakeUp.Builder()).build()));
-
-                    NotificationCenter.defaultCenter().publish(
-                            ServiceConstants.PATH_MICROPHONE_ARRAY_INIT_RESULT, DemoSpeechJava.this
-                    );
-                    Log.i(MainActivity.TAG, "311: init success.");
-                } catch (IOException e) {
-                    Log.e(MainActivity.TAG, "Failed to initialize DingDang: " + e.getMessage());
-                }
+                NotificationCenter.defaultCenter().publish(
+                        ServiceConstants.PATH_MICROPHONE_ARRAY_INIT_RESULT, DemoSpeechJava.this
+                );
+                Log.i(TAG, "DingDang init success.");
             } else {
                 Log.e(MainActivity.TAG,"Initialization configuration of wake-up module failed, restart application...");
                 Process.killProcess(Process.myPid());
