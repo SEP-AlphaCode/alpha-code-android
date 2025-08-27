@@ -4,6 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_list"
+        android:hint="List of action id here, split by comma"
+        />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ubtrobot.action.ActionApi;
@@ -26,13 +27,13 @@ public class ActionApiActivity extends Activity {
     private static final String TAG = "ActionApiActivity";
     private ActionApi actionApi;
     private ActionStoppedReceiver receiver;
-
+    private EditText editText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.action_api_layout);
-
+        editText = findViewById(R.id.action_list);
         initRobot();
     }
 
@@ -103,7 +104,7 @@ public class ActionApiActivity extends Activity {
     }
 
     public void playActionsInSequence(View view) {
-        String actionIdsStr = "takelowpic"; // Chuỗi chứa các actionId
+        String actionIdsStr = String.valueOf(editText.getText()); // Chuỗi chứa các actionId
         String[] actionIds = actionIdsStr.split(","); // tách chuỗi thành mảng
         playNextAction(actionIds, 0);
     }
@@ -140,7 +141,7 @@ public class ActionApiActivity extends Activity {
 
         String actionId = actionIds[index].trim();
 
-        actionApi.playCustomizeAction(actionId, new ResponseListener<Void>() {
+        actionApi.playAction(actionId, new ResponseListener<Void>() {
             @Override
             public void onResponseSuccess(Void aVoid) {
                 Log.i(TAG, "Action " + actionId + " done!");
