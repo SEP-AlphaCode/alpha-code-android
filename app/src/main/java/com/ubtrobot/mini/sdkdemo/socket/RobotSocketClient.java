@@ -2,11 +2,13 @@ package com.ubtrobot.mini.sdkdemo.socket;
 
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.commons.Priority;
 //import com.ubtrobot.mini.sdkdemo.BuildConfig;
 import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
@@ -22,10 +24,7 @@ public class RobotSocketClient extends Service {
     private RobotSocketManager manager;
     private void init(){
         Log.i("RobotSocketClient", "Connecting...");
-        DanceWithMusicActivity danceWithMusicActivity = DanceWithMusicActivity.get();
-        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
-        ActionApiActivity actionApiActivity = ActionApiActivity.get();
-        robotController = new RobotSocketController(danceWithMusicActivity, takePicApiActivity, actionApiActivity);
+        robotController = new RobotSocketController();
         VoicePool vp = VoicePool.get();
         String path = BuildConfig.API_WEBSOCKET;
         manager = new RobotSocketManager(path, vp, robotController);

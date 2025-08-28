@@ -74,17 +74,9 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     private UnderstanderListener mUnderstanderListener;
 
     private final SkillManager mSkillManager = new SkillManager();
-    private TakePicApiActivity takePicApiActivity;
-    private ActionApiActivity actionApiActivity;
 
     private DemoSpeechJava() {
         // Private constructor for singleton
-    }
-
-
-    private DemoSpeechJava(TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
-        this.takePicApiActivity = takePicApiActivity;
-        this.actionApiActivity = actionApiActivity;
     }
 
     public static DemoSpeechJava getInstance() {
@@ -266,7 +258,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
         DingDangManager.INSTANCE.load(appContext, success -> {
             if (success) {
                 TencentVadRecorder asrRecorder = new TencentVadRecorder(ResourceLoader.INSTANCE.getVad_path());
-                recognizer = new DemoRecognizer(asrRecorder, takePicApiActivity, actionApiActivity);
+                recognizer = new DemoRecognizer(asrRecorder);
                 recognizer.registerListener(mRecognizerListener);
                 //                    String modelPath = VoskRecognizerWrapper.copyAssets(appContext, "vosk/" + SMALL_MODEL);
 //                    File modelDir = new File(modelPath);
@@ -275,7 +267,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 //                    }
 //                    Log.i(VoskRecognizerWrapper.TAG, "Model directory validated: " + modelPath);
 
-                synthesizer = new DemoSynthesizer(appContext);
+                synthesizer = new DemoSynthesizer();
                 synthesizer.registerListener(mSynthesizerListener);
 
                 understander = new DemoUnderstander();

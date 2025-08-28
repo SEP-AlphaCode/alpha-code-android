@@ -7,32 +7,20 @@ import android.os.Looper;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.mini.weinalib.TencentVadRecorder;
 import com.ubtrobot.commons.Priority;
-import com.ubtrobot.master.context.MasterContext;
 import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.sdkdemo.apis.STTApi;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
-import com.ubtrobot.mini.sdkdemo.utils.RobotUtils;
-import com.ubtrobot.mini.voice.MiniMediaPlayer;
 import com.ubtrobot.mini.voice.VoiceListener;
-import com.ubtrobot.mini.voice.VoicePool;
-import com.ubtrobot.mini.voice.protos.VoiceProto;
 import com.ubtrobot.speech.AbstractRecognizer;
 import com.ubtrobot.speech.RecognitionOption;
 import com.ubtrobot.speech.RecognitionResult;
-
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,25 +36,14 @@ public class DemoRecognizer extends AbstractRecognizer {
     private Runnable timeoutRunnable;
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
     private boolean isRecording = false;
-    private MiniMediaPlayer miniPlayer;
     private ActionApiActivity actionApiActivity;
     private TakePicApiActivity takePicApiActivity;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final VoicePool vp = VoicePool.get();
+    private TTSManager tts;
 
-    // Initialize these only once in constructor
-    private final MasterContext context;
-    private final VoiceProto.Source source;
-
-    public DemoRecognizer(TencentVadRecorder recorder, TakePicApiActivity takePicApiActivity, ActionApiActivity actionApiActivity) {
+    public DemoRecognizer(TencentVadRecorder recorder) {
         this.recorder = recorder;
         this.timeoutHandler = new Handler(Looper.getMainLooper());
-        this.takePicApiActivity = takePicApiActivity;
-        this.actionApiActivity = actionApiActivity;
-
-        // Initialize context and source only once here
-        this.context = RobotUtils.getMasterContext();
-        this.source = RobotUtils.getVoiceProtoSource();
 
         recorder.registerRecordListener((asrData, length) -> {
             //asrData: pcm, 16000 sampleRate, 8bit
@@ -86,6 +63,14 @@ public class DemoRecognizer extends AbstractRecognizer {
             Log.i(TAG, "Speech end");
             stopRecordingAndProcess();
         });
+
+        initRobot();
+    }
+
+    private void initRobot() {
+        actionApiActivity = ActionApiActivity.get();
+        takePicApiActivity = TakePicApiActivity.get();
+        tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     @Override
@@ -151,30 +136,38 @@ public class DemoRecognizer extends AbstractRecognizer {
                             switch (type) {
                                 case "qr-code":
                                     if (response.body().getData() != null) {
-                                        vp.playTTs(text, Priority.MAXHIGH, new VoiceListener() {
+                                        tts.doTTS(text, new TTSManager.TTSCallback() {
                                             @Override
-                                            public void onCompleted() {
-                                                Log.i(TAG, "After voice played successfully");
-                                                actionApiActivity.playActionToTakeQR("takelowpic");
-
-                                                handler.postDelayed(() -> {
-                                                    takePicApiActivity.takePicImmediately("qr-code");
-                                                }, 3000); // Delay 3 seconds before taking picture
+                                            public void onStart() {
+                                                Log.i(TAG, "TTS started: " + text);
                                             }
 
                                             @Override
-                                            public void onError(int i, String s) {
-                                                Log.e(TAG, "Error playing after voice: " + s);
+                                            public void onDone() {
+                                                Log.i(TAG, "After voice played successfully");
+
+                                                takePicApiActivity.takePicImmediately("qr-code");
+                                            }
+
+                                            @Override
+                                            public void onError() {
+                                                Log.e(TAG, "Error playing TTS: " + text);
                                             }
                                         });
                                     }
                                     break;
                                 case "osmo-card":
                                     if (nlpResponse.getData() != null) {
-                                        vp.playTTs(text, Priority.MAXHIGH, new VoiceListener() {
+                                        tts.doTTS(text, new TTSManager.TTSCallback() {
                                             @Override
-                                            public void onCompleted() {
+                                            public void onStart() {
+                                                Log.i(TAG, "TTS started: " + text);
+                                            }
+
+                                            @Override
+                                            public void onDone() {
                                                 Log.i(TAG, "After voice played successfully");
+
                                                 actionApiActivity.playActionToTakeQR("takelowpic");
 
                                                 handler.postDelayed(() -> {
@@ -183,15 +176,15 @@ public class DemoRecognizer extends AbstractRecognizer {
                                             }
 
                                             @Override
-                                            public void onError(int i, String s) {
-                                                Log.e(TAG, "Error playing after voice: " + s);
+                                            public void onError() {
+                                                Log.e(TAG, "Error playing TTS: " + text);
                                             }
                                         });
                                     }
                                     break;
                                 default:
                                     if (text != null) {
-                                        vp.playTTs(text, Priority.HIGH, null);
+                                        tts.doTTS(text);
                                     }
                                     break;
                             }

@@ -21,10 +21,12 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
 import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeDetectResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
@@ -47,7 +49,7 @@ public class TakePicApiActivity extends Activity {
     private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    private VoicePool voicePool;
+    private TTSManager tts;
     QRCodeApi qrCodeApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
@@ -74,7 +76,7 @@ public class TakePicApiActivity extends Activity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        voicePool = VoicePool.get();
+        tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     /**
@@ -83,11 +85,6 @@ public class TakePicApiActivity extends Activity {
      *
      */
     public void takePicImmediately(String action) {
-        // Ensure takePicApi is initialized
-        if (takePicApi == null) {
-            initRobot();
-        }
-
         if (takePicApi != null) {
             takePicApi.takePicImmediately(new ResponseListener<String>() {
                 @Override
@@ -228,7 +225,6 @@ public class TakePicApiActivity extends Activity {
         int height = bitmap.getHeight();
         int[] pixels = new int[width * height];
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-
         LuminanceSource source = new RGBLuminanceSource(width, height, pixels);
         BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
         Reader reader = new MultiFormatReader();
@@ -238,7 +234,7 @@ public class TakePicApiActivity extends Activity {
             return result.getText();
         } catch (NotFoundException e) {
             Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
-            voicePool.playTTs("Qr code not found in the image, please try again.", null, null);
+            tts.doTTS("Qr code not found in the image, please try again.");
             return null;
         } catch (Exception e) {
             Log.e(TAG, "Error when decode QR Code: " + e.getMessage());

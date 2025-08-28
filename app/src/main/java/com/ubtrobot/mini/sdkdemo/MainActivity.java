@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
@@ -29,17 +30,13 @@ public class MainActivity extends Activity {
     public static final String TAG = "DEBUG";
     private RobotSocketClient wsClient;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
-        DanceWithMusicActivity danceActivity = DanceWithMusicActivity.get();
-        TakePicApiActivity takePicApiActivity = TakePicApiActivity.get();
-        ActionApiActivity actionApiActivity = ActionApiActivity.get();
-        RobotSocketController robotSocketController = new RobotSocketController(danceActivity, takePicApiActivity, actionApiActivity);
+        RobotSocketController robotSocketController = new RobotSocketController();
         wsClient = new RobotSocketClient(robotSocketController);
         forceConnect.setOnClickListener(l -> {
             VoicePool.get().playTTs("Fuck you", Priority.HIGH, null);

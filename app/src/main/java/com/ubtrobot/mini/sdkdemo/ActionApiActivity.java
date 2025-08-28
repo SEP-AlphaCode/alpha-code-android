@@ -116,8 +116,7 @@ public class ActionApiActivity extends Activity {
         }
         
         if (actionApi != null) {
-            String[] actionIds = action.split(","); // tách chuỗi thành mảng
-            playNextAction(actionIds, 0);
+            playCustomizeAction(action);
         } else {
             Log.e(TAG, "ActionApi is still null after initialization attempt");
         }
@@ -154,6 +153,31 @@ public class ActionApiActivity extends Activity {
                 Log.e(TAG, "Action " + actionId + " failed: " + s);
                 // Vẫn tiếp tục chạy cái tiếp theo
                 playNextAction(actionIds, index + 1);
+            }
+        });
+    }
+
+    private void playCustomizeAction(String actionId) {
+
+        // Ensure actionApi is initialized before each action
+        if (actionApi == null) {
+            initRobot();
+        }
+
+        if (actionApi == null) {
+            Log.e(TAG, "ActionApi is null, cannot play action");
+            return;
+        }
+
+        actionApi.playCustomizeAction(actionId, new ResponseListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void aVoid) {
+                Log.i(TAG, "Action " + actionId + " done!");
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+                Log.e(TAG, "Action " + actionId + " failed: " + s);
             }
         });
     }
