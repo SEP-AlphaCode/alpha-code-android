@@ -4,20 +4,19 @@ import android.util.Log;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.ubtech.utilcode.utils.Utils;
+import com.google.gson.Gson;
 import com.ubtechinc.mini.weinalib.TencentVadRecorder;
-import com.ubtrobot.commons.Priority;
-import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
-import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.sdkdemo.apis.STTApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
-import com.ubtrobot.mini.voice.VoiceListener;
 import com.ubtrobot.speech.AbstractRecognizer;
 import com.ubtrobot.speech.RecognitionOption;
 import com.ubtrobot.speech.RecognitionResult;
+
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -30,16 +29,11 @@ public class DemoRecognizer extends AbstractRecognizer {
     private final TencentVadRecorder recorder;
     private static final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final STTApi sttApi = ApiClient.getPythonInstance().create(STTApi.class);
-
-    // Timeout related variables
     private final Handler timeoutHandler;
     private Runnable timeoutRunnable;
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
     private boolean isRecording = false;
-    private ActionApiActivity actionApiActivity;
-    private TakePicApiActivity takePicApiActivity;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private TTSManager tts;
+    private CommandHandler commandHandler;
 
     public DemoRecognizer(TencentVadRecorder recorder) {
         this.recorder = recorder;
@@ -64,13 +58,7 @@ public class DemoRecognizer extends AbstractRecognizer {
             stopRecordingAndProcess();
         });
 
-        initRobot();
-    }
-
-    private void initRobot() {
-        actionApiActivity = ActionApiActivity.get();
-        takePicApiActivity = TakePicApiActivity.get();
-        tts = new TTSManager(Utils.getContext().getApplicationContext());
+        this.commandHandler = new CommandHandler();
     }
 
     @Override
@@ -131,64 +119,15 @@ public class DemoRecognizer extends AbstractRecognizer {
                     try {
                         NLPResponse nlpResponse = response.body();
                         String type = nlpResponse.getType();
-                        String text = nlpResponse.getData() != null ? nlpResponse.getData().getText() : "I didn't catch that. Could you please repeat?";
-                        if (type != null) {
-                            switch (type) {
-                                case "qr-code":
-                                    if (response.body().getData() != null) {
-                                        tts.doTTS(text, new TTSManager.TTSCallback() {
-                                            @Override
-                                            public void onStart() {
-                                                Log.i(TAG, "TTS started: " + text);
-                                            }
+                        NLPResponse.DataContainer data = nlpResponse.getData();
+                        // Convert DataContainer -> JSON string
+                        String jsonString = new Gson().toJson(data);
 
-                                            @Override
-                                            public void onDone() {
-                                                Log.i(TAG, "After voice played successfully");
+                        // Convert JSON string -> JSONObject
+                        JSONObject jsonData = new JSONObject(jsonString);
 
-                                                takePicApiActivity.takePicImmediately("qr-code");
-                                            }
-
-                                            @Override
-                                            public void onError() {
-                                                Log.e(TAG, "Error playing TTS: " + text);
-                                            }
-                                        });
-                                    }
-                                    break;
-                                case "osmo-card":
-                                    if (nlpResponse.getData() != null) {
-                                        tts.doTTS(text, new TTSManager.TTSCallback() {
-                                            @Override
-                                            public void onStart() {
-                                                Log.i(TAG, "TTS started: " + text);
-                                            }
-
-                                            @Override
-                                            public void onDone() {
-                                                Log.i(TAG, "After voice played successfully");
-
-                                                actionApiActivity.playActionToTakeQR("takelowpic");
-
-                                                handler.postDelayed(() -> {
-                                                    takePicApiActivity.takePicImmediately("osmo-card");
-                                                }, 3000); // Delay 3 seconds before taking picture
-                                            }
-
-                                            @Override
-                                            public void onError() {
-                                                Log.e(TAG, "Error playing TTS: " + text);
-                                            }
-                                        });
-                                    }
-                                    break;
-                                default:
-                                    if (text != null) {
-                                        tts.doTTS(text);
-                                    }
-                                    break;
-                            }
-                        }
+                        // Use CommandHandler instead of switch case
+                        commandHandler.handleCommand(type, jsonData);
 
                     } catch (Exception e) {
                         Log.e(TAG, "Error processing response: " + e.getMessage());

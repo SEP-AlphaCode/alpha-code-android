@@ -6,22 +6,12 @@ import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
-
-import com.ubtrobot.mini.voice.VoicePool;
-
 import java.util.Locale;
 
 public class TTSManager {
     private TextToSpeech tts;
     private boolean isReady = false;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
-
-    // interface callback để bên ngoài truyền vào
-    public interface TTSCallback {
-        void onStart();
-        void onDone();
-        void onError();
-    }
 
     public TTSManager(Context context) {
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
@@ -38,7 +28,7 @@ public class TTSManager {
             }
         });
 
-        // gắn listener mặc định
+        // Set default listener
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
@@ -70,7 +60,7 @@ public class TTSManager {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "UTTERANCE_ID");
     }
 
-    // thêm overload có callback
+    // Add overload have call back
     public void doTTS(String text, TTSCallback callback) {
         if (!isReady) {
             Log.w("TTSManager", "TTS not ready yet");

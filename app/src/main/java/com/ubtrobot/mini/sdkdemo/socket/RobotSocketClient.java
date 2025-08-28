@@ -2,22 +2,12 @@ package com.ubtrobot.mini.sdkdemo.socket;
 
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.ubtech.utilcode.utils.Utils;
-import com.ubtrobot.commons.Priority;
-//import com.ubtrobot.mini.sdkdemo.BuildConfig;
-import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
-import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
-import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.voice.VoicePool;
-
-import okhttp3.*;
 
 public class RobotSocketClient extends Service {
     private RobotSocketController robotController;

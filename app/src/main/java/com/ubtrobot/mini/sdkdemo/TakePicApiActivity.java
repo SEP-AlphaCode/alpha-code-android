@@ -30,9 +30,7 @@ import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeDetectResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
-import com.ubtrobot.mini.voice.VoicePool;
 import java.io.File;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

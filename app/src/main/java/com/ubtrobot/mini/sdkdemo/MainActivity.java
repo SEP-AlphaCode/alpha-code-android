@@ -8,19 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
 import com.ubtrobot.mini.voice.VoicePool;
-import com.ubtrobot.transport.message.CallException;
-import com.ubtrobot.transport.message.Request;
-
-import java.util.Arrays;
 
 /**
  * Created by lulin.wu on 2018/6/19.

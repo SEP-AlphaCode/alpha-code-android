@@ -24,7 +24,7 @@ import com.ubtrobot.ulog.logger.android.AndroidLoggerFactory;
 
 public class DemoApp extends Application {
 
-    public static final String DEBUG_TAG = "API_TAG";
+    public static final String TAG = "API_TAG";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,24 +44,24 @@ public class DemoApp extends Application {
                     BuildConfig.DEBUG ? new AndroidLoggerFactory() : new InfrequentLoggerFactory());
             startService(new Intent(this, DemoMasterService.class));
 
-            Log.i(MainActivity.TAG, "Speech App: Declaring speech settings");
+            Log.i(TAG, "Speech App: Declaring speech settings");
             ServiceModules.initialize(this);
             ServiceModules.declare(SpeechSettings.class,
                     (aClass, moduleCreatedNotifier) -> {
                         moduleCreatedNotifier.notifyModuleCreated(
                                 DemoSpeechJava.getInstance().createSpeechSettings());
                     });
-            Log.i(MainActivity.TAG, "Speech App: Declaring speech service");
+            Log.i(TAG, "Speech App: Declaring speech service");
             ServiceModules.declare(SpeechService.class,
                     (aClass, moduleCreatedNotifier) -> ThreadPool.runOnNonUIThread(() -> {
                         while (DemoSpeechJava.getInstance().createSpeechService() == null) {
-                            Log.i(MainActivity.TAG, "Speech App: Cannot get service");
+                            Log.i(TAG, "Speech App: Cannot get service");
                             SystemClock.sleep(5);
                         }
                         moduleCreatedNotifier.notifyModuleCreated(DemoSpeechJava.getInstance().createSpeechService());
                     }));
         } catch (Exception e) {
-            Log.i(MainActivity.TAG, "Error: " + e);
+            Log.i(TAG, "Error: " + e);
         }
     }
 
