@@ -2,20 +2,26 @@ package com.ubtrobot.mini.sdkdemo.common;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.ubtech.utilcode.utils.Utils;
-import com.ubtrobot.mini.sdkdemo.ActionApiActivity;
+import com.ubtrobot.action.ActionApi;
+import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
 import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+
 import org.json.JSONObject;
 
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
 
     private TakePicApiActivity takePicApiActivity;
-    private ActionApiActivity actionApiActivity;
+    private ActionApi actionApi;
+    private ExpressApi expressApi;
     private TTSManager tts;
     private DanceWithMusicActivity danceWithMusicActivity;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -23,12 +29,15 @@ public class CommandHandler {
     public CommandHandler() {
         this.danceWithMusicActivity = DanceWithMusicActivity.get();
         this.takePicApiActivity = TakePicApiActivity.get();
-        this.actionApiActivity = ActionApiActivity.get();
+        this.actionApi = ActionApi.get();
+        expressApi = ExpressApi.get();
         this.tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     public void handleCommand(String type, JSONObject data) {
         String text = data.optString("text");
+        String code = data.optString("code");
+
         if (type == null) {
             if (text != null) {
                 tts.doTTS(text);
@@ -40,6 +49,11 @@ public class CommandHandler {
             case "dance-with-music":
                 handleWithDanceMusic(data);
                 break;
+            case "action":
+                handleWithAction(code);
+                break;
+            case "expression":
+                expressApi.doExpress(code);
             case "qr-code":
                 handleQRCode(text);
                 break;
@@ -52,6 +66,20 @@ public class CommandHandler {
         }
     }
 
+    private void handleWithAction(String actionCode) {
+        if (actionCode != null) {
+            actionApi.playAction(actionCode, new ResponseListener<Void>() {
+                @Override
+                public void onResponseSuccess(Void aVoid) {
+                    Log.i(TAG, "Action " + actionCode + " done!");
+                }
+
+                @Override
+                public void onFailure(int i, @NonNull String s) {
+                    Log.e(TAG, "Action " + actionCode + " failed: " + s);
+                }
+            });        }
+    }
     private void handleWithDanceMusic(JSONObject data) {
         if (danceWithMusicActivity != null) {
             danceWithMusicActivity.JumpWithMusic(data);
@@ -91,7 +119,7 @@ public class CommandHandler {
                 @Override
                 public void onDone() {
                     Log.i(TAG, "After voice played successfully");
-                    actionApiActivity.playActionToTakeQR("takelowpic");
+                    actionApi.playCustomizeAction("takelowpic", null);
 
                     handler.postDelayed(() -> {
                         takePicApiActivity.takePicImmediately("osmo-card");
