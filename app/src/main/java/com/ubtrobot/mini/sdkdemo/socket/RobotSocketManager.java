@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
-import com.ubtrobot.mini.voice.VoicePool;
 
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +22,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import com.ubtrobot.commons.Priority;
+import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 import com.ubtrobot.sys.SysApi;
 
 public class RobotSocketManager {
@@ -37,28 +37,10 @@ public class RobotSocketManager {
     private RobotSocketController robotController;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable connectionChecker;
-    private MouthLedApi led;
     private SysApi sysApi;
+    private LedHelper ledHelper;
 
-    /**
-     * 0 = OK (green), 1 = WAIT (yellow), 2 = FAIL (red)
-     */
-    private void notifyState(int state) {
-        int color = -1;
-        switch (state) {
-            case 0:
-                color = Color.argb(0, 0, 255, 0);
-                break;
-            case 1:
-                color = Color.argb(0, 255, 255, 0);
-                break;
-            case 2:
-                color = Color.argb(0, 255, 0, 0);
-                break;
-        }
-        Log.i(TAG, "State is " + state);
-        led.startNormalModel(color, 2000, Priority.HIGH, null);
-    }
+
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
@@ -89,7 +71,7 @@ public class RobotSocketManager {
 
     public RobotSocketManager(String serverUrl, RobotSocketController robotController) {
         this.robotController = robotController;
-        led = MouthLedApi.get();
+        ledHelper = new LedHelper();
         sysApi = SysApi.get();
 
         // Use unsafe client to allow self-signed certificates
@@ -117,7 +99,7 @@ public class RobotSocketManager {
             @Override
             public void run() {
                 if (isConnected) {
-                    notifyState(1);
+                    ledHelper.notifyState(1);
                     connect();
                 }
                 handler.postDelayed(this, PING_INTERVAL_MS); // Check every ping interval
@@ -136,13 +118,14 @@ public class RobotSocketManager {
             public void onOpen(WebSocket webSocket, Response response) {
                 isConnected = true;
                 Log.d(TAG, "WebSocket connected");
-                notifyState(0);
+                ledHelper.notifyState(0);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-                notifyState(0);
+                ledHelper.notifyState(0);
                 if (robotController != null) {
+                    Log.i(TAG, "Received message: " + text);
                     robotController.handleCommand(text);
                 }
             }
@@ -162,7 +145,7 @@ public class RobotSocketManager {
     private void handleConnectionFailure(String error) {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
-        notifyState(2);
+        ledHelper.notifyState(2);
 
         if (shouldReconnect) {
             scheduleReconnect();

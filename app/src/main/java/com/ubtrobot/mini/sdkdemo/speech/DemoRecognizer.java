@@ -11,6 +11,7 @@ import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 import com.ubtrobot.speech.AbstractRecognizer;
 import com.ubtrobot.speech.RecognitionOption;
 import com.ubtrobot.speech.RecognitionResult;
@@ -34,10 +35,11 @@ public class DemoRecognizer extends AbstractRecognizer {
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
     private boolean isRecording = false;
     private CommandHandler commandHandler;
-
+    private LedHelper ledHelper;
     public DemoRecognizer(TencentVadRecorder recorder) {
         this.recorder = recorder;
         this.timeoutHandler = new Handler(Looper.getMainLooper());
+        ledHelper = new LedHelper();
 
         recorder.registerRecordListener((asrData, length) -> {
             //asrData: pcm, 16000 sampleRate, 8bit
@@ -125,8 +127,8 @@ public class DemoRecognizer extends AbstractRecognizer {
 
                         // Convert JSON string -> JSONObject
                         JSONObject jsonData = new JSONObject(jsonString);
-
                         // Use CommandHandler instead of switch case
+                        ledHelper.notifyState(0);
                         commandHandler.handleCommand(type, jsonData);
 
                     } catch (Exception e) {

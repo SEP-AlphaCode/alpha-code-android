@@ -38,13 +38,6 @@ public class CommandHandler {
         String text = data.optString("text");
         String code = data.optString("code");
 
-        if (type == null) {
-            if (text != null) {
-                tts.doTTS(text);
-            }
-            return;
-        }
-
         switch (type) {
             case "dance-with-music":
                 handleWithDanceMusic(data);
@@ -54,6 +47,7 @@ public class CommandHandler {
                 break;
             case "expression":
                 expressApi.doExpress(code);
+                break;
             case "qr-code":
                 handleQRCode(text);
                 break;
@@ -78,8 +72,10 @@ public class CommandHandler {
                 public void onFailure(int i, @NonNull String s) {
                     Log.e(TAG, "Action " + actionCode + " failed: " + s);
                 }
-            });        }
+            });
+        }
     }
+
     private void handleWithDanceMusic(JSONObject data) {
         if (danceWithMusicActivity != null) {
             danceWithMusicActivity.JumpWithMusic(data);
@@ -87,51 +83,61 @@ public class CommandHandler {
     }
 
     private void handleQRCode(String text) {
-        if (text != null) {
-            tts.doTTS(text, new TTSCallback() {
-                @Override
-                public void onStart() {
-                    Log.i(TAG, "TTS started: " + text);
-                }
+        // Use default message if text is null or empty
+        final String message = (text == null || text.trim().isEmpty())
+                ? "Please show the QR code in front of me to take a picture. Now I will take the picture."
+                : text;
 
-                @Override
-                public void onDone() {
-                    Log.i(TAG, "After voice played successfully");
+        // Call TTS
+        tts.doTTS(message, new TTSCallback() {
+            @Override
+            public void onStart() {
+                Log.i(TAG, "TTS started: " + message);
+            }
+
+            @Override
+            public void onDone() {
+                Log.i(TAG, "Voice playback finished successfully");
+                // Only take picture if a QR code text was provided
+                if (message != null && !message.trim().isEmpty()) {
                     takePicApiActivity.takePicImmediately("qr-code");
                 }
+            }
 
-                @Override
-                public void onError() {
-                    Log.e(TAG, "Error playing TTS: " + text);
-                }
-            });
-        }
+            @Override
+            public void onError() {
+                Log.e(TAG, "Error playing TTS: " + message);
+            }
+        });
     }
 
+
     private void handleOsmoCard(String text) {
-        if (text != null) {
-            tts.doTTS(text, new TTSCallback() {
-                @Override
-                public void onStart() {
-                    Log.i(TAG, "TTS started: " + text);
-                }
 
-                @Override
-                public void onDone() {
-                    Log.i(TAG, "After voice played successfully");
-                    actionApi.playCustomizeAction("takelowpic", null);
+        final String message = (text == null || text.trim().isEmpty())
+                ? "Please place the OSMO card under my feet in my view. Now I will bend down to scan it."
+                : text;
+        tts.doTTS(message, new TTSCallback() {
+            @Override
+            public void onStart() {
+                Log.i(TAG, "TTS started: " + message);
+            }
 
-                    handler.postDelayed(() -> {
-                        takePicApiActivity.takePicImmediately("osmo-card");
-                    }, 3000); // Delay 3 seconds before taking picture
-                }
+            @Override
+            public void onDone() {
+                Log.i(TAG, "After voice played successfully");
+                actionApi.playCustomizeAction("takelowpic", null);
 
-                @Override
-                public void onError() {
-                    Log.e(TAG, "Error playing TTS: " + text);
-                }
-            });
-        }
+                handler.postDelayed(() -> {
+                    takePicApiActivity.takePicImmediately("osmo-card");
+                }, 3000); // Delay 3 seconds before taking picture
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "Error playing TTS: " + message);
+            }
+        });
     }
 
     private void handleDefault(String text) {

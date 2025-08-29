@@ -83,6 +83,9 @@ public class TakePicApiActivity extends Activity {
      *
      */
     public void takePicImmediately(String action) {
+        if(takePicApi == null){
+            initRobot();
+        }
         if (takePicApi != null) {
             takePicApi.takePicImmediately(new ResponseListener<String>() {
                 @Override
