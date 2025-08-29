@@ -23,12 +23,12 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import com.ubtrobot.commons.Priority;
+import com.ubtrobot.sys.SysApi;
 
 public class RobotSocketManager {
     private static final String TAG = "WebSocketManager";
     private static final long RECONNECT_DELAY_MS = 7500;
     private static final long PING_INTERVAL_MS = 15000; // 30 seconds ping interval
-
     private OkHttpClient client;
     private WebSocket webSocket;
     private Request request;
@@ -38,6 +38,7 @@ public class RobotSocketManager {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable connectionChecker;
     private MouthLedApi led;
+    private SysApi sysApi;
 
     /**
      * 0 = OK (green), 1 = WAIT (yellow), 2 = FAIL (red)
@@ -89,16 +90,26 @@ public class RobotSocketManager {
     public RobotSocketManager(String serverUrl, RobotSocketController robotController) {
         this.robotController = robotController;
         led = MouthLedApi.get();
+        sysApi = SysApi.get();
 
-        // Sử dụng unsafe client để bỏ qua SSL certificate validation
+        // Use unsafe client to allow self-signed certificates
         client = getUnsafeOkHttpClient();
 
+        String serial = getRobotSerialNumber();
         request = new Request.Builder()
-                .url(serverUrl)
+                .url(serverUrl + "?serial=" + serial)
                 .build();
 
         setupConnectionChecker();
         connect();
+    }
+
+    private String getRobotSerialNumber() {
+        String serialNumber = sysApi.readRobotSid();;
+        if (serialNumber == null || serialNumber.isEmpty()) {
+            serialNumber = "unknown_serial";
+        }
+        return serialNumber;
     }
 
     private void setupConnectionChecker() {
