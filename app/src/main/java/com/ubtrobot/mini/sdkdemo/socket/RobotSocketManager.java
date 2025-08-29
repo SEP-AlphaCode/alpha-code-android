@@ -97,7 +97,7 @@ public class RobotSocketManager {
 
         String serial = getRobotSerialNumber();
         request = new Request.Builder()
-                .url(serverUrl + "?serial=" + serial)
+                .url(serverUrl + "/" + serial)
                 .build();
 
         setupConnectionChecker();
