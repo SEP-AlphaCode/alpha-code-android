@@ -131,7 +131,7 @@ public class RobotSocketManager {
         handler.removeCallbacks(connectionChecker);
         handler.post(connectionChecker);
 
-        webSocket = client.newWebSocket(request, new WebSocketListener() {
+        webSocket = client.newWebSocket(request,  new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 isConnected = true;
