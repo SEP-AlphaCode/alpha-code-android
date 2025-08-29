@@ -34,11 +34,9 @@ public class RobotSocketManager {
     private Request request;
     private boolean isConnected = false;
     private boolean shouldReconnect = true;
-    private VoicePool vp;
     private RobotSocketController robotController;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable connectionChecker;
-    private long lastMessageReceivedTime = 0;
     private MouthLedApi led;
 
     /**
@@ -88,8 +86,7 @@ public class RobotSocketManager {
         }
     }
 
-    public RobotSocketManager(String serverUrl, VoicePool vp, RobotSocketController robotController) {
-        this.vp = vp;
+    public RobotSocketManager(String serverUrl, RobotSocketController robotController) {
         this.robotController = robotController;
         led = MouthLedApi.get();
 
@@ -127,14 +124,12 @@ public class RobotSocketManager {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 isConnected = true;
-                lastMessageReceivedTime = System.currentTimeMillis();
                 Log.d(TAG, "WebSocket connected");
                 notifyState(0);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-                lastMessageReceivedTime = System.currentTimeMillis();
                 notifyState(0);
                 if (robotController != null) {
                     robotController.handleCommand(text);

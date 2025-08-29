@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
-import com.ubtrobot.mini.voice.VoicePool;
 
 public class RobotSocketClient extends Service {
     private RobotSocketController robotController;
@@ -15,9 +14,8 @@ public class RobotSocketClient extends Service {
     private void init(){
         Log.i("RobotSocketClient", "Connecting...");
         robotController = new RobotSocketController();
-        VoicePool vp = VoicePool.get();
         String path = BuildConfig.API_WEBSOCKET;
-        manager = new RobotSocketManager(path, vp, robotController);
+        manager = new RobotSocketManager(path, robotController);
     }
 
     /**
