@@ -130,12 +130,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             );
 
             MicApiHelper.setMicLockAngle(angle, false);
-            if (createSpeechSettings().isSpeechLinkable()
-                    && ShakeHeadUtils.shakeHeadTiming == ShakeHeadUtils.ShakeHeadTiming.BeforeRecord) {
-                if (!ActionApi.get().unsafeAction()) {
-                    shakeHead();
-                }
-            }
+            shakeHead();
         });
 
         mRecognizerListener = new RecognizerListener() {
