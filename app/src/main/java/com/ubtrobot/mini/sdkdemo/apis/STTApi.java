@@ -12,7 +12,4 @@ import retrofit2.http.Streaming;
 public interface STTApi {
     @POST("/stt/with-action")
     Call<NLPResponse> doSTT(@Body STTRequest request);
-    @Streaming
-    @POST("/stt/with-action-wav")
-    Call<ResponseBody> doSTT2(@Body STTRequest request);
 }

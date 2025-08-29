@@ -124,6 +124,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
         final MasterSystemService hostService = service;
 
         WeiNaMicApi.get().addDoaAngleCallback(angle -> {
+            Log.i(TAG, "doa angle:" + angle);
             hostService.publishCarefully(
                     ServiceConstants.PATH_MICROPHONE_ARRAY_WAKEUP_ANGLE,
                     ParcelableParam.create(new MicrophoneWakeupAngle((int) angle))
@@ -258,13 +259,6 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                 TencentVadRecorder asrRecorder = new TencentVadRecorder(ResourceLoader.INSTANCE.getVad_path());
                 recognizer = new DemoRecognizer(asrRecorder);
                 recognizer.registerListener(mRecognizerListener);
-                //                    String modelPath = VoskRecognizerWrapper.copyAssets(appContext, "vosk/" + SMALL_MODEL);
-//                    File modelDir = new File(modelPath);
-//                    if (!modelDir.exists() || !modelDir.isDirectory()) {
-//                        Log.e(VoskRecognizerWrapper.TAG, "Model directory does not exist or is invalid: " + modelPath);
-//                    }
-//                    Log.i(VoskRecognizerWrapper.TAG, "Model directory validated: " + modelPath);
-
                 synthesizer = new DemoSynthesizer();
                 synthesizer.registerListener(mSynthesizerListener);
 
@@ -296,7 +290,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     }
 
     private void handleWakeup(MasterSystemService hostService, WakeUp wakeUp, MasterSystemService service) {
-        LOGGER.w("publish wakeup.");
+        Log.i(TAG, "onWakeUp: " + wakeUp);
         hostService.publishCarefully(
                 ServiceConstants.ACTION_SPEECH_WAKEUP,
                 ProtoParam.create(Speech.WakeupParam.newBuilder().build())
@@ -307,12 +301,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
         WakeupAudioPlayer.get(appContext).play();
 
-        ThreadPool.runOnNonUIThread(new Runnable() {
-            @Override
-            public void run() {
-                MotorApi.get().clearProtectFlag(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-            }
-        });
+        ThreadPool.runOnNonUIThread(() -> MotorApi.get().clearProtectFlag(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14));
     }
 
     @Override
