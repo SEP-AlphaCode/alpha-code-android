@@ -109,19 +109,6 @@ public class ActionApiActivity extends Activity {
         playNextAction(actionIds, 0);
     }
 
-    public void playActionToTakeQR(String action) {
-        // Ensure actionApi is initialized
-        if (actionApi == null) {
-            initRobot();
-        }
-        
-        if (actionApi != null) {
-            playCustomizeAction(action);
-        } else {
-            Log.e(TAG, "ActionApi is still null after initialization attempt");
-        }
-    }
-
     private void playNextAction(String[] actionIds, int index) {
         if (index >= actionIds.length) {
             Log.i(TAG, "All actions completed!");
@@ -156,32 +143,6 @@ public class ActionApiActivity extends Activity {
             }
         });
     }
-
-    private void playCustomizeAction(String actionId) {
-
-        // Ensure actionApi is initialized before each action
-        if (actionApi == null) {
-            initRobot();
-        }
-
-        if (actionApi == null) {
-            Log.e(TAG, "ActionApi is null, cannot play action");
-            return;
-        }
-
-        actionApi.playCustomizeAction(actionId, new ResponseListener<Void>() {
-            @Override
-            public void onResponseSuccess(Void aVoid) {
-                Log.i(TAG, "Action " + actionId + " done!");
-            }
-
-            @Override
-            public void onFailure(int i, @NonNull String s) {
-                Log.e(TAG, "Action " + actionId + " failed: " + s);
-            }
-        });
-    }
-
 
     /**
      * 执行自定义动作
