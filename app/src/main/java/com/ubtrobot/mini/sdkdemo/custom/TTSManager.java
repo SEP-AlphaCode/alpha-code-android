@@ -6,12 +6,17 @@ import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
+
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TTSManager {
     private TextToSpeech tts;
     private boolean isReady = false;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final Map<String, TTSCallback> callbackMap = new ConcurrentHashMap<>();
 
     public TTSManager(Context context) {
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
@@ -22,48 +27,45 @@ public class TTSManager {
                     Log.e("TTSManager", "Language not supported");
                 } else {
                     isReady = true;
+                    Log.i("TTSManager", "TTS is ready");
                 }
             } else {
                 Log.e("TTSManager", "Initialization failed");
             }
         });
 
-        // Set default listener
+        // Một listener duy nhất cho tất cả utterance
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
+                TTSCallback cb = callbackMap.get(utteranceId);
+                if (cb != null) mainHandler.post(cb::onStart);
                 Log.i("TTSManager", "TTS Started: " + utteranceId);
             }
 
             @Override
             public void onDone(String utteranceId) {
+                TTSCallback cb = callbackMap.remove(utteranceId);
+                if (cb != null) mainHandler.post(cb::onDone);
                 Log.i("TTSManager", "TTS Done: " + utteranceId);
             }
 
             @Override
             public void onError(String utteranceId) {
+                TTSCallback cb = callbackMap.remove(utteranceId);
+                if (cb != null) mainHandler.post(cb::onError);
                 Log.e("TTSManager", "TTS Error: " + utteranceId);
             }
         });
     }
 
     public void doTTS(String text) {
-        if (!isReady) {
-            Log.w("TTSManager", "TTS not ready yet");
-            return;
-        }
-        if (text == null || text.trim().isEmpty()) {
-            Log.w("TTSManager", "No text to speak");
-            return;
-        }
-
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "UTTERANCE_ID");
+        doTTS(text, null);
     }
 
-    // Add overload have call back
     public void doTTS(String text, TTSCallback callback) {
         if (!isReady) {
-            Log.w("TTSManager", "TTS not ready yet");
+            Log.w("TTSManager", "TTS not ready yet → will skip text: " + text);
             return;
         }
         if (text == null || text.trim().isEmpty()) {
@@ -71,27 +73,12 @@ public class TTSManager {
             return;
         }
 
-        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String utteranceId) {
-                mainHandler.post(callback::onStart);
-            }
-
-            @Override
-            public void onDone(String utteranceId) {
-                mainHandler.post(callback::onDone);
-            }
-
-            @Override
-            public void onError(String utteranceId) {
-                mainHandler.post(callback::onError);
-            }
-        });
-
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "UTTERANCE_ID");
+        String utteranceId = UUID.randomUUID().toString();
+        if (callback != null) {
+            callbackMap.put(utteranceId, callback);
+        }
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
-
-
 
     public void shutdown() {
         if (tts != null) {

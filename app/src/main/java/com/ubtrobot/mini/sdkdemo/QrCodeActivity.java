@@ -7,15 +7,15 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
-import com.ubtrobot.mini.voice.VoiceListener;
-import com.ubtrobot.mini.voice.VoicePool;
-
+import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +24,7 @@ public class QrCodeActivity {
     private ActionApi actionApi;
     private ExpressApi expressApi;
     private MouthLedApi mouthLedApi;
-    private VoicePool voicePool;
-
+    private TTSManager ttsManager;
     private static final String TAG = "QrCodeActivity";
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -33,11 +32,11 @@ public class QrCodeActivity {
         return QrCodeActivity.Holder._api;
     }
 
-    public void DoActivity(String jsonString) {
-        initRobot();
+    public void DoActivity(String jsonString, String name) {
         try {
+            initRobot();
             JSONObject jsonObject = new JSONObject(jsonString);
-            playScriptFromJson(jsonObject);
+            playScriptFromJson(jsonObject, name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -45,10 +44,10 @@ public class QrCodeActivity {
     }
 
     private void initRobot() {
-        actionApi = ActionApi.get();
-        expressApi = ExpressApi.get();
-        mouthLedApi = MouthLedApi.get();
-        voicePool = VoicePool.get();
+        this.ttsManager = new TTSManager(Utils.getContext().getApplicationContext());
+        this.actionApi = ActionApi.get();
+        this.expressApi = ExpressApi.get();
+        this.mouthLedApi = MouthLedApi.get();
     }
 
 
@@ -58,16 +57,23 @@ public class QrCodeActivity {
         private static QrCodeActivity _api = new QrCodeActivity();
     }
 
-    private void playScriptFromJson(JSONObject script) {
+    private void playScriptFromJson(JSONObject script, String name) {
         try {
-            JSONArray actions = script.getJSONObject("activity").getJSONArray("actions");
-            String preVoice = script.getString("pre-voice");
-            String afterVoice = script.getString("after-voice");
-            long totalDuration = script.getLong("total-duration");
+            JSONArray actions = script.getJSONArray("activities");
+            String preVoice = "Start play " + name;
+            String afterVoice = "Finish play " + name;
+            long totalDuration = script.getLong("total_duration");
 
-            voicePool.playTTs(preVoice, Priority.MAXHIGH, new VoiceListener() {
+            // Delay for waiting TTS ready
+            handler.postDelayed(() -> {
+            ttsManager.doTTS(preVoice, new TTSCallback() {
                 @Override
-                public void onCompleted() {
+                public void onStart() {
+                    Log.i(TAG, "Playing pre voice: " + preVoice);
+                }
+
+                @Override
+                public void onDone() {
                     Log.i(TAG, "Pre voice played successfully");
 
                     // Delay 1s then start playing actions
@@ -99,7 +105,7 @@ public class QrCodeActivity {
 
                                     try {
                                         mouthLedApi.startNormalModel(Color.argb(finalA, finalR, finalG, finalB),
-                                                (int) (duration * 1000), Priority.NORMAL, null);
+                                                (int) (duration), Priority.NORMAL, null);
                                     } catch (Exception e) {
                                         Log.e(TAG, "Error setting LED color", e);
                                     }
@@ -121,13 +127,18 @@ public class QrCodeActivity {
                                         case "expression":
                                             try {
                                                 expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
-                                                    @Override public void onAnimationStart() {
+                                                    @Override
+                                                    public void onAnimationStart() {
                                                         Log.i(TAG, "doExpress开始执行表情!");
                                                     }
-                                                    @Override public void onAnimationEnd(int i) {
+
+                                                    @Override
+                                                    public void onAnimationEnd(int i) {
                                                         Log.i(TAG, "doExpress表情执行结束!");
                                                     }
-                                                    @Override public void onAnimationRepeat(int loopNumber) {
+
+                                                    @Override
+                                                    public void onAnimationRepeat(int loopNumber) {
                                                         Log.i(TAG, "doExpress重复执行表情,重复次数:" + loopNumber);
                                                     }
                                                 });
@@ -140,7 +151,7 @@ public class QrCodeActivity {
                                             break;
                                     }
 
-                                }, (long) (startTime * 1000));
+                                }, (long) (startTime));
 
                             } catch (Exception e) {
                                 Log.e(TAG, "Error parsing action JSON", e);
@@ -149,27 +160,21 @@ public class QrCodeActivity {
 
                         // Sau khi toàn bộ action xong + delay 1s → nói afterVoice
                         handler.postDelayed(() -> {
-                            voicePool.playTTs(afterVoice, Priority.MAXHIGH, new VoiceListener() {
-                                @Override
-                                public void onCompleted() {
-                                    Log.i(TAG, "After voice played successfully");
-                                }
-
-                                @Override
-                                public void onError(int i, String s) {
-                                    Log.e(TAG, "Error playing after voice: " + s);
-                                }
-                            });
-                        }, (long) (totalDuration * 1000) + 1000);
+                            ttsManager.doTTS(afterVoice);
+                        }, (long) (totalDuration) + 1000);
 
                     }, 1000); // Delay 1s sau khi nói preVoice
                 }
 
+
+
                 @Override
-                public void onError(int i, String s) {
-                    Log.i(TAG, "Error Code: " + i + ", Error Message: " + s);
+                public void onError() {
+                    Log.i(TAG, "Error playing pre voice");
+
                 }
             });
+            }, 500);
 
         } catch (Exception e) {
             Log.e(TAG, "Error in playScriptFromJson", e);

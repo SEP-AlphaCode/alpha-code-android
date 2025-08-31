@@ -24,11 +24,11 @@ import com.google.zxing.common.HybridBinarizer;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
-import com.ubtrobot.mini.sdkdemo.models.response.QRCodeDetectResponse;
+import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 import java.io.File;
 import okhttp3.MediaType;
@@ -48,7 +48,7 @@ public class TakePicApiActivity extends Activity {
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
     private TTSManager tts;
-    QRCodeApi qrCodeApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
+    ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
 
@@ -151,9 +151,9 @@ public class TakePicApiActivity extends Activity {
                             if (qrContent != null) {
                                 Log.i(TAG, "Qr Code content: " + qrContent);
                                 // Call api to get QR code details
-                                qrCodeApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeDetectResponse>() {
+                                activityApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeActivityResponse>() {
                                     @Override
-                                    public void onResponse(Call<QRCodeDetectResponse> call, Response<QRCodeDetectResponse> response) {
+                                    public void onResponse(Call<QRCodeActivityResponse> call, Response<QRCodeActivityResponse> response) {
                                         if (response.isSuccessful() && response.body() != null) {
                                             try {
                                                 JsonObject jsonObject = response.body().getData();
@@ -162,7 +162,7 @@ public class TakePicApiActivity extends Activity {
                                                 String jsonString = new Gson().toJson(jsonObject);
 
                                                 // Put string JSON to DoActivity
-                                                qrCodeActivity.DoActivity(jsonString);
+                                                qrCodeActivity.DoActivity(jsonString, response.body().getName());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -173,7 +173,7 @@ public class TakePicApiActivity extends Activity {
                                     }
 
                                     @Override
-                                    public void onFailure(Call<QRCodeDetectResponse> call, Throwable t) {
+                                    public void onFailure(Call<QRCodeActivityResponse> call, Throwable t) {
                                         Log.e(TAG, "Error when call API: " + t.getMessage());
                                     }
                                 });

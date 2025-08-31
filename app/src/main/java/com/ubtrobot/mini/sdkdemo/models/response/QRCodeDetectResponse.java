@@ -5,14 +5,12 @@ import com.google.gson.JsonObject;
 
 public class QRCodeDetectResponse {
     private int id;
-    private String code;
-    private String type;
+    private String name;
     private JsonObject data;
 
-    public QRCodeDetectResponse(int id, String code, String type, JsonObject data) {
+    public QRCodeDetectResponse(int id, String name, JsonObject data) {
         this.id = id;
-        this.code  = code;
-        this.type = type;
+        this.name = name;
         this.data = data;
     }
 
@@ -20,12 +18,8 @@ public class QRCodeDetectResponse {
         return id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
     public JsonObject getData() {
