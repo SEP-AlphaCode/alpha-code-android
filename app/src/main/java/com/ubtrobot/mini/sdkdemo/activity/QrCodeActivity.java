@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -32,6 +32,11 @@ public class QrCodeActivity {
         return QrCodeActivity.Holder._api;
     }
 
+    private static final class Holder {
+        @SuppressLint({"StaticFieldLeak"})
+        private static QrCodeActivity _api = new QrCodeActivity();
+    }
+
     public void DoActivity(String jsonString, String name) {
         try {
             initRobot();
@@ -50,12 +55,6 @@ public class QrCodeActivity {
         this.mouthLedApi = MouthLedApi.get();
     }
 
-
-
-    private static final class Holder {
-        @SuppressLint({"StaticFieldLeak"})
-        private static QrCodeActivity _api = new QrCodeActivity();
-    }
 
     private void playScriptFromJson(JSONObject script, String name) {
         try {
