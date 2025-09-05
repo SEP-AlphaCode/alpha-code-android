@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
+import com.ubtechinc.skill.SkillApi;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.action.ActionExApi;
 import com.ubtrobot.action.listeners.ActionExListener;
@@ -29,11 +30,13 @@ public class CommandHandler {
     private TTSManager tts;
     private DanceWithMusicActivity danceWithMusicActivity;
     private ActionExApi actionExApi;
+    private SkillApi skillApi;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public CommandHandler() {
         this.danceWithMusicActivity = DanceWithMusicActivity.get();
         this.takePicApiActivity = TakePicApiActivity.get();
+        this.skillApi = SkillApi.get();
         this.actionApi = ActionApi.get();
         this.expressApi = ExpressApi.get();
         this.actionExApi = ActionExApi.get();
