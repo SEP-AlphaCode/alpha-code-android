@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.skill.SkillApi;
+import com.ubtechinc.skill.SkillHelper;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.action.ActionExApi;
 import com.ubtrobot.action.listeners.ActionExListener;
@@ -17,9 +18,15 @@ import com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity;
 import com.ubtrobot.mini.sdkdemo.TakePicApiActivity;
 import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.transport.message.CallException;
+import com.ubtrobot.transport.message.Request;
+import com.ubtrobot.transport.message.Response;
+import com.ubtrobot.transport.message.ResponseCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
@@ -31,6 +38,8 @@ public class CommandHandler {
     private DanceWithMusicActivity danceWithMusicActivity;
     private ActionExApi actionExApi;
     private SkillApi skillApi;
+
+    private SkillHelper skillHelper;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public CommandHandler() {
@@ -40,6 +49,7 @@ public class CommandHandler {
         this.actionApi = ActionApi.get();
         this.expressApi = ExpressApi.get();
         this.actionExApi = ActionExApi.get();
+        this.skillHelper = new SkillHelper();
         this.tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
@@ -50,6 +60,14 @@ public class CommandHandler {
         switch (type) {
             case "dance_with_music":
                 handleWithDanceMusic(data);
+                break;
+
+            case "skill":
+                handleWithSkill();
+                break;
+
+            case "skill_helper":
+                handleWithSkillHelper("kungfu");
                 break;
 
             case "action":
@@ -186,6 +204,35 @@ public class CommandHandler {
                 Log.w(TAG, "Unknown extended action: " + name);
                 if (onComplete != null) onComplete.run();
                 break;
+        }
+    }
+
+
+    private void handleWithSkill() {
+            skillApi.startSkill(SkillApi.SKILL_NAME.DANCE_SKIRT, null, new ResponseListener<Void>() {
+                @Override
+                public void onResponseSuccess(Void aVoid) {
+                    Log.i(TAG,"onResponseSuccess");
+                }
+
+                @Override
+                public void onFailure(int i, @NonNull String s) {
+                    Log.i(TAG,"onFailure i = " + i);
+                }
+            });
+    }
+
+    private void handleWithSkillHelper(String skillIntentName){
+        if (skillIntentName != null) {
+            skillHelper.startSkillByIntent(skillIntentName, null, new ResponseCallback() {
+                @Override public void onResponse(Request request, Response response) {
+                    Log.i(TAG, "start success.");
+                }
+
+                @Override public void onFailure(Request request, CallException e) {
+                    Log.i(TAG, e.getMessage());
+                }
+            });
         }
     }
 
