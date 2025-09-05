@@ -33,13 +33,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver
-            android:name=".receiver.BootReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <activity android:name="com.ubtrobot.mini.sdkdemo.MainActivity">
             <intent-filter>
@@ -58,63 +51,6 @@
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity"
             android:theme="@style/AppTheme" />
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.InterruptibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_interruptible_skill" />
-        </service>
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.UnInterruptibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_uninterruptible_skill" />
-        </service>
-
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.ParallelSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_parallel_skill" />
-        </service>
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.NoRecordInterrutibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_norecord_in_skill" />
-        </service>
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.NoRecordUnInterrutibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_norecord_unin_skill" />
-        </service>
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.LowpowerInterruptibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_lp_interruptible_skill" />
-        </service>
-
-        <service
-            android:name="com.ubtrobot.mini.sdkdemo.skills.LowpowerUnInterruptibleSkill"
-            android:exported="true">
-            <meta-data
-                android:name="master.skill"
-                android:resource="@xml/demo_lp_uninterruptible_skill" />
-        </service>
 
         <service
             android:name=".socket.RobotSocketClient"
