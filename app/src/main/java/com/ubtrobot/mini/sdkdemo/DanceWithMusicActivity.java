@@ -35,6 +35,8 @@ public class DanceWithMusicActivity extends Activity {
     private MouthLedApi mouthLedApi;
     private static final String TAG = "DanceWithMusic";
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private static DanceWithMusicActivity instance;
+
 
     private void initRobot() {
         actionApi = ActionApi.get();
@@ -58,13 +60,14 @@ public class DanceWithMusicActivity extends Activity {
             Log.e(TAG, jsonObject.toString());
             playScriptFromJson(jsonObject);
         } catch (Exception e) {
-        Log.e(TAG, "Error parsing JSON", e);
-    }
+            Log.e(TAG, "Error parsing JSON", e);
+        }
+        instance = this;
     }
 
     private static final class Holder {
         @SuppressLint({"StaticFieldLeak"})
-        private static DanceWithMusicActivity _api = new DanceWithMusicActivity();
+        private static DanceWithMusicActivity _api = instance;
     }
 
     public void JumpWithMusic(JSONObject jsonObject) {
@@ -160,7 +163,7 @@ public class DanceWithMusicActivity extends Activity {
                     // Run action based on type
                     switch (type) {
                         case "dance":
-                            actionApi.playAction(actionId ,new ResponseListener<Void>() {
+                            actionApi.playAction(actionId, new ResponseListener<Void>() {
                                 @Override
                                 public void onResponseSuccess(Void aVoid) {
                                     Log.i(TAG, "Action " + actionId + " completed successfully");
@@ -176,15 +179,18 @@ public class DanceWithMusicActivity extends Activity {
                             try {
                                 Log.i(TAG, "Executing expression: " + actionId);
                                 expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
-                                    @Override public void onAnimationStart() {
+                                    @Override
+                                    public void onAnimationStart() {
                                         Log.i(TAG, "doExpress开始执行表情!");
                                     }
 
-                                    @Override public void onAnimationEnd(int i) {
+                                    @Override
+                                    public void onAnimationEnd(int i) {
                                         Log.i(TAG, "doExpress表情执行结束!");
                                     }
 
-                                    @Override public void onAnimationRepeat(int loopNumber) {
+                                    @Override
+                                    public void onAnimationRepeat(int loopNumber) {
                                         Log.i(TAG, "doExpress重复执行表情,重复次数:" + loopNumber);
                                     }
                                 });
@@ -203,8 +209,6 @@ public class DanceWithMusicActivity extends Activity {
             Log.e(TAG, "Error in playScriptFromJson", e);
         }
     }
-
-
 
 
     @Override
