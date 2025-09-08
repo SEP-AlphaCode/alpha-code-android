@@ -60,6 +60,7 @@ public class DemoApp extends Application {
                         }
                         moduleCreatedNotifier.notifyModuleCreated(DemoSpeechJava.getInstance().createSpeechService());
                     }));
+            Log.d(TAG, "Speech App: Initialization complete");
         } catch (Exception e) {
             Log.i(TAG, "Error: " + e);
         }
