@@ -79,4 +79,27 @@ public class CameraHandler {
             }
         });
     }
+    public void handleStartObjectDetect(String text) {
+        final String message = (text == null || text.trim().isEmpty())
+                ? "I am starting object detection now."
+                : text;
+
+        tts.doTTS(message, new TTSCallback() {
+            @Override
+            public void onStart() {
+                Log.i(TAG, "TTS started: " + message);
+            }
+
+            @Override
+            public void onDone() {
+                Log.i(TAG, "Voice playback finished successfully");
+                takePictureActivity.takePicImmediately("object_detect");
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "Error playing TTS: " + message);
+            }
+        });
+    }
 }

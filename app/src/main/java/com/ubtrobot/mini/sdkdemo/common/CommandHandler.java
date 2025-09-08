@@ -69,6 +69,10 @@ public class CommandHandler {
                 extendedActionHandler.handleExtendedAction(data);
                 break;
 
+            case "object_detect_start":
+                cameraHandler.handleStartObjectDetect(text);
+                break;
+
             default:
                 ttsHandler.handleDefault(text);
                 break;
