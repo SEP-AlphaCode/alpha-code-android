@@ -49,7 +49,7 @@ public class QrCodeActivity {
     }
 
     private void initRobot() {
-        this.ttsManager = TTSManager.getInstance(Utils.getContext().getApplicationContext());
+        this.ttsManager = TTSManager.getInstance();
         this.actionApi = ActionApi.get();
         this.expressApi = ExpressApi.get();
         this.mouthLedApi = MouthLedApi.get();
