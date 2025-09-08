@@ -35,6 +35,7 @@ import retrofit2.Response;
 public class ImageHandler {
     private QrHandler qrHandler = new QrHandler();
     private OsmoHandler osmoHandler = new OsmoHandler();
+    private ObjectDetectHandler objectDetectHandler = new ObjectDetectHandler();
 
     public void handleActions(String action, File file, String realPath) {
         switch (action) {
@@ -45,6 +46,11 @@ public class ImageHandler {
                 // Decode the QR code from the image file
                 qrHandler.handleQr(realPath);
                 break;
+            case "object-detect":
+                objectDetectHandler.handleDetect(file);
+                break;
+            default:
+                Log.w("ImageHandler", "Unknown action: " + action);
         }
     }
 

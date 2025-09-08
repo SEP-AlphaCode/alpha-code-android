@@ -48,7 +48,6 @@ import retrofit2.Response;
 public class TakePicApiActivity extends Activity {
     private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
-    private TTSManager tts;
     ImageHandler imageHandler = new ImageHandler();
 
 
@@ -73,7 +72,6 @@ public class TakePicApiActivity extends Activity {
      */
     private void initRobot() {
         takePicApi = TakePicApi.get();
-        tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     /**

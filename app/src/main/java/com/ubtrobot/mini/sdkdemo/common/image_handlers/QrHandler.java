@@ -29,7 +29,7 @@ public class QrHandler {
     private static final String TAG = "QrHandler";
     private QrCodeActivity qrCodeActivity = QrCodeActivity.get();
     private ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
-    private TTSManager tts = new TTSManager(Utils.getContext().getApplicationContext());
+    private TTSManager tts = TTSManager.getInstance();
     public void handleQr(String realPath) {
         String qrContent = decodeQRCodeFromFile(realPath);
         if (qrContent != null) {
