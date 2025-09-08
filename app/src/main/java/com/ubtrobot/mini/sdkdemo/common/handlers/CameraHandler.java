@@ -20,7 +20,7 @@ public class CameraHandler {
     public CameraHandler() {
         this.takePictureActivity = TakePictureActivity.get();
         this.actionApi = ActionApi.get();
-        this.tts = TTSManager.getInstance();
+        this.tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     public void handleQRCode(String text) {

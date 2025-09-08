@@ -7,8 +7,6 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 
-import com.ubtech.utilcode.utils.Utils;
-
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -19,9 +17,8 @@ public class TTSManager {
     private boolean isReady = false;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Map<String, TTSCallback> callbackMap = new ConcurrentHashMap<>();
-    private static TTSManager instance;
 
-    private TTSManager(Context context) {
+    public TTSManager(Context context) {
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(Locale.US);
@@ -60,21 +57,6 @@ public class TTSManager {
                 Log.e("TTSManager", "TTS Error: " + utteranceId);
             }
         });
-    }
-    public static TTSManager createInstance(Context context) {
-        instance = new TTSManager(context);
-        return instance;
-    }
-
-    /**
-     * Singleton pattern to get the TTSManager instance with Context from Utils
-     * @return
-     */
-    public static TTSManager getInstance() {
-        if(instance == null) {
-            instance = new TTSManager(Utils.getContext().getApplicationContext());
-        }
-        return instance;
     }
 
     public void doTTS(String text) {

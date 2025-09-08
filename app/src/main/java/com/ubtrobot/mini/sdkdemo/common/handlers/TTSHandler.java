@@ -11,7 +11,7 @@ public class TTSHandler {
     private TTSManager tts;
 
     public TTSHandler() {
-        this.tts = TTSManager.getInstance();
+        this.tts = new TTSManager(Utils.getContext().getApplicationContext());
     }
 
     public void handleDefault(String text) {
