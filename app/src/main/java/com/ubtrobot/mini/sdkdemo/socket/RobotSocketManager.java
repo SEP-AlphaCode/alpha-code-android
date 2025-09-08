@@ -1,8 +1,12 @@
 package com.ubtrobot.mini.sdkdemo.socket;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
+
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +20,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 import com.ubtrobot.sys.SysApi;
 
@@ -172,5 +178,9 @@ public class RobotSocketManager {
         if (client != null) {
             client.dispatcher().executorService().shutdown();
         }
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }
