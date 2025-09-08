@@ -46,7 +46,7 @@ public class ImageHandler {
                 // Decode the QR code from the image file
                 qrHandler.handleQr(realPath);
                 break;
-            case "object_detect":
+            case "object-detect":
                 objectDetectHandler.handleDetect(file);
                 break;
             default:
