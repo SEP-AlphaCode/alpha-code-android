@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -16,7 +15,7 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.view.Surface;
 
-import com.ubtrobot.mini.sdkdemo.common.image_handlers.ObjectDetectHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.ObjectDetectHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;

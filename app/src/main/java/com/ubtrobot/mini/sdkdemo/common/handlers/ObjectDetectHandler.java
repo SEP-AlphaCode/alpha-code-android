@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo.common.image_handlers;
+package com.ubtrobot.mini.sdkdemo.common.handlers;
 
 import android.util.Log;
 
