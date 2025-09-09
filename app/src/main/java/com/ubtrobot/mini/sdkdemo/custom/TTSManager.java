@@ -61,10 +61,6 @@ public class TTSManager {
             }
         });
     }
-    public static TTSManager createInstance(Context context) {
-        instance = new TTSManager(context);
-        return instance;
-    }
 
     /**
      * Singleton pattern to get the TTSManager instance with Context from Utils

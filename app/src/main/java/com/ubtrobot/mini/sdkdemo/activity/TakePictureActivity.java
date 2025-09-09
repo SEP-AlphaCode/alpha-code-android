@@ -44,6 +44,7 @@ public class TakePictureActivity {
     ImageHandler imageHandler = new ImageHandler();
     private TTSManager tts;
 
+
     public static TakePictureActivity get() {
         return TakePictureActivity.Holder._api;
     }

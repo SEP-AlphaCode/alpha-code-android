@@ -3,7 +3,9 @@ package com.ubtrobot.mini.sdkdemo.common.image_handlers;
 import android.util.Log;
 
 import com.ubtrobot.mini.sdkdemo.apis.ObjectDetectApi;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.DetectClosestResponse;
+import com.ubtrobot.mini.sdkdemo.models.response.Detection;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 
 import java.io.File;
@@ -18,6 +20,7 @@ import retrofit2.Response;
 public class ObjectDetectHandler {
     private static final String TAG = "ObjectDetectHandler";
     private final ObjectDetectApi api = ApiClient.getPythonInstance().create(ObjectDetectApi.class);
+    private TTSManager tts = TTSManager.getInstance();
 
     public void handleDetect(File imageFile) {
         RequestBody reqFile = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
@@ -35,6 +38,12 @@ public class ObjectDetectHandler {
                     for (int i = 0; i < result.closest_objects.size(); i++) {
                         Log.i(TAG, " - " + result.closest_objects.get(i).label +
                                 " (depth_min=" + result.closest_objects.get(i).depth_min + ")");
+                    }
+                    if(!result.closest_objects.isEmpty()) {
+                        Detection closest = result.closest_objects.get(0);
+                        tts.doTTS("I see a " + closest.label + " in front of me.", null);
+                    } else {
+                        tts.doTTS("I don't see any objects in front of me.", null);
                     }
                 } else {
                     Log.e(TAG, "Response failed: " + response.code());
