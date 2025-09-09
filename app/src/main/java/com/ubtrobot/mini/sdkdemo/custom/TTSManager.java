@@ -77,17 +77,6 @@ public class TTSManager {
         return instance;
     }
 
-    /**
-     * Singleton pattern to get the TTSManager instance with Context from Utils
-     * @return
-     */
-    public static TTSManager getInstance() {
-        if(instance == null) {
-            instance = new TTSManager(Utils.getContext().getApplicationContext());
-        }
-        return instance;
-    }
-
     public void doTTS(String text) {
         doTTS(text, null);
     }

@@ -75,7 +75,7 @@ public class TakePicApiActivity extends Activity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = new TTSManager(Utils.getContext().getApplicationContext());
+        tts = TTSManager.getInstance();
     }
 
     /**

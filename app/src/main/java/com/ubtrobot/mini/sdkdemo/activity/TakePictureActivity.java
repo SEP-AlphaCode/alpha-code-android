@@ -57,7 +57,7 @@ public class TakePictureActivity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = new TTSManager(Utils.getContext().getApplicationContext());
+        tts = TTSManager.getInstance();
     }
 
     public void takePicImmediately(String action) {
