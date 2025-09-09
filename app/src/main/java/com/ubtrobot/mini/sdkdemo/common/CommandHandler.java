@@ -1,5 +1,6 @@
 package com.ubtrobot.mini.sdkdemo.common;
 
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
@@ -7,6 +8,10 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
+import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+
 import org.json.JSONObject;
 
 public class CommandHandler {
@@ -19,6 +24,7 @@ public class CommandHandler {
     private ExpressionHandler expressionHandler;
     private DanceHandler danceHandler;
     private CameraHandler cameraHandler;
+    private TTSManager tts = TTSManager.getInstance();
     private TTSHandler ttsHandler;
 
     public CommandHandler() {
@@ -67,6 +73,26 @@ public class CommandHandler {
 
             case "extended_action":
                 extendedActionHandler.handleExtendedAction(data);
+                break;
+
+            case "object_detect_start":
+                tts.doTTS(text, new TTSCallback() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onDone() {
+                        CameraPreviewCapture previewCapture = new CameraPreviewCapture(Utils.getContext().getApplicationContext());
+                        previewCapture.openCamera();
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
                 break;
 
             default:

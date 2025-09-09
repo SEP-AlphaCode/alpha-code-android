@@ -21,7 +21,6 @@ import com.ubtrobot.mini.voice.VoicePool;
 
 public class MainActivity extends Activity {
     public static final String TAG = "DEBUG";
-    private RobotSocketClient wsClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class MainActivity extends Activity {
         checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
         RobotSocketController robotSocketController = new RobotSocketController();
-        wsClient = new RobotSocketClient(robotSocketController);
+        RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);
         forceConnect.setOnClickListener(l -> {
             VoicePool.get().playTTs("Fuck you", Priority.HIGH, null);
         });
