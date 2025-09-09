@@ -46,7 +46,7 @@ public class CommandHandler {
                 break;
 
             case "skill_helper":
-                skillHandler.handleSkillHelper("kungfu");
+                skillHandler.handleSkillHelper(code);
                 break;
 
             case "action":
