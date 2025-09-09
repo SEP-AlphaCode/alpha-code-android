@@ -44,6 +44,7 @@ public class TakePictureActivity {
     ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
+
     public static TakePictureActivity get() {
         return TakePictureActivity.Holder._api;
     }
