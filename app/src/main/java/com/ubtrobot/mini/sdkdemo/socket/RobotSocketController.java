@@ -21,6 +21,7 @@ public class RobotSocketController {
             JSONObject json = new JSONObject(command);
             String type = json.optString("type");
             JSONObject data = json.optJSONObject("data");
+            Log.i(TAG, "Received command: type=" + type + ", data=" + data);
             commandHandler.handleCommand(type, data);
 
         } catch (JSONException e) {
