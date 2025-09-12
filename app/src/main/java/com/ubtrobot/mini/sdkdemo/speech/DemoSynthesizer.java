@@ -4,21 +4,23 @@ import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.MainActivity;
+import com.ubtrobot.mini.sdkdemo.custom.tts.EnglishTTS;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTS;
-import com.ubtrobot.mini.sdkdemo.custom.tts.ViTTSManager;
+import com.ubtrobot.mini.sdkdemo.custom.tts.VietnameseTTS;
 import com.ubtrobot.speech.AbstractSynthesizer;
 import com.ubtrobot.speech.SpeakingVoice;
 import com.ubtrobot.speech.SynthesisOption;
 import java.util.List;
 
 public class DemoSynthesizer extends AbstractSynthesizer {
-    TTS tts = ViTTSManager.getInstance(Utils.getContext().getApplicationContext());
+    TTS viTts = VietnameseTTS.getInstance(Utils.getContext().getApplicationContext());
+    TTS enTTS = EnglishTTS.getInstance(Utils.getContext().getApplicationContext());
     public DemoSynthesizer() {
     }
 
     @Override
     protected void startSynthesizing(SynthesisOption synthesisOption) {
-        tts.doTTS(synthesisOption.getInputText());
+        viTts.doTTS(synthesisOption.getInputText());
         resolveSynthesizing();
     }
 

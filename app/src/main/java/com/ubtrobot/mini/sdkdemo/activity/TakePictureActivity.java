@@ -23,7 +23,6 @@ import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;

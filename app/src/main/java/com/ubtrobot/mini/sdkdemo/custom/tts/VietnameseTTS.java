@@ -1,6 +1,7 @@
 package com.ubtrobot.mini.sdkdemo.custom.tts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.speech.tts.TextToSpeech;
@@ -12,30 +13,32 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
-public class EnTTSManager implements TTS {
+public class VietnameseTTS implements TTS {
+    private static final String TAG = "VietnameseTTS";
     private TextToSpeech tts;
     private boolean isReady = false;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Map<String, TTSCallback> callbackMap = new ConcurrentHashMap<>();
-    private static EnTTSManager instance;
+    private static VietnameseTTS instance;
     private Context context;
 
-    private EnTTSManager(Context context) {
+    private VietnameseTTS(Context context) {
         this.context = context.getApplicationContext();
         init(context);
     }
 
-    public static synchronized EnTTSManager getInstance(Context context) {
+    public static synchronized VietnameseTTS getInstance(Context context) {
         if (instance == null) {
-            instance = new EnTTSManager(context);
+            instance = new VietnameseTTS(context);
         }
         return instance;
     }
 
-    public static synchronized EnTTSManager getInstance() {
+    public static synchronized VietnameseTTS getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("EnTTSManager must be initialized first with getInstance(Context)");
+            throw new IllegalStateException("VietnameseTTS must be initialized first with getInstance(Context)");
         }
         return instance;
     }
@@ -48,41 +51,65 @@ public class EnTTSManager implements TTS {
 
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
-                int result = tts.setLanguage(Locale.US);
-                if (result == TextToSpeech.LANG_MISSING_DATA ||
-                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.e("EnTTSManager", "Language not supported");
-                    isReady = false;
-                } else {
-                    isReady = true;
-                    Log.i("EnTTSManager", "TTS is ready");
-                }
+                setLanguageForVietnamese();
             } else {
-                Log.e("EnTTSManager", "Initialization failed");
                 isReady = false;
+                Log.e(TAG, "TTS Initialization Failed: " + status);
+                notifyAllCallbacks(TTSCallback::onError);
             }
         });
 
+        setupProgressListener();
+    }
+
+    private void setLanguageForVietnamese() {
+        Locale vietnameseLocale = new Locale("vi");
+        int result = tts.setLanguage(vietnameseLocale);
+
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            isReady = false;
+            Log.e(TAG, "Vietnamese language pack missing or not supported.");
+
+            // Prompt user to install data
+            Intent installIntent = new Intent();
+            installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+            installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(installIntent);
+            } catch (Exception e) {
+                Log.e(TAG, "Could not launch TTS install activity", e);
+            }
+
+            notifyAllCallbacks(TTSCallback::onError);
+        } else {
+            isReady = true;
+            Log.i(TAG, "TTS is ready for Vietnamese.");
+        }
+    }
+
+    private void setupProgressListener() {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
                 TTSCallback cb = callbackMap.get(utteranceId);
                 if (cb != null) mainHandler.post(cb::onStart);
-                Log.i("EnTTSManager", "TTS Started: " + utteranceId);
             }
 
             @Override
             public void onDone(String utteranceId) {
                 TTSCallback cb = callbackMap.remove(utteranceId);
                 if (cb != null) mainHandler.post(cb::onDone);
-                Log.i("EnTTSManager", "TTS Done: " + utteranceId);
             }
 
             @Override
             public void onError(String utteranceId) {
                 TTSCallback cb = callbackMap.remove(utteranceId);
                 if (cb != null) mainHandler.post(cb::onError);
-                Log.e("EnTTSManager", "TTS Error: " + utteranceId);
+            }
+
+            @Override
+            public void onError(String utteranceId, int errorCode) {
+                onError(utteranceId);
             }
         });
     }
@@ -95,14 +122,14 @@ public class EnTTSManager implements TTS {
     @Override
     public void doTTS(String text, TTSCallback callback) {
         if (!isReady) {
-            Log.w("EnTTSManager", "TTS not ready yet → will skip text: " + text);
+            Log.w(TAG, "TTS not ready yet → will skip text: " + text);
             if (callback != null) {
                 mainHandler.post(callback::onError);
             }
             return;
         }
         if (text == null || text.trim().isEmpty()) {
-            Log.w("EnTTSManager", "No text to speak");
+            Log.w(TAG, "No text to speak");
             if (callback != null) {
                 mainHandler.post(callback::onError);
             }
@@ -137,5 +164,12 @@ public class EnTTSManager implements TTS {
     @Override
     public boolean isReady() {
         return isReady;
+    }
+
+    private void notifyAllCallbacks(Consumer<TTSCallback> action) {
+        for (TTSCallback callback : callbackMap.values()) {
+            mainHandler.post(() -> action.accept(callback));
+        }
+        callbackMap.clear();
     }
 }

@@ -39,7 +39,10 @@ public class NLPResponse {
 
     private String type;
     private DataContainer data;
-
+    private String lang;
+    public String getLang() {
+        return lang;
+    }
     public String getType() {
         return type;
     }
@@ -47,8 +50,10 @@ public class NLPResponse {
     public DataContainer getData() {
         return data;
     }
-    public NLPResponse(String type, DataContainer data){
+
+    public NLPResponse(String type, String lang, DataContainer data){
         this.type = type;
         this.data = data;
+        this.lang = lang;
     }
 }

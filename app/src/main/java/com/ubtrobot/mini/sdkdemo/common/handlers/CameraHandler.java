@@ -7,8 +7,6 @@ import android.util.Log;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.activity.TakePictureActivity;
-import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
-import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.voice.VoiceListener;
 import com.ubtrobot.mini.voice.VoicePool;
 

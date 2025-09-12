@@ -10,10 +10,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
-import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
-import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
-import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.voice.VoiceListener;
 import com.ubtrobot.mini.voice.VoicePool;
 
@@ -80,7 +77,6 @@ public class CommandHandler {
 
             case "object_detect_start":
                 vp.playTTs(text, Priority.HIGH, new VoiceListener() {
-
                     @Override
                     public void onCompleted() {
                         CameraPreviewCapture previewCapture = new CameraPreviewCapture(Utils.getContext().getApplicationContext());

@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.apis.ObjectDetectApi;
-import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.DetectClosestResponse;
 import com.ubtrobot.mini.sdkdemo.models.response.Detection;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
@@ -43,7 +42,7 @@ public class ObjectDetectHandler {
                     }
                     if (!result.closest_objects.isEmpty()) {
                         Detection closest = result.closest_objects.get(0);
-                        vp.playTTs("I see a " + closest.label + " in front of me.", Priority.HIGH, null);
+                        vp.playTTs("Tôi thấy 1 cái " + closest.label + " in front of me.", Priority.HIGH, null);
                     } else {
                         vp.playTTs("I don't see any objects in front of me.", Priority.HIGH, null);
                     }
