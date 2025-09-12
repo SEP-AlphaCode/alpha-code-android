@@ -4,6 +4,7 @@ import java.util.List;
 
 public class NLPResponse {
     public static class DataContainer{
+        private String code;
         private String text;
         private List<Action> actions;
 
@@ -12,6 +13,9 @@ public class NLPResponse {
         }
         public String getText() {
             return text;
+        }
+        public String getCode() {
+            return code;
         }
 
     }

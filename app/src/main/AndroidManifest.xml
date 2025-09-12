@@ -48,9 +48,6 @@
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.ubtrobot.mini.sdkdemo.DanceWithMusicActivity"
-            android:theme="@style/AppTheme" />
 
         <service
             android:name=".socket.RobotSocketClient"
