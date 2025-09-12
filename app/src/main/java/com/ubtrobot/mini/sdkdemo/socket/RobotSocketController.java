@@ -14,17 +14,21 @@ public class RobotSocketController {
 
     }
 
-    public void handleCommand(String command) {
+    public void handleCommand(String command, String lang) {
         if (command == null) return;
 
         try {
             JSONObject json = new JSONObject(command);
             String type = json.optString("type");
             JSONObject data = json.optJSONObject("data");
-            commandHandler.handleCommand(type, data);
+            commandHandler.handleCommand(type, lang, data);
 
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON command: " + command, e);
         }
+    }
+
+    public void handleCommand(String command) {
+        handleCommand(command,  "en");
     }
 }

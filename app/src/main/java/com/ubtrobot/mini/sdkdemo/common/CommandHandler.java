@@ -11,6 +11,8 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSHandler;
 import com.ubtrobot.mini.voice.VoiceListener;
 import com.ubtrobot.mini.voice.VoicePool;
 
@@ -26,7 +28,6 @@ public class CommandHandler {
     private ExpressionHandler expressionHandler;
     private DanceHandler danceHandler;
     private CameraHandler cameraHandler;
-    private VoicePool vp = VoicePool.get();
 
     public CommandHandler() {
         // Initialize all handlers
@@ -38,10 +39,9 @@ public class CommandHandler {
         this.cameraHandler = new CameraHandler();
     }
 
-    public void handleCommand(String type, JSONObject data) {
+    public void handleCommand(String type, String lang, JSONObject data) {
         String text = data.optString("text");
         String code = data.optString("code");
-
         switch (type) {
             case "dance_with_music":
                 danceHandler.handleDanceWithMusic(data);
@@ -64,11 +64,11 @@ public class CommandHandler {
                 break;
 
             case "qr_code":
-                cameraHandler.handleQRCode(text);
+                cameraHandler.handleQRCode(text, lang);
                 break;
 
             case "osmo_card":
-                cameraHandler.handleOsmoCard(text);
+                cameraHandler.handleOsmoCard(text, lang);
                 break;
 
             case "extended_action":
@@ -76,33 +76,11 @@ public class CommandHandler {
                 break;
 
             case "object_detect_start":
-                vp.playTTs(text, Priority.HIGH, new VoiceListener() {
-                    @Override
-                    public void onCompleted() {
-                        CameraPreviewCapture previewCapture = new CameraPreviewCapture(Utils.getContext().getApplicationContext());
-                        previewCapture.openCamera();
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-
-                    }
-                });
+                TTSHandler.doTTS(text, lang);
                 break;
 
             default:
-                //ttsHandler.handleDefault(text);
-                vp.playTTs(text, Priority.HIGH, new VoiceListener() {
-                    @Override
-                    public void onCompleted() {
-                        Log.i(TAG, "TTS completed for text: " + text);
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-                        Log.e(TAG, "TTS error for text: " + text + ", error: " + s);
-                    }
-                });
+                TTSHandler.doTTS(text, lang);
                 break;
         }
     }

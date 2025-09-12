@@ -8,6 +8,7 @@ import android.util.Log;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.msc.util.log.DebugLog;
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtech.utilcode.utils.thread.ThreadPool;
 import com.ubtrobot.master.log.InfrequentLoggerFactory;
 import com.ubtrobot.mini.SDKInit;
@@ -32,7 +33,6 @@ public class DemoApp extends Application {
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
         initSpeech();
-        TTSHandler.init(this);
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();

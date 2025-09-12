@@ -7,6 +7,8 @@ import android.util.Log;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.activity.TakePictureActivity;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSHandler;
 import com.ubtrobot.mini.voice.VoiceListener;
 import com.ubtrobot.mini.voice.VoicePool;
 
@@ -14,7 +16,6 @@ public class CameraHandler {
     private static final String TAG = "CameraHandler";
     private TakePictureActivity takePictureActivity;
     private ActionApi actionApi;
-    private VoicePool vp = VoicePool.get();
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public CameraHandler() {
@@ -22,17 +23,22 @@ public class CameraHandler {
         this.actionApi = ActionApi.get();
     }
 
-    public void handleQRCode(String text) {
+    public void handleQRCode(String text, String lang) {
         // Use default message if text is null or empty
         final String message = (text == null || text.trim().isEmpty())
                 ? "Please show the QR code in front of me to take a picture. Now I will take the picture."
                 : text;
 
         // Call TTS
-        vp.playTTs(message, Priority.HIGH, new VoiceListener() {
+        TTSHandler.doTTS(message, lang, new TTSCallback() {
 
             @Override
-            public void onCompleted() {
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onDone() {
                 Log.i(TAG, "Voice playback finished successfully");
                 // Only take picture if a QR code text was provided
                 if (message != null && !message.trim().isEmpty()) {
@@ -41,21 +47,25 @@ public class CameraHandler {
             }
 
             @Override
-            public void onError(int i, String s) {
+            public void onError() {
                 Log.e(TAG, "Error playing TTS: " + message);
             }
         });
     }
 
-    public void handleOsmoCard(String text) {
+    public void handleOsmoCard(String text, String lang) {
         final String message = (text == null || text.trim().isEmpty())
                 ? "Please place the OSMO card under my feet in my view. Now I will bend down to scan it."
                 : text;
 
-        vp.playTTs(message, Priority.HIGH, new VoiceListener() {
+        TTSHandler.doTTS(message, lang, new TTSCallback() {
+            @Override
+            public void onStart() {
+
+            }
 
             @Override
-            public void onCompleted() {
+            public void onDone() {
                 Log.i(TAG, "After voice played successfully");
                 actionApi.playCustomizeAction("takelowpic", null);
 
@@ -65,7 +75,7 @@ public class CameraHandler {
             }
 
             @Override
-            public void onError(int i, String s) {
+            public void onError() {
                 Log.e(TAG, "Error playing TTS: " + message);
             }
         });

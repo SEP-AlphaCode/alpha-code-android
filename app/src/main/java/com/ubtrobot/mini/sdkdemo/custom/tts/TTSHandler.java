@@ -6,11 +6,9 @@ public class TTSHandler {
     public static void init(Context context){
         if(enTTS == null){
             enTTS = EnglishTTS.getInstance(context);
-            enTTS.init(null);
         }
         if(vnTTS == null){
             vnTTS = VietnameseTTS.getInstance(context);
-            vnTTS.init(null);
         }
     }
     public static void doTTS(String text, String lang, TTSCallback callback){
@@ -18,6 +16,13 @@ public class TTSHandler {
             vnTTS.doTTS(text, callback);
         } else {
             enTTS.doTTS(text, callback);
+        }
+    }
+    public static void doTTS(String text, String lang){
+        if(lang != null && lang.toLowerCase().startsWith("vi")){
+            vnTTS.doTTS(text, null);
+        } else {
+            enTTS.doTTS(text, null);
         }
     }
 }
