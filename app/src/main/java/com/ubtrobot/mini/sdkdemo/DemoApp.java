@@ -13,6 +13,7 @@ import com.ubtrobot.master.log.InfrequentLoggerFactory;
 import com.ubtrobot.mini.SDKInit;
 import com.ubtrobot.mini.properties.sdk.Path;
 import com.ubtrobot.mini.properties.sdk.PropertiesApi;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.speech.DemoMasterService;
 import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
 import com.ubtrobot.service.ServiceModules;
@@ -31,6 +32,7 @@ public class DemoApp extends Application {
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
         initSpeech();
+        TTSHandler.init(this);
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();
