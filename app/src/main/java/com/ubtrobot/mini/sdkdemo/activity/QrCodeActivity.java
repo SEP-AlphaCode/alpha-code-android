@@ -7,15 +7,15 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.voice.VoiceListener;
+import com.ubtrobot.mini.voice.VoicePool;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ public class QrCodeActivity {
     private ActionApi actionApi;
     private ExpressApi expressApi;
     private MouthLedApi mouthLedApi;
-    private TTSManager ttsManager;
+    private VoicePool vp;
     private static final String TAG = "QrCodeActivity";
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -49,7 +49,7 @@ public class QrCodeActivity {
     }
 
     private void initRobot() {
-        this.ttsManager = TTSManager.getInstance();
+        vp = VoicePool.get();
         this.actionApi = ActionApi.get();
         this.expressApi = ExpressApi.get();
         this.mouthLedApi = MouthLedApi.get();
@@ -65,14 +65,9 @@ public class QrCodeActivity {
 
             // Delay for waiting TTS ready
             handler.postDelayed(() -> {
-            ttsManager.doTTS(preVoice, new TTSCallback() {
+            vp.playTTs(preVoice, Priority.HIGH, new VoiceListener() {
                 @Override
-                public void onStart() {
-                    Log.i(TAG, "Playing pre voice: " + preVoice);
-                }
-
-                @Override
-                public void onDone() {
+                public void onCompleted() {
                     Log.i(TAG, "Pre voice played successfully");
 
                     // Delay 1s then start playing actions
@@ -159,18 +154,15 @@ public class QrCodeActivity {
 
                         // Sau khi toàn bộ action xong + delay 1s → nói afterVoice
                         handler.postDelayed(() -> {
-                            ttsManager.doTTS(afterVoice);
+                            vp.playTTs(afterVoice, Priority.HIGH, null);
                         }, (long) (totalDuration) + 1000);
 
                     }, 1000); // Delay 1s sau khi nói preVoice
                 }
 
-
-
                 @Override
-                public void onError() {
-                    Log.i(TAG, "Error playing pre voice");
-
+                public void onError(int i, String s) {
+                    Log.e(TAG, "Error playing pre voice: " + s);
                 }
             });
             }, 500);

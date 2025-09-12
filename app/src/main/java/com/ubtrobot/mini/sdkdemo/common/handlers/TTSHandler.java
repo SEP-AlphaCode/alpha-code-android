@@ -2,16 +2,15 @@ package com.ubtrobot.mini.sdkdemo.common.handlers;
 
 import android.util.Log;
 
-import com.ubtech.utilcode.utils.Utils;
-import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
 
 public class TTSHandler {
     private static final String TAG = "TTSHandler";
-    private TTSManager tts;
+    private EnTTSManager tts;
 
     public TTSHandler() {
-        this.tts = TTSManager.getInstance();
+        this.tts = EnTTSManager.getInstance();
     }
 
     public void handleDefault(String text) {

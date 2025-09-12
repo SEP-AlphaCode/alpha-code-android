@@ -21,16 +21,17 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.activity.QrCodeActivity;
 import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.voice.VoicePool;
+
 import java.io.File;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -48,7 +49,7 @@ public class TakePicApiActivity extends Activity {
     private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    private TTSManager tts;
+    private VoicePool vp = VoicePool.get();
     ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
@@ -75,7 +76,6 @@ public class TakePicApiActivity extends Activity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = TTSManager.getInstance();
     }
 
     /**
@@ -236,7 +236,7 @@ public class TakePicApiActivity extends Activity {
             return result.getText();
         } catch (NotFoundException e) {
             Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
-            tts.doTTS("Qr code not found in the image, please try again.");
+            vp.playTTs("Qr code not found in the image, please try again.", Priority.HIGH, null);
             return null;
         } catch (Exception e) {
             Log.e(TAG, "Error when decode QR Code: " + e.getMessage());

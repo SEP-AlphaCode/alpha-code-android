@@ -19,13 +19,15 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.custom.tts.EnTTSManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.voice.VoicePool;
 
 import java.io.File;
 
@@ -40,7 +42,6 @@ public class TakePictureActivity {
     private static final String TAG = "TakePictureActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    private TTSManager tts;
     ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
@@ -57,7 +58,6 @@ public class TakePictureActivity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = TTSManager.getInstance();
     }
 
     public void takePicImmediately(String action) {
@@ -192,7 +192,7 @@ public class TakePictureActivity {
             return result.getText();
         } catch (NotFoundException e) {
             Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
-            tts.doTTS("Qr code not found in the image, please try again.");
+            VoicePool.get().playTTs("Qr code not found in the image, please try again.", Priority.HIGH, null);
             return null;
         } catch (Exception e) {
             Log.e(TAG, "Error when decode QR Code: " + e.getMessage());
