@@ -9,7 +9,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.commons.ResponseListener;
@@ -17,7 +16,8 @@ import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.master.context.MasterContext;
-import com.ubtrobot.mini.sdkdemo.R;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.utils.RobotUtils;
 import com.ubtrobot.mini.voice.MiniMediaPlayer;
 import com.ubtrobot.mini.voice.protos.VoiceProto;
@@ -73,6 +73,7 @@ public class DanceHandler {
                     playScriptFromJson(jsonObject);
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing JSON", e);
+                    LogManager.log(LogLevel.ERROR, TAG, "Error parsing JSON: " + e.getMessage());
                 }
             });
 
@@ -80,6 +81,7 @@ public class DanceHandler {
 
             miniPlayer.setOnErrorListener((mp, what, extra) -> {
                 Log.e(TAG, "Error playing media: " + what + ", " + extra);
+                LogManager.log(LogLevel.ERROR, TAG, "Error playing media: " + what + ", " + extra);
                 return true;
             });
 
@@ -87,6 +89,7 @@ public class DanceHandler {
 
         } catch (Exception e) {
             Log.e(TAG, "Error initializing player", e);
+            LogManager.log(LogLevel.ERROR, TAG, "Error initializing player: " + e.getMessage());
         }
     }
 
@@ -95,6 +98,7 @@ public class DanceHandler {
             JSONArray actions = script.getJSONObject("activity").getJSONArray("actions");
 
             Log.i(TAG, "Playing script with " + actions.length() + " actions");
+            LogManager.log(LogLevel.INFO, TAG, "Playing script with " + actions.length() + " actions");
 
             for (int i = 0; i < actions.length(); i++) {
                 JSONObject action = actions.getJSONObject(i);
@@ -116,6 +120,7 @@ public class DanceHandler {
 
                 handler.postDelayed(() -> {
                     Log.i(TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
+                    LogManager.log(LogLevel.INFO, TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
 
                     // Set LED color with activity duration time
                     try {
@@ -123,6 +128,7 @@ public class DanceHandler {
                                 (int) (duration * 1000), Priority.NORMAL, null);
                     } catch (Exception e) {
                         Log.e(TAG, "Error setting LED color", e);
+                        LogManager.log(LogLevel.ERROR, TAG, "Error setting LED color: " + e.getMessage());
                     }
 
                     // Run action based on type
@@ -132,11 +138,13 @@ public class DanceHandler {
                                 @Override
                                 public void onResponseSuccess(Void aVoid) {
                                     Log.i(TAG, "Action " + actionId + " completed successfully");
+                                    LogManager.log(LogLevel.INFO, TAG, "Action " + actionId + " completed successfully");
                                 }
 
                                 @Override
                                 public void onFailure(int errorCode, @NonNull String errorMessage) {
                                     Log.e(TAG, "Action " + actionId + " failed: " + errorMessage);
+                                    LogManager.log(LogLevel.ERROR, TAG, "Action " + actionId + " failed: " + errorMessage);
                                 }
                             });
                             break;
@@ -146,25 +154,30 @@ public class DanceHandler {
                                 expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
                                     @Override
                                     public void onAnimationStart() {
-                                        Log.i(TAG, "doExpress开始执行表情!");
+                                        Log.i(TAG, "doExpress");
+                                        LogManager.log(LogLevel.INFO, TAG, "doExpress");
                                     }
 
                                     @Override
                                     public void onAnimationEnd(int i) {
-                                        Log.i(TAG, "doExpress表情执行结束!");
+                                        Log.i(TAG, "doExpress");
+                                        LogManager.log(LogLevel.INFO, TAG, "doExpress");
                                     }
 
                                     @Override
                                     public void onAnimationRepeat(int loopNumber) {
-                                        Log.i(TAG, "doExpress重复执行表情,重复次数:" + loopNumber);
+                                        Log.i(TAG, "doExpress" + loopNumber);
+                                        LogManager.log(LogLevel.INFO, TAG, "doExpress" + loopNumber);
                                     }
                                 });
                             } catch (Exception e) {
                                 Log.e(TAG, "Error executing expression " + actionId, e);
+                                LogManager.log(LogLevel.ERROR, TAG, "Error executing expression " + actionId + ": " + e.getMessage());
                             }
                             break;
                         default:
                             Log.w(TAG, "Unknown action type: " + type + " for action: " + actionId);
+                            LogManager.log(LogLevel.WARN, TAG, "Unknown action type: " + type + " for action: " + actionId);
                             break;
                     }
 
@@ -172,6 +185,7 @@ public class DanceHandler {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error in playScriptFromJson", e);
+            LogManager.log(LogLevel.ERROR, TAG, "Error in playScriptFromJson: " + e.getMessage());
         }
     }
 

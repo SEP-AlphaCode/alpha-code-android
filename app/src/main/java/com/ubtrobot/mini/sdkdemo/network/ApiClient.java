@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static Retrofit springRetrofit;
     private static Retrofit pythonRetrofit;
+    private static Retrofit logServiceRetrofit;
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
@@ -69,5 +70,16 @@ public class ApiClient {
                     .build();
         }
         return pythonRetrofit;
+    }
+
+    public static Retrofit getLogServiceInstance() {
+        if (logServiceRetrofit == null) {
+            logServiceRetrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_LOGSERVICE_PATH)
+                    .client(getUnsafeOkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return logServiceRetrofit;
     }
 }

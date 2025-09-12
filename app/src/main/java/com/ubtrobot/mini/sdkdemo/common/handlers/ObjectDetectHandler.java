@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.ubtrobot.mini.sdkdemo.apis.ObjectDetectApi;
 import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.models.response.DetectClosestResponse;
 import com.ubtrobot.mini.sdkdemo.models.response.Detection;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
@@ -47,12 +49,14 @@ public class ObjectDetectHandler {
                     }
                 } else {
                     Log.e(TAG, "Response failed: " + response.code());
+                    LogManager.log(LogLevel.ERROR, TAG, "Response failed: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<DetectClosestResponse> call, Throwable t) {
                 Log.e(TAG, "Request failed: " + t.getMessage(), t);
+                LogManager.log(LogLevel.ERROR, TAG, "Request failed: " + t.getMessage());
             }
         });
     }

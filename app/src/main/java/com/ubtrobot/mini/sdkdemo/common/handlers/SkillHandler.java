@@ -6,6 +6,8 @@ import android.util.Log;
 import com.ubtechinc.skill.SkillApi;
 import com.ubtechinc.skill.SkillHelper;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.transport.message.CallException;
 import com.ubtrobot.transport.message.Request;
 import com.ubtrobot.transport.message.Response;
