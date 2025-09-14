@@ -2,12 +2,20 @@ package com.ubtrobot.mini.sdkdemo.common.handlers;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.apis.ObjectDetectApi;
+import com.ubtrobot.mini.sdkdemo.apis.STTApi;
+import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.models.response.DetectClosestResponse;
 import com.ubtrobot.mini.sdkdemo.models.response.Detection;
+import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 import com.ubtrobot.mini.voice.VoicePool;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -21,14 +29,14 @@ import retrofit2.Response;
 public class ObjectDetectHandler {
     private static final String TAG = "ObjectDetectHandler";
     private final ObjectDetectApi api = ApiClient.getPythonInstance().create(ObjectDetectApi.class);
-    private VoicePool vp = VoicePool.get();
+    private final STTApi sttApi = ApiClient.getPythonInstance().create(STTApi.class);
 
-    public void handleDetect(File imageFile) {
+    public void handleDetect(File imageFile, String lang) {
         RequestBody reqFile = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), reqFile);
 
         // Example: call detect_closest
-        Call<DetectClosestResponse> call = api.detectClosest(body);
+        Call<DetectClosestResponse> call = api.detectClosest(body, 1);
 
         call.enqueue(new Callback<DetectClosestResponse>() {
             @Override
@@ -42,9 +50,33 @@ public class ObjectDetectHandler {
                     }
                     if (!result.closest_objects.isEmpty()) {
                         Detection closest = result.closest_objects.get(0);
-                        vp.playTTs("Tôi thấy 1 cái " + closest.label + " in front of me.", Priority.HIGH, null);
+                        sttApi.objectDetectResult(closest.label, lang).enqueue(new Callback<NLPResponse>() {
+                            @Override
+                            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                                NLPResponse r = response.body();
+                                if(r == null) return;
+                                NLPResponse.DataContainer data = r.getData();
+                                // Convert JSON string -> JSONObject
+                                try {
+                                    String jsonString = new Gson().toJson(data);
+                                    JSONObject jsonData = new JSONObject(jsonString);
+                                    (new CommandHandler()).handleCommand(r.getType(), r.getLang(), jsonData);
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NLPResponse> call, Throwable t) {
+
+                            }
+                        });
                     } else {
-                        vp.playTTs("I don't see any objects in front of me.", Priority.HIGH, null);
+                        if(lang.equals("en")){
+                            TTSHandler.doTTS("I didn't find any objects nearby.", lang, null);
+                        } else {
+                            TTSHandler.doTTS("Tôi không thấy vật gì", lang, null);
+                        }
                     }
                 } else {
                     Log.e(TAG, "Response failed: " + response.code());

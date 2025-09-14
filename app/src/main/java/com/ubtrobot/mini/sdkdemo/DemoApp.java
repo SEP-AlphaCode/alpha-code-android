@@ -33,6 +33,7 @@ public class DemoApp extends Application {
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
         initSpeech();
+        TTSHandler.init(Utils.getContext().getApplicationContext());
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();

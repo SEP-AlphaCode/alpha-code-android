@@ -1,9 +1,12 @@
 package com.ubtrobot.mini.sdkdemo.custom.tts;
 
 import android.content.Context;
+import android.util.Log;
+
 public class TTSHandler {
     private static TTS enTTS, vnTTS;
     public static void init(Context context){
+        Log.i("TTSHandler", "init TTSHandler");
         if(enTTS == null){
             enTTS = EnglishTTS.getInstance(context);
         }

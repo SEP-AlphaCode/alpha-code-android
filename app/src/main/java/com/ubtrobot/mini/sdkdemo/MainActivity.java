@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         checkWriteSettingsPermission(this);
-        TTSHandler.init(Utils.getContext().getApplicationContext());
         Button forceConnect = (Button) findViewById(R.id.force_connect);
         RobotSocketController robotSocketController = new RobotSocketController();
         RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);

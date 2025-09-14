@@ -9,6 +9,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.ObjectDetectHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
@@ -28,6 +29,8 @@ public class CommandHandler {
     private ExpressionHandler expressionHandler;
     private DanceHandler danceHandler;
     private CameraHandler cameraHandler;
+    private CameraPreviewCapture captureObject;
+    private ObjectDetectHandler objectDetectHandler;
 
     public CommandHandler() {
         // Initialize all handlers
@@ -37,11 +40,15 @@ public class CommandHandler {
         this.expressionHandler = new ExpressionHandler();
         this.danceHandler = new DanceHandler();
         this.cameraHandler = new CameraHandler();
+        this.captureObject = new CameraPreviewCapture(Utils.getContext().getApplicationContext());
+        this.objectDetectHandler = new ObjectDetectHandler();
     }
 
     public void handleCommand(String type, String lang, JSONObject data) {
         String text = data.optString("text");
         String code = data.optString("code");
+        Log.i(TAG, text);
+        Log.i(TAG, lang);
         switch (type) {
             case "dance_with_music":
                 danceHandler.handleDanceWithMusic(data);
@@ -76,9 +83,25 @@ public class CommandHandler {
                 break;
 
             case "object_detect_start":
-                TTSHandler.doTTS(text, lang);
-                break;
+                TTSHandler.doTTS(text, lang, new TTSCallback() {
+                    @Override
+                    public void onStart() {
+                    }
 
+                    @Override
+                    public void onDone() {
+                        captureObject.openCamera(lang, (file, lang) -> {
+                            objectDetectHandler.handleDetect(file, lang);
+                        });
+                    }
+
+                    @Override
+                    public void onError() {
+                    }
+                });
+                break;
+            case "object_detect_result":
+                TTSHandler.doTTS(text, lang);
             default:
                 TTSHandler.doTTS(text, lang);
                 break;
