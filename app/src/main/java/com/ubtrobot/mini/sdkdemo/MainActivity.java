@@ -56,4 +56,10 @@ public class MainActivity extends Activity {
             }
         }
     }
+
+    public void speechApiTest(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, SpeechTestActivity.class);
+        startActivity(intent);
+    }
 }

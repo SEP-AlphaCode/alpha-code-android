@@ -43,6 +43,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.ubtrobot.mini.sdkdemo.SpeechTestActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.ubtrobot.mini.sdkdemo.ActionApiActivity"
             android:theme="@style/AppTheme" />
         <activity

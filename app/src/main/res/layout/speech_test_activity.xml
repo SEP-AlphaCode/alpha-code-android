@@ -12,12 +12,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="English Speech"
+        android:text="Send Speech"
 
-        android:id="@+id/do_eng_speech"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vietnamese Speech"
-        android:id="@+id/do_vn_speech"/>
+        android:id="@+id/do_speech"/>
 </LinearLayout>

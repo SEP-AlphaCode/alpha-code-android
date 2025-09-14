@@ -66,6 +66,7 @@ public class CameraPreviewCapture {
      */
     @SuppressLint("MissingPermission")
     public void openCamera(String lang, CaptureCallback callback) {
+        captured = false;
         startBackgroundThread();
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
