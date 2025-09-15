@@ -7,10 +7,10 @@ import android.util.Log;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.activity.TakePictureActivity;
-import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
-import com.ubtrobot.mini.sdkdemo.custom.tts.TTSHandler;
-import com.ubtrobot.mini.voice.VoiceListener;
-import com.ubtrobot.mini.voice.VoicePool;
+import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
 public class CameraHandler {
     private static final String TAG = "CameraHandler";
@@ -34,7 +34,8 @@ public class CameraHandler {
 
             @Override
             public void onStart() {
-
+                Log.i(TAG, "TTS started: " + message);
+                LogManager.log(LogLevel.INFO, TAG, "TTS started: " + message);
             }
 
             @Override
@@ -49,6 +50,7 @@ public class CameraHandler {
             @Override
             public void onError() {
                 Log.e(TAG, "Error playing TTS: " + message);
+                LogManager.log(LogLevel.ERROR, TAG, "Error playing TTS: " + message);
             }
         });
     }
@@ -61,7 +63,8 @@ public class CameraHandler {
         TTSHandler.doTTS(message, lang, new TTSCallback() {
             @Override
             public void onStart() {
-
+                Log.i(TAG, "TTS started: " + message);
+                LogManager.log(LogLevel.ERROR, TAG, "TTS started: " + message);
             }
 
             @Override
@@ -77,6 +80,7 @@ public class CameraHandler {
             @Override
             public void onError() {
                 Log.e(TAG, "Error playing TTS: " + message);
+                LogManager.log(LogLevel.ERROR, TAG, "Error playing TTS: " + message);
             }
         });
     }

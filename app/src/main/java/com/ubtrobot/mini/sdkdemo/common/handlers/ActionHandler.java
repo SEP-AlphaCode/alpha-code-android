@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
 public class ActionHandler {
     private static final String TAG = "ActionHandler";
@@ -20,11 +22,13 @@ public class ActionHandler {
                 @Override
                 public void onResponseSuccess(Void aVoid) {
                     Log.i(TAG, "Action " + actionCode + " done!");
+                    LogManager.log(LogLevel.INFO, TAG,"Action " + actionCode + " done!");
                 }
 
                 @Override
                 public void onFailure(int i, @NonNull String s) {
                     Log.e(TAG, "Action " + actionCode + " failed: " + s);
+                    LogManager.log(LogLevel.ERROR, TAG,"Action " + actionCode + " failed: " + s);
                 }
             });
         }

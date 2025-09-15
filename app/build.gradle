@@ -67,6 +67,7 @@ android {
         buildConfigField "String", "API_SPRING_PATH", "\"${getLocalProperty('api.spring.path', '')}\""
         buildConfigField "String", "API_PYTHON_PATH", "\"${getLocalProperty('api.python.path', '')}\""
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
+        buildConfigField "String", "API_LOGSERVICE_PATH", "\"${getLocalProperty('api.logservice.path', '')}\""
         // Bật MultiDex
         multiDexEnabled true
         ndk {

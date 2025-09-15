@@ -6,6 +6,8 @@ import android.util.Log;
 import com.ubtrobot.action.ActionExApi;
 import com.ubtrobot.action.listeners.ActionExListener;
 import com.ubtrobot.commons.Priority;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +22,7 @@ public class ExtendedActionHandler {
 
     public void handleExtendedAction(JSONObject data) {
         Log.i(TAG, "handleExtendedAction: " + data);
+        LogManager.log(LogLevel.INFO, TAG, "handleExtendedAction: " + data);
 
         if (data.has("actions")) {
             JSONArray actions = data.optJSONArray("actions");
@@ -48,6 +51,7 @@ public class ExtendedActionHandler {
             int actStep = actionObj.optInt("step", 1);
 
             Log.i(TAG, "Executing action " + actName + " step=" + actStep);
+            LogManager.log(LogLevel.INFO, TAG, "Executing action " + actName + " step=" + actStep);
 
             executeAction(actName, actStep, () -> {
                 // After current action is done, execute the next one
@@ -69,6 +73,7 @@ public class ExtendedActionHandler {
             @Override
             public void onActionCompleted() {
                 Log.i(TAG, "Extended action " + name + " done!");
+                LogManager.log(LogLevel.INFO, TAG, "Extended action " + name + " done!");
                 if (onComplete != null) onComplete.run();
             }
 
@@ -85,6 +90,7 @@ public class ExtendedActionHandler {
             @Override
             public void onActionFailure(int i, @NonNull String s) {
                 Log.e(TAG, "Extended action " + name + " failed: " + s);
+                LogManager.log(LogLevel.ERROR, TAG, "Extended action " + name + " failed: " + s);
                 if (onComplete != null) onComplete.run(); // still call onComplete on failure
             }
         };

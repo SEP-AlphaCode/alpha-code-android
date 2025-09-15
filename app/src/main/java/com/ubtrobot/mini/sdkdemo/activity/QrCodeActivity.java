@@ -13,8 +13,10 @@ import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
-import com.ubtrobot.mini.voice.VoiceListener;
-import com.ubtrobot.mini.voice.VoicePool;
+import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,12 +69,19 @@ public class QrCodeActivity {
             handler.postDelayed(() -> {
             vp.playTTs(preVoice, Priority.HIGH, new VoiceListener() {
                 @Override
-                public void onCompleted() {
-                    Log.i(TAG, "Pre voice played successfully");
+                public void onStart() {
+                    Log.i(TAG, "Playing pre voice: " + preVoice);
+                    LogManager.log(LogLevel.INFO, TAG,"Playing pre voice: " + preVoice);
+                    LogManager.log(LogLevel.INFO, TAG,"Start play " + name);
+                }
 
+                @Override
+                public void onDone() {
+                    Log.i(TAG, "Pre voice played successfully");
                     // Delay 1s then start playing actions
                     handler.postDelayed(() -> {
                         Log.i(TAG, "Playing script with " + actions.length() + " actions");
+                        LogManager.log(LogLevel.INFO, TAG,"Playing script with " + actions.length() + " actions");
 
                         for (int i = 0; i < actions.length(); i++) {
                             JSONObject action;
@@ -96,12 +105,14 @@ public class QrCodeActivity {
 
                                 handler.postDelayed(() -> {
                                     Log.i(TAG, "Executing action: " + actionId);
+                                    LogManager.log(LogLevel.INFO, TAG,"Executing action: " + actionId);
 
                                     try {
                                         mouthLedApi.startNormalModel(Color.argb(finalA, finalR, finalG, finalB),
                                                 (int) (duration), Priority.NORMAL, null);
                                     } catch (Exception e) {
                                         Log.e(TAG, "Error setting LED color", e);
+                                        LogManager.log(LogLevel.ERROR, TAG,"Error setting LED color: " + e.getMessage());
                                     }
 
                                     switch (type) {
@@ -110,11 +121,13 @@ public class QrCodeActivity {
                                                 @Override
                                                 public void onResponseSuccess(Void aVoid) {
                                                     Log.i(TAG, "Action " + actionId + " completed successfully");
+                                                    LogManager.log(LogLevel.INFO, TAG,"Action " + actionId + " completed successfully");
                                                 }
 
                                                 @Override
                                                 public void onFailure(int errorCode, @NonNull String errorMessage) {
                                                     Log.e(TAG, "Action " + actionId + " failed: " + errorMessage);
+                                                    LogManager.log(LogLevel.ERROR, TAG,"Action " + actionId + " failed: " + errorMessage);
                                                 }
                                             });
                                             break;
@@ -123,25 +136,30 @@ public class QrCodeActivity {
                                                 expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
                                                     @Override
                                                     public void onAnimationStart() {
-                                                        Log.i(TAG, "doExpress开始执行表情!");
+                                                        Log.i(TAG, "Expression " + actionId + " started");
+                                                        LogManager.log(LogLevel.INFO, TAG,"Expression " + actionId + " started");
                                                     }
 
                                                     @Override
                                                     public void onAnimationEnd(int i) {
                                                         Log.i(TAG, "doExpress表情执行结束!");
+                                                        LogManager.log(LogLevel.INFO, TAG,"Expression " + actionId + " ended");
                                                     }
 
                                                     @Override
                                                     public void onAnimationRepeat(int loopNumber) {
-                                                        Log.i(TAG, "doExpress重复执行表情,重复次数:" + loopNumber);
+                                                        Log.i(TAG, "Expression: " + actionId + ", With loop: " + loopNumber);
+                                                        LogManager.log(LogLevel.INFO, TAG,"Expression: " + actionId + ", With loop: " + loopNumber);
                                                     }
                                                 });
                                             } catch (Exception e) {
                                                 Log.e(TAG, "Error executing expression " + actionId, e);
+                                                LogManager.log(LogLevel.ERROR, TAG,"Error executing expression " + actionId + ": " + e.getMessage());
                                             }
                                             break;
                                         default:
                                             Log.w(TAG, "Unknown action type: " + type + " for action: " + actionId);
+                                            LogManager.log(LogLevel.WARN, TAG,"Unknown action type: " + type + " for action: " + actionId);
                                             break;
                                     }
 
@@ -149,26 +167,30 @@ public class QrCodeActivity {
 
                             } catch (Exception e) {
                                 Log.e(TAG, "Error parsing action JSON", e);
+                                LogManager.log(LogLevel.ERROR, TAG,"Error parsing action JSON: " + e.getMessage());
                             }
                         }
 
                         // Sau khi toàn bộ action xong + delay 1s → nói afterVoice
                         handler.postDelayed(() -> {
-                            vp.playTTs(afterVoice, Priority.HIGH, null);
+                            ttsManager.doTTS(afterVoice);
+                            LogManager.log(LogLevel.INFO, TAG,"Playing after voice: " + afterVoice);
                         }, (long) (totalDuration) + 1000);
 
                     }, 1000); // Delay 1s sau khi nói preVoice
                 }
 
                 @Override
-                public void onError(int i, String s) {
-                    Log.e(TAG, "Error playing pre voice: " + s);
+                public void onError() {
+                    Log.i(TAG, "Error playing pre voice");
+                    LogManager.log(LogLevel.ERROR, TAG,"Error playing pre voice");
                 }
             });
             }, 500);
 
         } catch (Exception e) {
             Log.e(TAG, "Error in playScriptFromJson", e);
+            LogManager.log(LogLevel.ERROR, TAG,"Error in playScriptFromJson: " + e.getMessage());
         }
     }
 }
