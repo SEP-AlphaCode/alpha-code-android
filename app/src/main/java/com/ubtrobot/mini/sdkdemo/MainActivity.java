@@ -12,11 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ubtech.utilcode.utils.Utils;
-import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
-import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
-import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
-import com.ubtrobot.mini.voice.VoicePool;
 
 /**
  * Created by lulin.wu on 2018/6/19.
@@ -41,6 +37,12 @@ public class MainActivity extends Activity {
     public void actionApiTest(View view) {
         Intent intent = new Intent();
         intent.setClass(this, ActionApiActivity.class);
+        startActivity(intent);
+    }
+
+    public void sysEventTest(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, SysEventTestActivity.class);
         startActivity(intent);
     }
 
