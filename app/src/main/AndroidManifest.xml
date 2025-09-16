@@ -45,6 +45,7 @@
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.ActionApiActivity"
             android:theme="@style/AppTheme" />
+        <activity android:name=".SysEventTestActivity" android:theme="@style/AppTheme"/>
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
             android:theme="@style/AppTheme" />

@@ -7,11 +7,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.activity.SystemActivity;
-import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 
-public class BatteryTestActivity extends Activity {
+public class SysEventTestActivity extends Activity {
     private static String TAG = "BatteryTest";
     private SystemActivity sys;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
