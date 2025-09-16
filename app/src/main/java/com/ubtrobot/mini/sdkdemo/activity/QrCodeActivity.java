@@ -13,8 +13,8 @@ import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
@@ -26,7 +26,7 @@ public class QrCodeActivity {
     private ActionApi actionApi;
     private ExpressApi expressApi;
     private MouthLedApi mouthLedApi;
-    private TTSManager ttsManager;
+    private TTSHandler tts;
     private static final String TAG = "QrCodeActivity";
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -39,11 +39,11 @@ public class QrCodeActivity {
         private static QrCodeActivity _api = new QrCodeActivity();
     }
 
-    public void DoActivity(String jsonString, String name) {
+    public void doActivity(String jsonString, String name, String lang) {
         try {
             initRobot();
             JSONObject jsonObject = new JSONObject(jsonString);
-            playScriptFromJson(jsonObject, name);
+            playScriptFromJson(jsonObject, name, lang);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -51,14 +51,14 @@ public class QrCodeActivity {
     }
 
     private void initRobot() {
-        this.ttsManager = TTSManager.getInstance();
+        this.tts = new TTSHandler();
         this.actionApi = ActionApi.get();
         this.expressApi = ExpressApi.get();
         this.mouthLedApi = MouthLedApi.get();
     }
 
 
-    private void playScriptFromJson(JSONObject script, String name) {
+    private void playScriptFromJson(JSONObject script, String name, String lang) {
         try {
             JSONArray actions = script.getJSONArray("activities");
             String preVoice = "Start play " + name;
@@ -67,7 +67,7 @@ public class QrCodeActivity {
 
             // Delay for waiting TTS ready
             handler.postDelayed(() -> {
-            ttsManager.doTTS(preVoice, new TTSCallback() {
+            tts.doTTS(preVoice, lang, new TTSCallback() {
                 @Override
                 public void onStart() {
                     Log.i(TAG, "Playing pre voice: " + preVoice);
@@ -173,7 +173,7 @@ public class QrCodeActivity {
 
                         // Sau khi toàn bộ action xong + delay 1s → nói afterVoice
                         handler.postDelayed(() -> {
-                            ttsManager.doTTS(afterVoice);
+                            tts.doTTS(afterVoice, lang);
                             LogManager.log(LogLevel.INFO, TAG,"Playing after voice: " + afterVoice);
                         }, (long) (totalDuration) + 1000);
 

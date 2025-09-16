@@ -22,6 +22,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import com.ubtrobot.commons.Priority;
+import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 import com.ubtrobot.sys.SysApi;
 
@@ -39,8 +40,6 @@ public class RobotSocketManager {
     private Runnable connectionChecker;
     private SysApi sysApi;
     private LedHelper ledHelper;
-
-
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
@@ -117,6 +116,7 @@ public class RobotSocketManager {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 isConnected = true;
+                //ttsHandler.doTTS("Connected", "en");
                 Log.d(TAG, "WebSocket connected");
                 ledHelper.notifyState(0);
             }
@@ -126,18 +126,20 @@ public class RobotSocketManager {
                 ledHelper.notifyState(0);
                 if (robotController != null) {
                     Log.i(TAG, "Received message: " + text);
-                    robotController.handleCommand(text);
+                    robotController.handleCommand(text, "en");
                 }
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                 handleConnectionFailure(t.getMessage());
+                //ttsHandler.doTTS("Failed", "en");
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 handleConnectionFailure("Connection closed: " + reason);
+                //ttsHandler.doTTS("Closed", "en");
             }
         });
     }

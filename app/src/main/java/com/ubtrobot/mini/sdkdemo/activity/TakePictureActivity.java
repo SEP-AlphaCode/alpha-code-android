@@ -22,7 +22,7 @@ import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
@@ -42,7 +42,7 @@ public class TakePictureActivity {
     private static final String TAG = "TakePictureActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    private TTSManager tts;
+    private TTSHandler tts;
     ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
@@ -59,10 +59,10 @@ public class TakePictureActivity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = TTSManager.getInstance();
+        tts = new TTSHandler();
     }
 
-    public void takePicImmediately(String action) {
+    public void takePicImmediately(String action, String lang) {
         if(takePicApi == null){
             initRobot();
         }
@@ -143,7 +143,7 @@ public class TakePictureActivity {
                                                 String jsonString = new Gson().toJson(jsonObject);
 
                                                 // Put string JSON to DoActivity
-                                                qrCodeActivity.DoActivity(jsonString, response.body().getName());
+                                                qrCodeActivity.doActivity(jsonString, response.body().getName(), lang);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -201,7 +201,6 @@ public class TakePictureActivity {
         } catch (NotFoundException e) {
             Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
             LogManager.log(LogLevel.ERROR, TAG,"Qr code not found in the image: " + e.getMessage());
-            tts.doTTS("Qr code not found in the image, please try again.");
             return null;
         } catch (Exception e) {
             Log.e(TAG, "Error when decode QR Code: " + e.getMessage());

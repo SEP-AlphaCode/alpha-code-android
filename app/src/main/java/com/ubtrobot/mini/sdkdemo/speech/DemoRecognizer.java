@@ -129,7 +129,7 @@ public class DemoRecognizer extends AbstractRecognizer {
                         JSONObject jsonData = new JSONObject(jsonString);
                         // Use CommandHandler instead of switch case
                         ledHelper.notifyState(0);
-                        commandHandler.handleCommand(type, jsonData);
+                        commandHandler.handleCommand(type, jsonData, nlpResponse.getLang());
 
                     } catch (Exception e) {
                         Log.e(TAG, "Error processing response: " + e.getMessage());

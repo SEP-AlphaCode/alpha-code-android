@@ -57,7 +57,7 @@ public class CameraPreviewCapture {
     }
 
     @SuppressLint("MissingPermission")
-    public void openCamera() {
+    public void openCamera(String lang) {
         startBackgroundThread();
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
@@ -79,7 +79,7 @@ public class CameraPreviewCapture {
 
                     // 🔹 Send to detection handler
                     File tempFile = saveTempImage(bytes);
-                    objectDetectHandler.handleDetect(tempFile);
+                    objectDetectHandler.handleDetect(tempFile, lang);
 
                     // stop everything after capture
                     closeCamera();
@@ -123,7 +123,7 @@ public class CameraPreviewCapture {
                         public void onConfigured(@NonNull CameraCaptureSession session) {
                             captureSession = session;
                             try {
-                                session.setRepeatingRequest(builder.build(), null, backgroundHandler);
+                                session.capture(builder.build(), null, backgroundHandler);
                             } catch (CameraAccessException e) {
                                 e.printStackTrace();
                             }

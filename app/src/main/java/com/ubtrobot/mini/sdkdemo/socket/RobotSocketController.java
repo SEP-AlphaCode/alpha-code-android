@@ -14,7 +14,7 @@ public class RobotSocketController {
 
     }
 
-    public void handleCommand(String command) {
+    public void handleCommand(String command, String lang) {
         if (command == null) return;
 
         try {
@@ -22,7 +22,7 @@ public class RobotSocketController {
             String type = json.optString("type");
             JSONObject data = json.optJSONObject("data");
             Log.i(TAG, "Received command: type=" + type + ", data=" + data);
-            commandHandler.handleCommand(type, data);
+            commandHandler.handleCommand(type, data, lang);
 
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON command: " + command, e);

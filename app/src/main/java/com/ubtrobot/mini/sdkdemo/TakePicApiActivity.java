@@ -21,13 +21,12 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.activity.QrCodeActivity;
 import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.custom.tts.EnglishTTS;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
@@ -48,7 +47,7 @@ public class TakePicApiActivity extends Activity {
     private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
-    private TTSManager tts;
+    private EnglishTTS tts;
     ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
@@ -75,7 +74,7 @@ public class TakePicApiActivity extends Activity {
     private void initRobot() {
         takePicApi = TakePicApi.get();
         qrCodeActivity = QrCodeActivity.get();
-        tts = TTSManager.getInstance();
+        tts = EnglishTTS.getInstance();
     }
 
     /**
@@ -83,7 +82,7 @@ public class TakePicApiActivity extends Activity {
      *
      *
      */
-    public void takePicImmediately(String action) {
+    public void takePicImmediately(String action, String lang) {
         if(takePicApi == null){
             initRobot();
         }
@@ -163,7 +162,7 @@ public class TakePicApiActivity extends Activity {
                                                 String jsonString = new Gson().toJson(jsonObject);
 
                                                 // Put string JSON to DoActivity
-                                                qrCodeActivity.DoActivity(jsonString, response.body().getName());
+                                                qrCodeActivity.doActivity(jsonString, response.body().getName(), lang);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }

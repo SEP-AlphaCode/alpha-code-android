@@ -3,11 +3,12 @@ package com.ubtrobot.mini.sdkdemo.common.handlers;
 import android.util.Log;
 
 import com.ubtrobot.mini.sdkdemo.apis.ObjectDetectApi;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.apis.STTApi;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.models.response.DetectClosestResponse;
 import com.ubtrobot.mini.sdkdemo.models.response.Detection;
+import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 
 import java.io.File;
@@ -22,9 +23,10 @@ import retrofit2.Response;
 public class ObjectDetectHandler {
     private static final String TAG = "ObjectDetectHandler";
     private final ObjectDetectApi api = ApiClient.getPythonInstance().create(ObjectDetectApi.class);
-    private TTSManager tts = TTSManager.getInstance();
+    private TTSHandler tts = new TTSHandler();
+    private final STTApi stt = ApiClient.getPythonInstance().create(STTApi.class);
 
-    public void handleDetect(File imageFile) {
+    public void handleDetect(File imageFile, String lang) {
         RequestBody reqFile = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), reqFile);
 
@@ -43,9 +45,24 @@ public class ObjectDetectHandler {
                     }
                     if(!result.closest_objects.isEmpty()) {
                         Detection closest = result.closest_objects.get(0);
-                        tts.doTTS("I see a " + closest.label + " in front of me.", null);
+                        stt.doSTT(closest.label, lang).enqueue(new Callback<NLPResponse>() {
+                            @Override
+                            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                                NLPResponse r = response.body();
+                                tts.doTTS(r.getData().getText(), lang);
+                            }
+
+                            @Override
+                            public void onFailure(Call<NLPResponse> call, Throwable t) {
+
+                            }
+                        });
                     } else {
-                        tts.doTTS("I don't see any objects in front of me.", null);
+                        String text = "I don't see anything. Please try again";
+                        if(lang.equals("vi")){
+                            text = "Tôi không thấy gì cả. Xin hãy thử lại sau";
+                        }
+                        tts.doTTS(text, lang);
                     }
                 } else {
                     Log.e(TAG, "Response failed: " + response.code());

@@ -8,11 +8,15 @@ import android.util.Log;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.msc.util.log.DebugLog;
+import com.ubtech.utilcode.utils.Utils;
 import com.ubtech.utilcode.utils.thread.ThreadPool;
 import com.ubtrobot.master.log.InfrequentLoggerFactory;
 import com.ubtrobot.mini.SDKInit;
 import com.ubtrobot.mini.properties.sdk.Path;
 import com.ubtrobot.mini.properties.sdk.PropertiesApi;
+import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
 import com.ubtrobot.mini.sdkdemo.speech.DemoMasterService;
 import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
 import com.ubtrobot.service.ServiceModules;
@@ -28,9 +32,13 @@ public class DemoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TTSHandler.init(Utils.getContext().getApplicationContext());
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
         initSpeech();
+        RobotSocketController robotSocketController = new RobotSocketController();
+        RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);
+        wsClient.forceConnect();
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();

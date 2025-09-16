@@ -9,8 +9,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
-import com.ubtrobot.mini.sdkdemo.custom.TTSCallback;
-import com.ubtrobot.mini.sdkdemo.custom.TTSManager;
+import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 
 import org.json.JSONObject;
 
@@ -24,7 +23,6 @@ public class CommandHandler {
     private ExpressionHandler expressionHandler;
     private DanceHandler danceHandler;
     private CameraHandler cameraHandler;
-    private TTSManager tts = TTSManager.getInstance();
     private TTSHandler ttsHandler;
 
     public CommandHandler() {
@@ -38,7 +36,7 @@ public class CommandHandler {
         this.ttsHandler = new TTSHandler();
     }
 
-    public void handleCommand(String type, JSONObject data) {
+    public void handleCommand(String type, JSONObject data, String lang) {
         String text = data.optString("text");
         String code = data.optString("code");
 
@@ -64,11 +62,11 @@ public class CommandHandler {
                 break;
 
             case "qr_code":
-                cameraHandler.handleQRCode(text);
+                cameraHandler.handleQRCode(text, lang);
                 break;
 
             case "osmo_card":
-                cameraHandler.handleOsmoCard(text);
+                cameraHandler.handleOsmoCard(text, lang);
                 break;
 
             case "extended_action":
@@ -76,16 +74,15 @@ public class CommandHandler {
                 break;
 
             case "object_detect_start":
-                tts.doTTS(text, new TTSCallback() {
+                ttsHandler.doTTS(text, lang, new TTSCallback() {
                     @Override
                     public void onStart() {
-
                     }
 
                     @Override
                     public void onDone() {
                         CameraPreviewCapture previewCapture = new CameraPreviewCapture(Utils.getContext().getApplicationContext());
-                        previewCapture.openCamera();
+                        previewCapture.openCamera(lang);
                     }
 
                     @Override
@@ -94,9 +91,8 @@ public class CommandHandler {
                     }
                 });
                 break;
-
             default:
-                ttsHandler.handleDefault(text);
+                ttsHandler.doTTS(text, lang);
                 break;
         }
     }
