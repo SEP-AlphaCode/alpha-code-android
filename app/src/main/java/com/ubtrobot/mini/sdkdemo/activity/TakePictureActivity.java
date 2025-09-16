@@ -129,7 +129,7 @@ public class TakePictureActivity {
                             break;
                         case "qr-code":
                             // Decode the QR code from the image file
-                            String qrContent = decodeQRCodeFromFile(realPath);
+                            String qrContent = decodeQRCodeFromFile(realPath, lang);
                             if (qrContent != null) {
                                 // Call api to get QR code details
                                 activityApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeActivityResponse>() {
@@ -179,7 +179,7 @@ public class TakePictureActivity {
         }
     }
 
-    private String decodeQRCodeFromFile(String filePath) {
+    private String decodeQRCodeFromFile(String filePath, String lang) {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         if (bitmap == null) {
             Log.e(TAG, "Can not load file from path: " + filePath);
@@ -201,6 +201,12 @@ public class TakePictureActivity {
         } catch (NotFoundException e) {
             Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
             LogManager.log(LogLevel.ERROR, TAG,"Qr code not found in the image: " + e.getMessage());
+            if(lang.equals("en")){
+                tts.doTTS("Qr code not found in the image, please try again.", "en");
+            }
+            else {
+                tts.doTTS("Không tìm thấy qr code. Làm ơn thử lại.", "vi");
+            }
             return null;
         } catch (Exception e) {
             Log.e(TAG, "Error when decode QR Code: " + e.getMessage());

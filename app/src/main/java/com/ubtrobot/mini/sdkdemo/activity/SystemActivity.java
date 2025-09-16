@@ -8,7 +8,7 @@ import com.ubtrobot.sys.SysApi;
 
 public class SystemActivity {
     private SysApi sysApi;
-    private SysEventApiIm sysEventApi;
+//    private SysEventApiIm sysEventApi;
 
     private static final String TAG = "SystemActivity";
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -24,7 +24,7 @@ public class SystemActivity {
 
     private void initRobot() {
         sysApi = SysApi.get();
-        sysEventApi = (SysEventApi) SysEventApi.get();
+//        sysEventApi = (SysEventApi) SysEventApi.get();
     }
 
     public String getSerialNumber() {
@@ -42,9 +42,9 @@ public class SystemActivity {
         return sysApi.readCtrlVersion();
     }
 
-    public String getBatteryInfo() {
-        initRobot();
-        return sysEventApi.(GetBatteryInfoListener listener);
-    }
+//    public String getBatteryInfo() {
+//        initRobot();
+//        return sysEventApi.(GetBatteryInfoListener listener);
+//    }
 
 }
