@@ -3,12 +3,13 @@ package com.ubtrobot.mini.sdkdemo.activity;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
-
+import com.ubtrobot.masterevent.protos.SysMasterEvent;
+import com.ubtrobot.mini.sysevent.EventApi;
+import com.ubtrobot.mini.sysevent.SysEventApi;
 import com.ubtrobot.sys.SysApi;
-
 public class SystemActivity {
     private SysApi sysApi;
-//    private SysEventApiIm sysEventApi;
+    private EventApi evtApi;
 
     private static final String TAG = "SystemActivity";
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -25,6 +26,7 @@ public class SystemActivity {
     private void initRobot() {
         sysApi = SysApi.get();
 //        sysEventApi = (SysEventApi) SysEventApi.get();
+        evtApi = SysEventApi.get();
     }
 
     public String getSerialNumber() {
@@ -42,9 +44,9 @@ public class SystemActivity {
         return sysApi.readCtrlVersion();
     }
 
-//    public String getBatteryInfo() {
-//        initRobot();
-//        return sysEventApi.(GetBatteryInfoListener listener);
-//    }
+    public String getBatteryInfo() {
+        initRobot();
+        return evtApi.getCurrentBatteryInfoSync().toString();
+    }
 
 }
