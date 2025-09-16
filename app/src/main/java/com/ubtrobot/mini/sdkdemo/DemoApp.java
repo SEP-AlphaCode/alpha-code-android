@@ -15,6 +15,7 @@ import com.ubtrobot.mini.SDKInit;
 import com.ubtrobot.mini.properties.sdk.Path;
 import com.ubtrobot.mini.properties.sdk.PropertiesApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
 import com.ubtrobot.mini.sdkdemo.speech.DemoMasterService;
@@ -35,6 +36,11 @@ public class DemoApp extends Application {
         TTSHandler.init(Utils.getContext().getApplicationContext());
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
+
+        // Initialize LogManager for remote logging
+        LogManager.init();
+        Log.i(TAG, "LogManager initialized");
+
         initSpeech();
         RobotSocketController robotSocketController = new RobotSocketController();
         RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);

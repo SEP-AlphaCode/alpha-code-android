@@ -20,13 +20,14 @@ public class LogManager {
                 String systemName = sysApi.readRobotSid();
                 if (systemName != null && !systemName.isEmpty()) {
                     robotId = systemName;
-                    Log.i(TAG, "Robot ID from SysApi: " + robotId);
                 } else {
                     Log.w(TAG, "Cannot get system name from SysApi, using default");
                 }
+            } else {
+                Log.w(TAG, "SysApi is null, using default robot ID");
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error getting system name from SysApi: " + e.getMessage());
+            Log.e(TAG, "Error getting system name from SysApi: " + e.getMessage(), e);
         }
 
         initRemoteHandler();
@@ -40,17 +41,22 @@ public class LogManager {
     }
 
     private static void initRemoteHandler() {
-        remoteHandler = new RemoteLogHandler(new RemoteLogHandler.LogCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "Remote log sent successfully");
-            }
+        try {
+            remoteHandler = new RemoteLogHandler(new RemoteLogHandler.LogCallback() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "Remote log sent successfully");
+                }
 
-            @Override
-            public void onFailure(String error) {
-                Log.w(TAG, "Remote log failed: " + error);
-            }
-        });
+                @Override
+                public void onFailure(String error) {
+                    Log.w(TAG, "Remote log failed: " + error);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to initialize RemoteLogHandler", e);
+            remoteHandler = null;
+        }
     }
 
     // Method mới để log với LogLevel enum
@@ -80,8 +86,19 @@ public class LogManager {
 
         // Send to remote server if enabled
         if (enableRemoteLogging && remoteHandler != null) {
-            LogEntry logEntry = new LogEntry(robotId, level.getValue(), tag, message, System.currentTimeMillis());
-            handleRemoteLogging(logEntry);
+            try {
+                LogEntry logEntry = new LogEntry(robotId, level.getValue(), tag, message, System.currentTimeMillis());
+                handleRemoteLogging(logEntry);
+            } catch (Exception e) {
+                Log.e(TAG, "Error creating or sending LogEntry", e);
+            }
+        } else {
+            if (!enableRemoteLogging) {
+                Log.d(TAG, "Remote logging is disabled");
+            }
+            if (remoteHandler == null) {
+                Log.w(TAG, "RemoteHandler is null - remote logging unavailable");
+            }
         }
     }
 
