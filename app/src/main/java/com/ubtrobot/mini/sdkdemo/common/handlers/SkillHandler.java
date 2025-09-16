@@ -43,11 +43,13 @@ public class SkillHandler {
                 @Override
                 public void onResponse(Request request, Response response) {
                     Log.i(TAG, "start success.");
+                    LogManager.log(LogLevel.INFO,TAG,"Play skill success: " + skillIntentName);
                 }
 
                 @Override
                 public void onFailure(Request request, CallException e) {
                     Log.i(TAG, e.getMessage());
+                    LogManager.log(LogLevel.ERROR,TAG,"Play skill failed: " + skillIntentName + ", error: " + e.getMessage());
                 }
             });
         }
