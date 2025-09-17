@@ -7,6 +7,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
@@ -24,7 +25,7 @@ public class CommandHandler {
     private DanceHandler danceHandler;
     private CameraHandler cameraHandler;
     private TTSHandler ttsHandler;
-
+    private SystemHandler systemHandler;
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -34,6 +35,7 @@ public class CommandHandler {
         this.danceHandler = new DanceHandler();
         this.cameraHandler = new CameraHandler();
         this.ttsHandler = new TTSHandler();
+        this.systemHandler = SystemHandler.get();
     }
 
     public void handleCommand(String type, JSONObject data, String lang) {
@@ -41,6 +43,8 @@ public class CommandHandler {
         String code = data.optString("code");
 
         switch (type) {
+            case "status_req":
+                systemHandler.sendRobotStatus();
             case "dance_with_music":
                 danceHandler.handleDanceWithMusic(data);
                 break;

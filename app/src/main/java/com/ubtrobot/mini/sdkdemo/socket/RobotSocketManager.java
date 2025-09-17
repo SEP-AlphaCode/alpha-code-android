@@ -171,6 +171,15 @@ public class RobotSocketManager {
         }
     }
 
+    public void sendMessage(String message) {
+        if (webSocket != null && isConnected) {
+            boolean success = webSocket.send(message);
+            Log.d(TAG, "Send message: " + message + " | success: " + success);
+        } else {
+            Log.w(TAG, "Cannot send message, WebSocket not connected.");
+        }
+    }
+
     public void disconnect() {
         shouldReconnect = false;
         handler.removeCallbacksAndMessages(null);

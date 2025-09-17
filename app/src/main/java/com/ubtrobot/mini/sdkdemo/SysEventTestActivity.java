@@ -7,14 +7,14 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.ubtrobot.mini.sdkdemo.activity.SystemActivity;
+import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 
 public class SysEventTestActivity extends Activity {
     private static String TAG = "BatteryTest";
-    private SystemActivity sys;
+    private SystemHandler sys;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sys = SystemActivity.get();
+        sys = SystemHandler.get();
         setContentView(R.layout.battery_test_activity);
         Button serial = findViewById(R.id.serial_button), firmware = findViewById(R.id.firmware_ver_button),
                 ctrl = findViewById(R.id.ctrl_button), battery = findViewById(R.id.battery_button);
