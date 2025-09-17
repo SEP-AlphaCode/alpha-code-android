@@ -43,7 +43,7 @@ public class CommandHandler {
         String code = data.optString("code");
 
         switch (type) {
-            case "status_req":
+            case "get_system_info":
                 systemHandler.sendRobotStatus();
                 break;
             case "dance_with_music":

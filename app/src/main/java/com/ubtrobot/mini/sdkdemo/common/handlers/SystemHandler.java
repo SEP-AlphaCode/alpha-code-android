@@ -73,7 +73,7 @@ public class SystemHandler {
             data.put("batteryInfo", sysInfo.getBatteryInfo());
 
             JSONObject res = new JSONObject();
-            res.put("type", "status_res");
+            res.put("type", "get_system_info");
             res.put("data", data);
 
             if (socketManager != null && socketManager.isConnected()) {
