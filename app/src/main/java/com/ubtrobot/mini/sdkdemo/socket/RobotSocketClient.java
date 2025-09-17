@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
+import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 
 public class RobotSocketClient extends Service {
     private RobotSocketController robotController;
@@ -16,6 +17,7 @@ public class RobotSocketClient extends Service {
         robotController = new RobotSocketController();
         String path = BuildConfig.API_WEBSOCKET;
         manager = new RobotSocketManager(path, robotController);
+        SystemHandler.get().setSocketManager(manager);
     }
 
     /**

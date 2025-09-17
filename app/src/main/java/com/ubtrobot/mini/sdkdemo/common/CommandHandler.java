@@ -45,6 +45,7 @@ public class CommandHandler {
         switch (type) {
             case "status_req":
                 systemHandler.sendRobotStatus();
+                break;
             case "dance_with_music":
                 danceHandler.handleDanceWithMusic(data);
                 break;
