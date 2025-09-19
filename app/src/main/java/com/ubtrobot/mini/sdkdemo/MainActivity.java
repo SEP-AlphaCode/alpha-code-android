@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 
 /**
  * Created by lulin.wu on 2018/6/19.
@@ -30,7 +32,7 @@ public class MainActivity extends Activity {
         Button forceConnect = (Button) findViewById(R.id.force_connect);
 
         forceConnect.setOnClickListener(l -> {
-            //wsClient.forceConnect();
+            RobotSocketClient.getInstance().forceConnect();
         });
     }
 
@@ -49,6 +51,10 @@ public class MainActivity extends Activity {
     public void takePicApiTest(View view) {
         Intent intent = new Intent();
         intent.setClass(this, TakePicApiActivity.class);
+        startActivity(intent);
+    }
+    public void faceApiTest(View view){
+        Intent intent = new Intent(this, FaceApiActivity.class);
         startActivity(intent);
     }
     private void checkWriteSettingsPermission(Context context) {

@@ -11,7 +11,8 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 
 public class RobotSocketClient extends Service {
     private RobotSocketController robotController;
-    private RobotSocketManager manager;
+    private static RobotSocketManager manager;
+    private static RobotSocketClient instance;
     private void init(){
         Log.i("RobotSocketClient", "Connecting...");
         robotController = new RobotSocketController();
@@ -28,11 +29,17 @@ public class RobotSocketClient extends Service {
     public RobotSocketClient(RobotSocketController robotController) {
         this.robotController = robotController;
         init();
+        instance = this;
     }
 
     public void forceConnect(){
+        Log.d("WebsocketManager", "Forcing a connection");
         manager.connect();
         Log.i("WebSocketManager", "Done");
+    }
+
+    public static RobotSocketClient getInstance(){
+        return instance;
     }
 
     @Override

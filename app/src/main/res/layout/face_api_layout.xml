@@ -8,6 +8,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/face_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="DO NOT EDIT" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,14 +24,14 @@
                 android:layout_height="wrap_content"
                 android:onClick="checkFaceInsertState"
                 android:text="check Face Insert State"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="faceAnalyze"
                 android:text="face Analyze"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -38,14 +44,14 @@
                 android:layout_height="wrap_content"
                 android:onClick="faceDetect"
                 android:text="face Detect"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="faceRecognize"
                 android:text="face Recognize"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,16 +62,23 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="faceRegister"
+                android:text="face Register"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="faceRegisterStart"
                 android:text="face Register Start"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="faceRegisterStop"
                 android:text="face Register Stop"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,39 +91,39 @@
                 android:layout_height="wrap_content"
                 android:onClick="faceTrack"
                 android:text="face Track"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="stopFaceTrack"
                 android:text="stop Face Track"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="vertical">-->
 
-<!--            <Button-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="findFace"-->
-<!--                android:text="find Face" />-->
+        <!--            <Button-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:onClick="findFace"-->
+        <!--                android:text="find Face" />-->
 
-<!--            <Button-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="pauseFindFace"-->
-<!--                android:text="pause Find Face" />-->
-<!--        </LinearLayout>-->
+        <!--            <Button-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:onClick="pauseFindFace"-->
+        <!--                android:text="pause Find Face" />-->
+        <!--        </LinearLayout>-->
 
-<!--        <Button-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:onClick="stopFindFace"-->
-<!--            android:text="stop Find Face" />-->
+        <!--        <Button-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:onClick="stopFindFace"-->
+        <!--            android:text="stop Find Face" />-->
 
     </LinearLayout>
 </ScrollView>
