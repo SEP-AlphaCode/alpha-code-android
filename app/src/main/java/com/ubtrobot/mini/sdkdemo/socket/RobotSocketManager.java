@@ -81,8 +81,8 @@ public class RobotSocketManager {
                 .url(serverUrl + "/" + serial)
                 .build();
 
-        setupConnectionChecker();
-        connect();
+//        setupConnectionChecker();
+//        connect();
     }
 
     private String getRobotSerialNumber() {

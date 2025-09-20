@@ -1,10 +1,25 @@
 package com.ubtrobot.mini.sdkdemo;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.EditText;
 
@@ -14,17 +29,36 @@ import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtechinc.sauron.api.FaceTrackListener;
 import com.ubtechinc.sauron.api.SauronApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.voice.VoicePool;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FaceApiActivity extends Activity {
     private static final String TAG = "FaceActivity";
+    private static final int CAMERA_PERMISSION_REQUEST = 199901;
+    private static final int MAX_RETRY_ATTEMPTS = 1; // Retry only once
+    private int retryCount = 0;
+    private boolean shouldRetry = true;
     private FaceApi faceApi;
+    private TextureView textureView;
+    private CameraDevice cameraDevice;
+    private CameraCaptureSession cameraCaptureSession;
+    private CaptureRequest.Builder captureRequestBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.face_api_layout);
+        textureView = findViewById(R.id.camera_feed);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    CAMERA_PERMISSION_REQUEST);
+        } else {
+            setupCamera();
+        }
         initRobot();
     }
 
@@ -112,8 +146,8 @@ public class FaceApiActivity extends Activity {
         });
     }
 
-    public void faceRegister(View view){
-        faceApi.startRegister("user_li", "MinhDuck",  new ResponseListener<String>() {
+    public void faceRegister(View view) {
+        faceApi.startRegister("user_li", "MinhDuck", new ResponseListener<String>() {
 
             @Override
             public void onResponseSuccess(String msg) {
@@ -134,16 +168,16 @@ public class FaceApiActivity extends Activity {
     public void faceRegisterStart(View view) {
         faceApi.apiFaceRegister("user_li", "MinhDuck", new ResponseListener<String>() {
 
-                    @Override
-                    public void onResponseSuccess(String msg) {
-                        Log.i(TAG, "faceRegisterStart call successful, msg======" + msg);
-                    }
+            @Override
+            public void onResponseSuccess(String msg) {
+                Log.i(TAG, "faceRegisterStart call successful, msg======" + msg);
+            }
 
-                    @Override
-                    public void onFailure(int errorCode, @NonNull String errorMsg) {
-                        Log.i(TAG, "faceRegisterStart interface returns an error, errorCode: " + errorCode + ", errorMsg: " + errorMsg);
-                    }
-                });
+            @Override
+            public void onFailure(int errorCode, @NonNull String errorMsg) {
+                Log.i(TAG, "faceRegisterStart interface returns an error, errorCode: " + errorCode + ", errorMsg: " + errorMsg);
+            }
+        });
         Log.i(TAG, "faceRegisterStart interface call successful!");
     }
 
@@ -287,5 +321,177 @@ public class FaceApiActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void setupCamera() {
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            String[] cameraIds = manager.getCameraIdList();
+            if (cameraIds.length == 0) {
+                // No camera available, just leave black screen
+                return;
+            }
+
+            textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+                @Override
+                public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+                    openCamera();
+                }
+
+                @Override
+                public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {}
+
+                @Override
+                public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+                    return false;
+                }
+
+                @Override
+                public void onSurfaceTextureUpdated(SurfaceTexture surface) {}
+            });
+
+        } catch (CameraAccessException e) {
+            // Just leave black screen on initial setup error
+        }
+    }
+
+    private void openCamera() {
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            String cameraId = manager.getCameraIdList()[0];
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            manager.openCamera(cameraId, new CameraDevice.StateCallback() {
+                @Override
+                public void onOpened(@NonNull CameraDevice camera) {
+                    cameraDevice = camera;
+                    retryCount = 0; // Reset retry count on success
+                    createCameraPreview();
+                }
+
+                @Override
+                public void onDisconnected(@NonNull CameraDevice camera) {
+                    cameraDevice.close();
+                    cameraDevice = null;
+                    tryReopenCamera();
+                }
+
+                @Override
+                public void onError(@NonNull CameraDevice camera, int error) {
+                    if(cameraDevice != null){
+                        cameraDevice.close();
+                        cameraDevice = null;
+                    }
+                    tryReopenCamera();
+                }
+            }, null);
+
+        } catch (CameraAccessException e) {
+            Log.e(TAG, "Cannot open camera", e);
+            tryReopenCamera();
+        } 
+    }
+    private void tryReopenCamera() {
+        if (shouldRetry && retryCount < MAX_RETRY_ATTEMPTS) {
+            retryCount++;
+            Log.d(TAG, "Retrying camera open, attempt: " + retryCount);
+
+            // Wait a bit before retrying
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (shouldRetry) {
+                    openCamera();
+                }
+            }, 1000); // Retry after 1 second
+
+        } else {
+            // Max retries reached or should not retry, just keep black screen
+            Log.d(TAG, "Giving up on camera after " + retryCount + " attempts");
+            shouldRetry = false; // Stop any further retries
+            // TextureView will remain black (default state)
+        }
+    }
+
+    private void createCameraPreview() {
+        try {
+            SurfaceTexture texture = textureView.getSurfaceTexture();
+            if (texture == null) return;
+
+            texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
+            Surface surface = new Surface(texture);
+
+            CaptureRequest.Builder captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequestBuilder.addTarget(surface);
+
+            cameraDevice.createCaptureSession(Arrays.asList(surface),
+                    new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession session) {
+                            if (cameraDevice == null) return;
+
+                            cameraCaptureSession = session;
+                            try {
+                                captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                                cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(),
+                                        null, null);
+                            } catch (CameraAccessException e) {
+                                // Preview setup failed, try to reopen
+                                tryReopenCamera();
+                            }
+                        }
+
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                            // Session configuration failed, try to reopen
+                            tryReopenCamera();
+                        }
+                    }, null);
+
+        } catch (CameraAccessException e) {
+            tryReopenCamera();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setupCamera();
+            }
+            // If denied, TextureView will remain black (no error message)
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shouldRetry = false; // Stop any ongoing retries
+
+        if (cameraCaptureSession != null) {
+            cameraCaptureSession.close();
+            cameraCaptureSession = null;
+        }
+
+        if (cameraDevice != null) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        shouldRetry = true;
+        retryCount = 0;
+
+        if (textureView.isAvailable()) {
+            openCamera();
+        }
     }
 }

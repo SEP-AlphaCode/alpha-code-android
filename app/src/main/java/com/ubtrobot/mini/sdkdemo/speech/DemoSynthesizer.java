@@ -16,6 +16,7 @@ public class DemoSynthesizer extends AbstractSynthesizer {
     @Override
     protected void startSynthesizing(SynthesisOption synthesisOption) {
         EnglishTTS.getInstance().doTTS(synthesisOption.getInputText());
+        Log.d("Synthesizer", synthesisOption.toString());
     }
 
     @Override

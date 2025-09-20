@@ -44,7 +44,7 @@ public class DemoApp extends Application {
         initSpeech();
         RobotSocketController robotSocketController = new RobotSocketController();
         RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);
-        wsClient.forceConnect();
+        //wsClient.forceConnect();
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();
