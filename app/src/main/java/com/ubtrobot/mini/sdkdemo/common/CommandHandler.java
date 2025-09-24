@@ -96,6 +96,10 @@ public class CommandHandler {
                     }
                 });
                 break;
+            case "face_recognize":
+                break;
+            case "face_register":
+                break;
             default:
                 ttsHandler.doTTS(text, lang);
                 break;
