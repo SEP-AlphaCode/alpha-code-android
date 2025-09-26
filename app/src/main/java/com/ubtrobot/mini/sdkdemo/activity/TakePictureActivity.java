@@ -20,7 +20,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
-import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
+import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
@@ -43,7 +43,7 @@ public class TakePictureActivity {
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
     private TTSHandler tts;
-    ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
+    QRCodeApi activityApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
 
@@ -129,10 +129,11 @@ public class TakePictureActivity {
                             break;
                         case "qr-code":
                             // Decode the QR code from the image file
-                            String qrContent = decodeQRCodeFromFile(realPath, lang);
-                            if (qrContent != null) {
+                            RequestBody requestFileImage = RequestBody.create(file, MediaType.parse("image/*"));
+                            MultipartBody.Part bodyImage = MultipartBody.Part.createFormData("imageFile", file.getName(), requestFileImage);
+                            if (bodyImage != null) {
                                 // Call api to get QR code details
-                                activityApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeActivityResponse>() {
+                                activityApi.getQrCodeByImage(bodyImage).enqueue(new Callback<QRCodeActivityResponse>() {
                                     @Override
                                     public void onResponse(Call<QRCodeActivityResponse> call, Response<QRCodeActivityResponse> response) {
                                         if (response.isSuccessful() && response.body() != null) {
@@ -148,6 +149,8 @@ public class TakePictureActivity {
                                                 e.printStackTrace();
                                             }
                                         } else {
+                                            String text = lang.equals("en")  ? "Cannot recognize the QR code, please try again." : "Không thể nhận diện mã QR, làm ơn thử lại.";
+                                            tts.doTTS(text, lang);
                                             Log.e(TAG, "Data is null or response is not successful");
                                             LogManager.log(LogLevel.ERROR, TAG,"Data is null or response is not successful");
                                         }

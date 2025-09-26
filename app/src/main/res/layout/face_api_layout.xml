@@ -62,8 +62,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="faceRegister"
-                android:text="face Register"
+                android:onClick="faceTestRegister"
+                android:text="face Test Register"
                 android:textAllCaps="false" />
 
             <Button
