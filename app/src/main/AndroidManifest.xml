@@ -63,7 +63,7 @@
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
             android:theme="@style/AppTheme" />
-
+        <activity android:name=".FaceApiCRUD" android:theme="@style/AppTheme"/>
         <service
             android:name=".socket.RobotSocketClient"
             android:enabled="true"

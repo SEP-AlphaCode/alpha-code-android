@@ -1,11 +1,27 @@
 package com.ubtrobot.mini.sdkdemo;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.ubtechinc.sauron.api.FaceApi;
@@ -14,17 +30,23 @@ import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtechinc.sauron.api.FaceTrackListener;
 import com.ubtechinc.sauron.api.SauronApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.custom.CustomFaceApi;
+import com.ubtrobot.mini.voice.VoicePool;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FaceApiActivity extends Activity {
     private static final String TAG = "FaceActivity";
     private FaceApi faceApi;
+    private CustomFaceApi customApi;
+    private EditText name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.face_api_layout);
+        name = findViewById(R.id.name_to_register);
         initRobot();
     }
 
@@ -33,6 +55,7 @@ public class FaceApiActivity extends Activity {
      */
     private void initRobot() {
         faceApi = FaceApi.get();
+        customApi = CustomFaceApi.getInstance();
     }
 
     /**
@@ -112,8 +135,14 @@ public class FaceApiActivity extends Activity {
         });
     }
 
-    public void faceTestRegister(View view){
-        faceApi.startRegister("user_li", "MinhDuck",  new ResponseListener<String>() {
+    /**
+     * Face registration skill startup interface
+     */
+    public void faceRegisterStart(View view) {
+        if(String.valueOf(name.getText()).isEmpty()){
+            return;
+        }
+        customApi.apiFaceRegister("user_li", String.valueOf(name.getText()), new ResponseListener<String>() {
 
             @Override
             public void onResponseSuccess(String msg) {
@@ -129,29 +158,10 @@ public class FaceApiActivity extends Activity {
     }
 
     /**
-     * Face registration skill startup interface
-     */
-    public void faceRegisterStart(View view) {
-        faceApi.apiFaceRegister("user_li", "MinhDuck", new ResponseListener<String>() {
-
-                    @Override
-                    public void onResponseSuccess(String msg) {
-                        Log.i(TAG, "faceRegisterStart call successful, msg======" + msg);
-                    }
-
-                    @Override
-                    public void onFailure(int errorCode, @NonNull String errorMsg) {
-                        Log.i(TAG, "faceRegisterStart interface returns an error, errorCode: " + errorCode + ", errorMsg: " + errorMsg);
-                    }
-                });
-        Log.i(TAG, "faceRegisterStart interface call successful!");
-    }
-
-    /**
      * Exit the face registration process
      */
     public void faceRegisterStop(View view) {
-        faceApi.stopRegister("user_li", new ResponseListener<Void>() {
+        customApi.stopRegister("user_li", new ResponseListener<Void>() {
             @Override
             public void onResponseSuccess(Void aVoid) {
                 Log.i(TAG, "faceRegisterStop call successful!");

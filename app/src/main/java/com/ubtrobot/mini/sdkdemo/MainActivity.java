@@ -57,6 +57,10 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, FaceApiActivity.class);
         startActivity(intent);
     }
+    public void faceApiCRUD(View view){
+        Intent intent = new Intent(this, FaceApiCRUD.class);
+        startActivity(intent);
+    }
     private void checkWriteSettingsPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.System.canWrite(context)) {
