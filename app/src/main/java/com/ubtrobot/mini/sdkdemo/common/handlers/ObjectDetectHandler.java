@@ -45,7 +45,7 @@ public class ObjectDetectHandler {
                     }
                     if(!result.closest_objects.isEmpty()) {
                         Detection closest = result.closest_objects.get(0);
-                        stt.doSTT(closest.label, lang).enqueue(new Callback<NLPResponse>() {
+                        stt.describeObjectDetectResult(closest.label, lang).enqueue(new Callback<NLPResponse>() {
                             @Override
                             public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
                                 NLPResponse r = response.body();

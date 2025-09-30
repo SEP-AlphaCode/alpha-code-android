@@ -35,6 +35,11 @@ public class MainActivity extends Activity {
             RobotSocketClient.getInstance().forceConnect();
         });
     }
+    public void speechApiTest(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, SpeechApiActivity.class);
+        startActivity(intent);
+    }
 
     public void actionApiTest(View view) {
         Intent intent = new Intent();

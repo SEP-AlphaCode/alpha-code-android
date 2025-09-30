@@ -41,7 +41,7 @@ public class CameraHandler {
             public void onDone() {
                 Log.i(TAG, "Voice playback finished successfully");
                 // Only take picture if a QR code text was provided
-                if (message != null && !message.trim().isEmpty()) {
+                if (!message.trim().isEmpty()) {
                     takePictureActivity.takePicImmediately("qr-code", lang);
                 }
             }

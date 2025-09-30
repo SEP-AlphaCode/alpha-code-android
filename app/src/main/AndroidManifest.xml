@@ -76,6 +76,7 @@
                 android:resource="@xml/speech_demo" />
         </service>
         <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>
+        <activity android:name=".SpeechApiActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

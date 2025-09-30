@@ -69,7 +69,7 @@
                 android:layout_weight="1"
                 android:onClick="speechApiTest"
                 android:singleLine="true"
-                android:text="Speech Api Test"
+                android:text="Send text"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
 
