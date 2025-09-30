@@ -24,7 +24,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.activity.QrCodeActivity;
-import com.ubtrobot.mini.sdkdemo.apis.ActivityApi;
+import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
 import com.ubtrobot.mini.sdkdemo.custom.tts.EnglishTTS;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
@@ -48,7 +48,7 @@ public class TakePicApiActivity extends Activity {
     private TakePicApi takePicApi;
     private QrCodeActivity qrCodeActivity;
     private EnglishTTS tts;
-    ActivityApi activityApi = ApiClient.getSpringInstance().create(ActivityApi.class);
+    QRCodeApi activityApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
 
 

@@ -146,15 +146,15 @@ public class FaceApiActivity extends Activity {
 
             @Override
             public void onResponseSuccess(String msg) {
-                Log.i(TAG, "faceRegisterStart call successful, msg======" + msg);
+                Log.i(TAG, "faceRegisterTestStart call successful, msg======" + msg);
             }
 
             @Override
             public void onFailure(int errorCode, @NonNull String errorMsg) {
-                Log.i(TAG, "faceRegisterStart interface returns an error, errorCode: " + errorCode + ", errorMsg: " + errorMsg);
+                Log.i(TAG, "faceRegisterTestStart interface returns an error, errorCode: " + errorCode + ", errorMsg: " + errorMsg);
             }
         });
-        Log.i(TAG, "faceRegisterStart interface call successful!");
+        Log.i(TAG, "faceRegisterTestStart interface call successful!");
     }
 
     /**
