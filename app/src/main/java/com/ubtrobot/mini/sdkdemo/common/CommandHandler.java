@@ -6,6 +6,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.FaceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
@@ -26,6 +27,7 @@ public class CommandHandler {
     private CameraHandler cameraHandler;
     private TTSHandler ttsHandler;
     private SystemHandler systemHandler;
+    private FaceHandler faceHandler;
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -36,6 +38,7 @@ public class CommandHandler {
         this.cameraHandler = new CameraHandler();
         this.ttsHandler = new TTSHandler();
         this.systemHandler = SystemHandler.get();
+        this.faceHandler = FaceHandler.get();
     }
 
     public void handleCommand(String type, JSONObject data, String lang) {
@@ -97,8 +100,15 @@ public class CommandHandler {
                 });
                 break;
             case "face_recognize":
+                faceHandler.handleDetect(lang);
                 break;
             case "face_register":
+                String name = data.optString("name");
+                if(name != null && !name.isEmpty()){
+                    faceHandler.handleRegister(name);
+                } else {
+                    ttsHandler.doTTS(lang.equals("en") ? "Please provide a name to register" : "Vui lòng cung cấp tên để đăng ký", lang);
+                }
                 break;
             default:
                 ttsHandler.doTTS(text, lang);
