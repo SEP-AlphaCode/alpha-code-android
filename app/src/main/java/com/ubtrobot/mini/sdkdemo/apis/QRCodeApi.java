@@ -15,7 +15,7 @@ public interface QRCodeApi {
     Call<QRCodeActivityResponse> getQrCodeByCode(@Path("qrCode") String qrCode);
 
     @Multipart
-    @POST("activities/by-image")
+    @POST("qr-codes/by-image")
     Call<QRCodeActivityResponse> getQrCodeByImage(
             @Part MultipartBody.Part imageFile
     );

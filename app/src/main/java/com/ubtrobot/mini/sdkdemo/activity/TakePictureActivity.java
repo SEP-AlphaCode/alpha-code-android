@@ -130,7 +130,7 @@ public class TakePictureActivity {
                         case "qr-code":
                             // Decode the QR code from the image file
                             RequestBody requestFileImage = RequestBody.create(file, MediaType.parse("image/*"));
-                            MultipartBody.Part bodyImage = MultipartBody.Part.createFormData("imageFile", file.getName(), requestFileImage);
+                            MultipartBody.Part bodyImage = MultipartBody.Part.createFormData("image", file.getName(), requestFileImage);
                             if (bodyImage != null) {
                                 // Call api to get QR code details
                                 activityApi.getQrCodeByImage(bodyImage).enqueue(new Callback<QRCodeActivityResponse>() {
