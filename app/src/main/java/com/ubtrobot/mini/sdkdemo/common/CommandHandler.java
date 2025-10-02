@@ -1,5 +1,7 @@
 package com.ubtrobot.mini.sdkdemo.common;
 
+import android.util.Log;
+
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
@@ -104,6 +106,7 @@ public class CommandHandler {
                 break;
             case "face_register":
                 String name = data.optString("name");
+                Log.i(TAG, name);
                 if(name != null && !name.isEmpty()){
                     faceHandler.handleRegister(name);
                 } else {
