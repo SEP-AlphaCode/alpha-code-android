@@ -1,6 +1,7 @@
 package com.ubtrobot.mini.sdkdemo;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.ubtrobot.mini.SDKInit;
 import com.ubtrobot.mini.properties.sdk.Path;
 import com.ubtrobot.mini.properties.sdk.PropertiesApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.custom.translator.TranslatorHelper;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketController;
@@ -33,7 +35,9 @@ public class DemoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        TTSHandler.init(Utils.getContext().getApplicationContext());
+        Context context = Utils.getContext().getApplicationContext();
+        TTSHandler.init(context);
+        TranslatorHelper.init(context);
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
 

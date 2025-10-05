@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         TTSHandler.init(Utils.getContext().getApplicationContext());
-        checkWriteSettingsPermission(this);
+        //checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
 
         forceConnect.setOnClickListener(l -> {

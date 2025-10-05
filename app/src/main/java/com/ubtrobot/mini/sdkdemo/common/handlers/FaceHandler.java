@@ -1,12 +1,14 @@
 package com.ubtrobot.mini.sdkdemo.common.handlers;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.ubtechinc.sauron.api.FaceApi;
 import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,10 +33,17 @@ public class FaceHandler {
 
             @Override
             public void onDone() {
-                faceApi.faceDetect(10000, new ResponseListener<List<FaceInfo>>() {
+                faceApi.faceRecognize(10000, new ResponseListener<List<FaceInfo>>() {
                     @Override
                     public void onResponseSuccess(List<FaceInfo> faceInfos) {
-
+                        for (FaceInfo faceInfo : faceInfos) {
+                            Log.i(TAG, "Detected face: " + faceInfo);
+                        }
+                        if(lang.equals("en")){
+                            handleFaceInfosEn(faceInfos);
+                        } else {
+                            handleFaceInfosVi(faceInfos);
+                        }
                     }
 
                     @Override
@@ -63,4 +72,55 @@ public class FaceHandler {
             }
         });
     }
+
+    private String buildNamesSentence(List<String> names, String lang) {
+        if (names.isEmpty()) return "";
+        if (names.size() == 1) return names.get(0);
+        String last = names.get(names.size() - 1);
+        String joiner = lang.equals("vi") ? " và " : " and ";
+        return String.join(", ", names.subList(0, names.size() - 1)) + joiner + last;
+    }
+
+    public void handleFaceInfosEn(List<FaceInfo> faceInfos) {
+        if (faceInfos == null || faceInfos.isEmpty()) {
+            tts.doTTS("Are you there? Hello...", "en", null);
+            return;
+        }
+        List<String> knownNames = new ArrayList<>();
+        int strangerCount = 0;
+        for (FaceInfo faceInfo : faceInfos) {
+            if (faceInfo.getId() == null) {
+                strangerCount++;
+            } else {
+                knownNames.add(faceInfo.getName());
+            }
+        }
+        if (faceInfos.size() == 1 && strangerCount == 1) {
+            tts.doTTS("I don't recognize you", "en", null);
+        } else if (!knownNames.isEmpty()) {
+            tts.doTTS("I see " + buildNamesSentence(knownNames, "en") + ".", "en", null);
+        }
+    }
+
+    public void handleFaceInfosVi(List<FaceInfo> faceInfos) {
+        if (faceInfos == null || faceInfos.isEmpty()) {
+            tts.doTTS("Bạn có ở đó không? Alo...", "vi", null);
+            return;
+        }
+        List<String> knownNames = new ArrayList<>();
+        int strangerCount = 0;
+        for (FaceInfo faceInfo : faceInfos) {
+            if (faceInfo.getId() == null) {
+                strangerCount++;
+            } else {
+                knownNames.add(faceInfo.getName());
+            }
+        }
+        if (faceInfos.size() == 1 && strangerCount == 1) {
+            tts.doTTS("Tôi không nhận ra bạn", "vi", null);
+        } else if (!knownNames.isEmpty()) {
+            tts.doTTS("Tôi thấy " + buildNamesSentence(knownNames, "vi") + ".", "vi", null);
+        }
+    }
+
 }
