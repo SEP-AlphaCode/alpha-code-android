@@ -44,7 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FaceApiActivity" />
+        <activity android:name=".uiActivities.FaceApiActivity" />
         <receiver
             android:name=".custom.ShutdownReceiver"
             android:enabled="true"
@@ -57,13 +57,13 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name="com.ubtrobot.mini.sdkdemo.ActionApiActivity"
+            android:name="com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".SysEventTestActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".uiActivities.SysEventTestActivity" android:theme="@style/AppTheme"/>
         <activity
-            android:name="com.ubtrobot.mini.sdkdemo.TakePicApiActivity"
+            android:name="com.ubtrobot.mini.sdkdemo.uiActivities.TakePicApiActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".FaceApiCRUD" android:theme="@style/AppTheme"/>
+        <activity android:name=".uiActivities.FaceApiCRUD" android:theme="@style/AppTheme"/>
         <service
             android:name=".socket.RobotSocketClient"
             android:enabled="true"
@@ -76,7 +76,7 @@
                 android:resource="@xml/speech_demo" />
         </service>
         <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>
-        <activity android:name=".SpeechApiActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".uiActivities.SpeechApiActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

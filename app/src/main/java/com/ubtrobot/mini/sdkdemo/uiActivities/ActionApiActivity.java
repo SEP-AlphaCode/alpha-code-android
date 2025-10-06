@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.action.receiver.ActionStoppedReceiver;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.motion.protos.Motion;
 
 

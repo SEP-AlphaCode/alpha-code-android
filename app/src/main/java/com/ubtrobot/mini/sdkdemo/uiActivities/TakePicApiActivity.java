@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,6 +23,7 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.activity.QrCodeActivity;
 import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;

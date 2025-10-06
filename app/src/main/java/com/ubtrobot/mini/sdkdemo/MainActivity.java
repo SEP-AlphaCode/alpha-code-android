@@ -14,7 +14,12 @@ import android.widget.Button;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
-import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
+import com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiCRUD;
+import com.ubtrobot.mini.sdkdemo.uiActivities.SpeechApiActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.SysEventTestActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.TakePicApiActivity;
 
 /**
  * Created by lulin.wu on 2018/6/19.

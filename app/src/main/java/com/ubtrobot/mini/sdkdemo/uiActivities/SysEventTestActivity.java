@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 
 public class SysEventTestActivity extends Activity {
