@@ -59,6 +59,7 @@ public class DanceHandler {
     }
 
     private void initPlayer(MasterContext context, VoiceProto.Source source, JSONObject jsonObject) {
+        Log.i(TAG, String.valueOf(jsonObject));
         try {
             String audioPath = jsonObject.getJSONObject("music_info").getString("music_file_url");
             miniPlayer = MiniMediaPlayer.create(context, source);

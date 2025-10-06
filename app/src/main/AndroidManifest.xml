@@ -45,6 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".uiActivities.FaceApiActivity" />
+
         <receiver
             android:name=".custom.ShutdownReceiver"
             android:enabled="true"
@@ -56,14 +57,30 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWEROFF" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".custom.BatteryReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".uiActivities.SysEventTestActivity" android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".uiActivities.SysEventTestActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.ubtrobot.mini.sdkdemo.uiActivities.TakePicApiActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".uiActivities.FaceApiCRUD" android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".uiActivities.FaceApiCRUD"
+            android:theme="@style/AppTheme" />
+
         <service
             android:name=".socket.RobotSocketClient"
             android:enabled="true"
@@ -75,8 +92,13 @@
                 android:name="master.service"
                 android:resource="@xml/speech_demo" />
         </service>
-        <meta-data android:name="ubt-master-app" android:value="third_part_speechservice"/>
-        <activity android:name=".uiActivities.SpeechApiActivity" android:theme="@style/AppTheme"/>
+
+        <meta-data
+            android:name="ubt-master-app"
+            android:value="third_part_speechservice" />
+        <activity
+            android:name=".uiActivities.SpeechApiActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
