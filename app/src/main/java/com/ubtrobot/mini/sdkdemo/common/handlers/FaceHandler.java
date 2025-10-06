@@ -89,7 +89,7 @@ public class FaceHandler {
         List<String> knownNames = new ArrayList<>();
         int strangerCount = 0;
         for (FaceInfo faceInfo : faceInfos) {
-            if (faceInfo.getId() == null) {
+            if (faceInfo.getId() == null || faceInfo.getId().isEmpty()) {
                 strangerCount++;
             } else {
                 knownNames.add(faceInfo.getName());
@@ -104,13 +104,13 @@ public class FaceHandler {
 
     public void handleFaceInfosVi(List<FaceInfo> faceInfos) {
         if (faceInfos == null || faceInfos.isEmpty()) {
-            tts.doTTS("Bạn có ở đó không? Alo...", "vi", null);
+            tts.doTTS("Bạn có ở đó không?", "vi", null);
             return;
         }
         List<String> knownNames = new ArrayList<>();
         int strangerCount = 0;
         for (FaceInfo faceInfo : faceInfos) {
-            if (faceInfo.getId() == null) {
+            if (faceInfo.getId() == null || faceInfo.getId().isEmpty()) {
                 strangerCount++;
             } else {
                 knownNames.add(faceInfo.getName());

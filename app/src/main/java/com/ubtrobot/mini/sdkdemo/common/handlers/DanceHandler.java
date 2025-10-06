@@ -71,6 +71,7 @@ public class DanceHandler {
                 // This ensures the media is ready before executing actions
                 try {
                     playScriptFromJson(jsonObject);
+                    Log.i(TAG, "Script execution done");
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing JSON", e);
                     LogManager.log(LogLevel.ERROR, TAG, "Error parsing JSON: " + e.getMessage());
