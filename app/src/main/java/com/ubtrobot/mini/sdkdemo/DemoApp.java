@@ -43,7 +43,7 @@ public class DemoApp extends Application {
 
         initSpeech();
         RobotSocketController robotSocketController = new RobotSocketController();
-        RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);
+        RobotSocketClient wsClient = new RobotSocketClient();
         //wsClient.forceConnect();
     }
     private void initSpeech(){
