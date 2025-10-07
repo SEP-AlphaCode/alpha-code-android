@@ -2,6 +2,8 @@ package com.ubtrobot.mini.sdkdemo.models.response;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import java.util.UUID;
 
 public class QRCodeActivityResponse {

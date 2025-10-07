@@ -59,6 +59,7 @@ public class DanceHandler {
     }
 
     private void initPlayer(MasterContext context, VoiceProto.Source source, JSONObject jsonObject) {
+        Log.i(TAG, String.valueOf(jsonObject));
         try {
             String audioPath = jsonObject.getJSONObject("music_info").getString("music_file_url");
             miniPlayer = MiniMediaPlayer.create(context, source);
@@ -71,6 +72,7 @@ public class DanceHandler {
                 // This ensures the media is ready before executing actions
                 try {
                     playScriptFromJson(jsonObject);
+                    Log.i(TAG, "Script execution done");
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing JSON", e);
                     LogManager.log(LogLevel.ERROR, TAG, "Error parsing JSON: " + e.getMessage());

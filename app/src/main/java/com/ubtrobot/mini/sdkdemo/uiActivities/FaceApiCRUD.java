@@ -1,4 +1,4 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ubtechinc.sauron.api.FaceApi;
 import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
 
 import java.util.ArrayList;
 

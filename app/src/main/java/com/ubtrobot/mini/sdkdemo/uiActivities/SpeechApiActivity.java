@@ -1,15 +1,20 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
+import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.apis.STTApi;
+import com.ubtrobot.mini.sdkdemo.camera.CameraManager;
 import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.models.requests.NLPRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
@@ -27,6 +32,11 @@ public class SpeechApiActivity extends Activity {
     Button sendBtn, qr, osmo;
     CommandHandler cmd = new CommandHandler();
     STTApi api = ApiClient.getPythonInstance().create(STTApi.class);
+
+    private CameraManager cameraManager;
+    private SurfaceView surfaceView;
+    private SurfaceHolder surfaceHolder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +49,28 @@ public class SpeechApiActivity extends Activity {
             textContent.setText("Scan the qr code");
         });
         osmo = findViewById(R.id.osmo_btn);
-        osmo.setOnClickListener(v -> {;
+        osmo.setOnClickListener(v -> {
+            ;
             textContent.setText("Scan the osmo cards");
         });
+
+        surfaceView = findViewById(R.id.camera_surface);
+        surfaceView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                int width = surfaceView.getWidth();
+                int height = surfaceView.getHeight();
+                cameraManager.focusOnPoint(x, y, width, height);
+                return true;
+            }
+            return false;
+        });
+        surfaceHolder = surfaceView.getHolder();
+        cameraManager = new CameraManager();
+        cameraManager.openCamera(surfaceHolder);
     }
+
     public void sendText(View view) {
         api.processText(new NLPRequest(textContent.getText().toString())).enqueue(new Callback<NLPResponse>() {
             @Override
@@ -71,5 +99,10 @@ public class SpeechApiActivity extends Activity {
                 Log.e(TAG, "Error processing response in speech api activity", t);
             }
         });
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        cameraManager.closeCamera();
     }
 }

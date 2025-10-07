@@ -12,6 +12,8 @@ import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -44,10 +46,27 @@ public class ObjectDetectHandler {
                         Log.i(TAG, " - " + result.closest_objects.get(i).label +
                                 " (depth_min=" + result.closest_objects.get(i).depth_min + ")");
                     }
-                    String text = lang.equals("vi") ?
-                            buildDetectionSentenceVi(result.closest_objects) :
-                            buildDetectionSentenceEn(result.closest_objects);
-                    tts.doTTS(text, lang);
+                    if(!result.closest_objects.isEmpty()) {
+                        Detection closest = result.closest_objects.get(0);
+                        stt.describeObjectDetectResult(closest.label, lang).enqueue(new Callback<NLPResponse>() {
+                            @Override
+                            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                                NLPResponse r = response.body();
+                                tts.doTTS(r.getData().getText(), lang);
+                            }
+
+                            @Override
+                            public void onFailure(Call<NLPResponse> call, Throwable t) {
+
+                            }
+                        });
+                    } else {
+                        String text = "I don't see anything. Please try again";
+                        if(lang.equals("vi")){
+                            text = "Tôi không thấy gì cả. Xin hãy thử lại sau";
+                        }
+                        tts.doTTS(text, lang);
+                    }
                 } else {
                     Log.e(TAG, "Response failed: " + response.code());
                     LogManager.log(LogLevel.ERROR, TAG, "Response failed: " + response.code());
@@ -75,7 +94,7 @@ public class ObjectDetectHandler {
             return "I see a " + labels.get(0) + ".";
         }
         StringBuilder sb = new StringBuilder("I see ");
-        for (int i = 0; i < labels.size(); i++) {
+        for (int i = 0; i < 1; i++) {
             sb.append("a ").append(labels.get(i));
             if (i < labels.size() - 2) {
                 sb.append(", ");
@@ -100,7 +119,7 @@ public class ObjectDetectHandler {
             return "Tôi thấy một " + labels.get(0) + ".";
         }
         StringBuilder sb = new StringBuilder("Tôi thấy ");
-        for (int i = 0; i < labels.size(); i++) {
+        for (int i = 0; i < 1; i++) {
             sb.append("một ").append(labels.get(i));
             if (i < labels.size() - 2) {
                 sb.append(", ");

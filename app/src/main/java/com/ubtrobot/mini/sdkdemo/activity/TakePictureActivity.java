@@ -22,12 +22,15 @@ import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
+import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -41,7 +44,7 @@ import retrofit2.Response;
 public class TakePictureActivity {
     private static final String TAG = "TakePictureActivity";
     private TakePicApi takePicApi;
-    private QrCodeActivity qrCodeActivity;
+    private CommandHandler commandHandler = new CommandHandler();
     private TTSHandler tts;
     QRCodeApi activityApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
     OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
@@ -58,7 +61,6 @@ public class TakePictureActivity {
 
     private void initRobot() {
         takePicApi = TakePicApi.get();
-        qrCodeActivity = QrCodeActivity.get();
         tts = new TTSHandler();
     }
 
@@ -138,13 +140,9 @@ public class TakePictureActivity {
                                     public void onResponse(Call<QRCodeActivityResponse> call, Response<QRCodeActivityResponse> response) {
                                         if (response.isSuccessful() && response.body() != null) {
                                             try {
-                                                JsonObject jsonObject = response.body().getData();
-
-                                                // Change JsonObject (Gson) -> JSON string
-                                                String jsonString = new Gson().toJson(jsonObject);
-
+                                                JSONObject data = new JSONObject(new Gson().toJson(response.body().getData()));
                                                 // Put string JSON to DoActivity
-                                                qrCodeActivity.doActivity(jsonString, response.body().getName(), lang);
+                                                commandHandler.handleCommand(response.body().getType(), data, lang);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }

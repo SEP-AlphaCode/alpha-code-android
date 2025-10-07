@@ -1,27 +1,11 @@
-package com.ubtrobot.mini.sdkdemo;
+package com.ubtrobot.mini.sdkdemo.uiActivities;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.ubtechinc.sauron.api.FaceApi;
@@ -30,10 +14,9 @@ import com.ubtechinc.sauron.api.FaceInfo;
 import com.ubtechinc.sauron.api.FaceTrackListener;
 import com.ubtechinc.sauron.api.SauronApi;
 import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.custom.CustomFaceApi;
-import com.ubtrobot.mini.voice.VoicePool;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class FaceApiActivity extends Activity {
