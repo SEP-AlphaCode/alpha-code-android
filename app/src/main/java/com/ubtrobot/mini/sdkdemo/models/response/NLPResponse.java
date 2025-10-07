@@ -27,18 +27,18 @@ public class NLPResponse {
     }
 
     public static class Action {
-        private String name;
+        private String code;
         private int step;
 
         public Action() {
         }
 
         public String getName() {
-            return name;
+            return code;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setName(String code) {
+            this.code = code;
         }
 
         public int getStep() {
