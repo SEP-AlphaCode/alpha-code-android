@@ -55,10 +55,6 @@ public class CommandHandler {
                 danceHandler.handleDanceWithMusic(data);
                 break;
 
-            case "skill":
-                skillHandler.handleSkill();
-                break;
-
             case "skill_helper":
                 skillHandler.handleSkillHelper(code);
                 break;

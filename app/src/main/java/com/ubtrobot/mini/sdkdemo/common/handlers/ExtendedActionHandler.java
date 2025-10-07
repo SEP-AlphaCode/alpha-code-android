@@ -31,7 +31,7 @@ public class ExtendedActionHandler {
             }
         } else {
             // fallback for single action
-            String name = data.optString("name");
+            String name = data.optString("code");
             int step = data.optInt("step", 1);
             executeAction(name, step, () -> {
                 Log.i(TAG, "Single extended action finished");
