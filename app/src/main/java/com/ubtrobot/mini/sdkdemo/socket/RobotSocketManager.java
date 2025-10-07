@@ -35,12 +35,32 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
 
     private final String serverUrl;
     private final String robotSerial;
+    private static RobotSocketManager instance;
 
-    public RobotSocketManager(String serverUrl, String robotSerial) {
+    private RobotSocketManager(String serverUrl, String robotSerial) {
         this.serverUrl = serverUrl;
         this.robotSerial = robotSerial;
         initializeClient();
         setupPingMechanism();
+    }
+
+    public static synchronized RobotSocketManager getInstance(String serverUrl, String robotSerial) {
+        if (instance == null) {
+            instance = new RobotSocketManager(serverUrl, robotSerial);
+        }
+        return instance;
+    }
+
+    public static synchronized RobotSocketManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("RobotSocketManager not initialized. Call getInstance(String, String) first.");
+        }
+        return instance;
+    }
+
+    // Method to check if instance is initialized
+    public static boolean isInitialized() {
+        return instance != null;
     }
 
     @Override
@@ -194,6 +214,20 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         }
     }
 
+    @Override
+    public void sendBinaryMessage(byte[] message) {
+        if (webSocket != null && isConnected) {
+            boolean success = webSocket.send(okio.ByteString.of(message));
+            Log.d(TAG, "Send binary message, length: " + message.length + " | success: " + success);
+
+            if (!success && view != null) {
+                view.onError("Failed to send binary message");
+            }
+        } else {
+            Log.w(TAG, "Cannot send binary message, WebSocket not connected");
+        }
+    }
+
     private class SocketListener extends WebSocketListener {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
@@ -207,7 +241,7 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
-            Log.i(TAG, "Received message: " + text);
+            Log.i(TAG, "Received text message: " + text);
 
             if (view != null) {
                 view.onMessageReceived(text);
@@ -222,6 +256,17 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
             handleConnectionFailure("Connection closed: " + reason + " (code: " + code + ")");
+        }
+        @Override
+        public void onMessage(WebSocket webSocket, okio.ByteString bytes) {
+            Log.i(TAG, "Received binary message, length: " + bytes.size());
+
+            // Handle binary response (if your server sends protobuf responses)
+            if (view != null) {
+                // Convert to string for text responses, or handle as binary
+                String textResponse = bytes.utf8();
+                view.onMessageReceived(textResponse);
+            }
         }
     }
 }

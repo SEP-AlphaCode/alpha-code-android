@@ -45,6 +45,22 @@ public class RobotSocketController implements WebSocketContract.View {
     }
 
     @Override
+    public void onBinaryMessageReceived(byte[] message) {
+        Log.i(TAG, "Received binary message, length: " + message.length);
+
+        // If your server sends protobuf responses, parse them here
+        // For now, since you mentioned server responds with text,
+        // we'll convert binary to string
+        try {
+            String textResponse = new String(message, "UTF-8");
+            onMessageReceived(textResponse);
+        } catch (Exception e) {
+            Log.e(TAG, "Error converting binary message to string", e);
+            onError("Failed to parse binary message");
+        }
+    }
+
+    @Override
     public void onError(String error) {
         Log.e(TAG, "WebSocket error: " + error);
     }

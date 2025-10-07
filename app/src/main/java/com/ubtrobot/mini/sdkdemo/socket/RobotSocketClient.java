@@ -42,7 +42,7 @@ public class RobotSocketClient extends Service {
 
             // Create controller and manager
             socketController = new RobotSocketController();
-            socketManager = new RobotSocketManager(BuildConfig.API_WEBSOCKET, serial);
+            socketManager = RobotSocketManager.getInstance(BuildConfig.API_WEBSOCKET, serial);
 
             // Connect them
             socketManager.setView(socketController);
