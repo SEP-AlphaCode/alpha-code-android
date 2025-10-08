@@ -42,6 +42,9 @@ public class DemoApp extends Application {
         Log.i(TAG, "LogManager initialized");
 
         initSpeech();
+        RobotSocketController robotSocketController = new RobotSocketController();
+        RobotSocketClient wsClient = new RobotSocketClient(robotSocketController);
+        //wsClient.forceConnect();
     }
     private void initSpeech(){
         StringBuffer param = new StringBuffer();

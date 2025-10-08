@@ -39,13 +39,38 @@ public class ObjectDetectHandler {
         call.enqueue(new Callback<DetectClosestResponse>() {
             @Override
             public void onResponse(Call<DetectClosestResponse> call, Response<DetectClosestResponse> response) {
-                DetectClosestResponse result = response.body();
-                String sentence = buildDetectionSentence(result.closest_objects);
-                if(lang.equals("en")){
-                    tts.doTTS(sentence, lang);
-                    return;
-                }
+                if (response.isSuccessful() && response.body() != null) {
+                    DetectClosestResponse result = response.body();
+                    Log.i(TAG, "Closest Objects: " + result.closest_objects.size());
+                    for (int i = 0; i < result.closest_objects.size(); i++) {
+                        Log.i(TAG, " - " + result.closest_objects.get(i).label +
+                                " (depth_min=" + result.closest_objects.get(i).depth_min + ")");
+                    }
+                    if(!result.closest_objects.isEmpty()) {
+                        Detection closest = result.closest_objects.get(0);
+                        stt.describeObjectDetectResult(closest.label, lang).enqueue(new Callback<NLPResponse>() {
+                            @Override
+                            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                                NLPResponse r = response.body();
+                                tts.doTTS(r.getData().getText(), lang);
+                            }
 
+                            @Override
+                            public void onFailure(Call<NLPResponse> call, Throwable t) {
+
+                            }
+                        });
+                    } else {
+                        String text = "I don't see anything. Please try again";
+                        if(lang.equals("vi")){
+                            text = "Tôi không thấy gì cả. Xin hãy thử lại sau";
+                        }
+                        tts.doTTS(text, lang);
+                    }
+                } else {
+                    Log.e(TAG, "Response failed: " + response.code());
+                    LogManager.log(LogLevel.ERROR, TAG, "Response failed: " + response.code());
+                }
             }
 
             @Override
@@ -56,7 +81,7 @@ public class ObjectDetectHandler {
         });
     }
 
-    private String buildDetectionSentence(List<Detection> detections) {
+    private String buildDetectionSentenceEn(List<Detection> detections) {
         if (detections == null || detections.isEmpty()) {
             return "I don't see anything. Please try again";
         }
@@ -80,4 +105,30 @@ public class ObjectDetectHandler {
         sb.append(".");
         return sb.toString();
     }
+
+    private String buildDetectionSentenceVi(List<Detection> detections) {
+        if (detections == null || detections.isEmpty()) {
+            return "Tôi không thấy gì cả. Xin hãy thử lại sau";
+        }
+        LinkedHashSet<String> uniqueLabels = new LinkedHashSet<>();
+        for (Detection d : detections) {
+            uniqueLabels.add(d.label);
+        }
+        List<String> labels = new ArrayList<>(uniqueLabels);
+        if (labels.size() == 1) {
+            return "Tôi thấy một " + labels.get(0) + ".";
+        }
+        StringBuilder sb = new StringBuilder("Tôi thấy ");
+        for (int i = 0; i < 1; i++) {
+            sb.append("một ").append(labels.get(i));
+            if (i < labels.size() - 2) {
+                sb.append(", ");
+            } else if (i == labels.size() - 2) {
+                sb.append(" và ");
+            }
+        }
+        sb.append(".");
+        return sb.toString();
+    }
+
 }
