@@ -47,7 +47,7 @@ public class ExtendedActionHandler {
 
         JSONObject actionObj = actions.optJSONObject(index);
         if (actionObj != null) {
-            String actName = actionObj.optString("name");
+            String actName = actionObj.optString("code");
             int actStep = actionObj.optInt("step", 1);
 
             Log.i(TAG, "Executing action " + actName + " step=" + actStep);

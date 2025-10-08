@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ubtech.utilcode.utils.Utils;
+import com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity;
@@ -39,6 +40,12 @@ public class MainActivity extends Activity {
         forceConnect.setOnClickListener(l -> {
             RobotSocketClient.getInstance().forceConnect();
         });
+    }
+
+    public void robotWebRTCActivity(View view){
+        Intent intent = new Intent();
+        intent.setClass(this, RobotWebRTCActivity.class);
+        startActivity(intent);
     }
     public void speechApiTest(View view) {
         Intent intent = new Intent();

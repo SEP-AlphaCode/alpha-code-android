@@ -80,6 +80,9 @@
         <activity
             android:name=".uiActivities.FaceApiCRUD"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity"
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".socket.RobotSocketClient"
