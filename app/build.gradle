@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
 //
 //import java.util.zip.ZipFile
 //import java.util.zip.ZipEntry
@@ -55,17 +56,6 @@ apply plugin: 'com.android.application'
 //}
 //
 //
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.18'
-    }
-}
-apply plugin: 'com.google.protobuf'
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -118,6 +108,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/proto'
+            }
+            java {
+                srcDirs 'src/main/java', 'build/generated/source/proto/main/java'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -154,21 +154,16 @@ dependencies {
     implementation(name: 'tencent-vad-1.0.0', ext: 'aar')
     implementation(name: 'weinalib-5.0.1', ext: 'aar')
     implementation(name: 'wakeup-5.0.0', ext: 'aar')
-
-    implementation 'com.google.protobuf:protobuf-java:3.21.12'
-    implementation 'com.google.protobuf:protobuf-java-util:3.21.12'
 }
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.21.12'
+        artifact = 'com.google.protobuf:protoc:3.4.0'
     }
     generateProtoTasks {
         all().each { task ->
             task.builtins {
-                java {
-                    option "lite"
-                }
+                java { }
             }
         }
     }

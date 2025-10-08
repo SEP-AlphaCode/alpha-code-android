@@ -5,7 +5,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.ubtrobot.led.LedApi;
+import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
+
 import java.security.cert.CertificateException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
@@ -36,6 +40,7 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
     private final String serverUrl;
     private final String robotSerial;
     private static RobotSocketManager instance;
+    private LedHelper ledHelper = new LedHelper();
 
     private RobotSocketManager(String serverUrl, String robotSerial) {
         this.serverUrl = serverUrl;
@@ -136,10 +141,12 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
 
         try {
             webSocket = client.newWebSocket(request, new SocketListener());
+            ledHelper.notifyState(0, "ok");
             Log.d(TAG, "Connection attempt initiated");
         } catch (Exception e) {
             Log.e(TAG, "Failed to create WebSocket connection", e);
             handleConnectionFailure("Connection creation failed: " + e.getMessage());
+            ledHelper.notifyState(1);
         }
     }
 
@@ -228,6 +235,23 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         }
     }
 
+    public void sendRobotRequest(String type, int[] asrData, byte[] imageData,
+                                 Map<String, String> params, String speech) {
+        byte[] protobufData = ProtobufConverter.requestToProtoBytes(type, asrData, imageData, params, speech);
+        if (protobufData != null) {
+            sendBinaryMessage(protobufData);
+        } else {
+            Log.e(TAG, "Failed to create protobuf data for request");
+            if (view != null) {
+                view.onError("Failed to create protobuf message");
+            }
+        }
+    }
+
+    public void sendSimpleRequest(String type, Map<String, String> params) {
+        sendRobotRequest(type, null, null, params, null);
+    }
+
     private class SocketListener extends WebSocketListener {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
@@ -249,15 +273,6 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         }
 
         @Override
-        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            handleConnectionFailure("Connection failed: " + t.getMessage());
-        }
-
-        @Override
-        public void onClosed(WebSocket webSocket, int code, String reason) {
-            handleConnectionFailure("Connection closed: " + reason + " (code: " + code + ")");
-        }
-        @Override
         public void onMessage(WebSocket webSocket, okio.ByteString bytes) {
             Log.i(TAG, "Received binary message, length: " + bytes.size());
 
@@ -267,6 +282,16 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
                 String textResponse = bytes.utf8();
                 view.onMessageReceived(textResponse);
             }
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            handleConnectionFailure("Connection failed: " + t.getMessage());
+        }
+
+        @Override
+        public void onClosed(WebSocket webSocket, int code, String reason) {
+            handleConnectionFailure("Connection closed: " + reason + " (code: " + code + ")");
         }
     }
 }

@@ -146,6 +146,7 @@ public class DemoRecognizer extends AbstractRecognizer {
 //            }
 //        });
         byte[] protobufMessage = new RobotMessageBuilder()
+                .setType("asr_data")
                 .setAsrData(convertBytesToIntArray(fullRecording))
                 .build();
         if(RobotSocketManager.isInitialized()){

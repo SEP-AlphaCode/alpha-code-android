@@ -34,9 +34,10 @@ public class RobotSocketController implements WebSocketContract.View {
             JSONObject json = new JSONObject(message);
             String type = json.optString("type");
             JSONObject data = json.optJSONObject("data");
+            String lang = json.optString("lang", "en");
 
             Log.i(TAG, "Processing command - type: " + type + ", data: " + data);
-            commandHandler.handleCommand(type, data, "en");
+            commandHandler.handleCommand(type, data, lang);
 
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON command: " + message, e);
@@ -48,16 +49,27 @@ public class RobotSocketController implements WebSocketContract.View {
     public void onBinaryMessageReceived(byte[] message) {
         Log.i(TAG, "Received binary message, length: " + message.length);
 
-        // If your server sends protobuf responses, parse them here
-        // For now, since you mentioned server responds with text,
-        // we'll convert binary to string
-        try {
-            String textResponse = new String(message, "UTF-8");
-            onMessageReceived(textResponse);
-        } catch (Exception e) {
-            Log.e(TAG, "Error converting binary message to string", e);
-            onError("Failed to parse binary message");
+        // Try to parse as protobuf first
+        RobotRequestProto.RobotRequest request = ProtobufConverter.bytesToRequest(message);
+        if (request != null) {
+            // Handle protobuf response
+            handleProtobufResponse(request);
+        } else {
+            // Fall back to text conversion
+            try {
+                String textResponse = new String(message, "UTF-8");
+                onMessageReceived(textResponse);
+            } catch (Exception e) {
+                Log.e(TAG, "Error converting binary message to string", e);
+                onError("Failed to parse binary message");
+            }
         }
+    }
+
+    private void handleProtobufResponse(RobotRequestProto.RobotRequest response) {
+        // If your server starts sending protobuf responses, handle them here
+        Log.d(TAG, "Received protobuf response - Type: " + response.getType());
+        // Convert protobuf response to your command format if needed
     }
 
     @Override

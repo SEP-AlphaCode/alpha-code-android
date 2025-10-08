@@ -17,16 +17,5 @@ public interface WebSocketContract {
         void sendBinaryMessage(byte[] message); // Add this
         boolean isConnected();
         void setView(View view);
-        static RobotSocketManager getInstance(String serverUrl, String robotSerial) {
-            return RobotSocketManager.getInstance(serverUrl, robotSerial);
-        }
-
-        static RobotSocketManager getInstance() {
-            return RobotSocketManager.getInstance();
-        }
-
-        static boolean isInitialized() {
-            return RobotSocketManager.isInitialized();
-        }
     }
 }
