@@ -40,16 +40,7 @@ android {
     lintOptions {
         abortOnError false
     }
-}
 
-repositories {
-    google()
-    mavenCentral()
-    maven { url "https://jitpack.io" }
-    maven { url "https://maven.webrtc.org" }   // thêm repo chính thức WebRTC
-    flatDir {
-        dirs 'libs'
-    }
     sourceSets {
         main {
             proto {
@@ -59,6 +50,16 @@ repositories {
                 srcDirs 'src/main/java', 'build/generated/source/proto/main/java'
             }
         }
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    maven { url "https://maven.webrtc.org" }   // thêm repo chính thức WebRTC
+    flatDir {
+        dirs 'libs'
     }
 }
 
