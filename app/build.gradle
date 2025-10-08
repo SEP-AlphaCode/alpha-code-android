@@ -40,17 +40,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-    sourceSets {
-        main {
-            proto {
-                srcDir 'src/main/proto'
-            }
-            java {
-                srcDirs 'src/main/java', 'build/generated/source/proto/main/java'
-            }
-        }
-    }
 }
 
 repositories {
@@ -60,6 +49,16 @@ repositories {
     maven { url "https://maven.webrtc.org" }   // thêm repo chính thức WebRTC
     flatDir {
         dirs 'libs'
+    }
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/proto'
+            }
+            java {
+                srcDirs 'src/main/java', 'build/generated/source/proto/main/java'
+            }
+        }
     }
 }
 
