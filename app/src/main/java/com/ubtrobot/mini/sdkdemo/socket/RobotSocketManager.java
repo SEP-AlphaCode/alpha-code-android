@@ -1,15 +1,13 @@
-// RobotSocketManager.java
 package com.ubtrobot.mini.sdkdemo.socket;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.ubtrobot.led.LedApi;
-import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 
 import java.security.cert.CertificateException;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
@@ -23,79 +21,33 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class RobotSocketManager implements WebSocketContract.Presenter {
-    private static final String TAG = "RobotSocketManager";
-    private static final long RECONNECT_DELAY_MS = 7500;
-    private static final long PING_INTERVAL_MS = 15000;
+import com.ubtrobot.commons.Priority;
+import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
+import com.ubtrobot.sys.SysApi;
 
+public class RobotSocketManager {
+    private static final String TAG = "WebSocketManager";
+    private static final long RECONNECT_DELAY_MS = 7500;
+    private static final long PING_INTERVAL_MS = 15000; // 30 seconds ping interval
     private OkHttpClient client;
     private WebSocket webSocket;
     private Request request;
     private boolean isConnected = false;
     private boolean shouldReconnect = true;
-    private WebSocketContract.View view;
+    private RobotSocketController robotController;
     private Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable pingRunnable;
+    private Runnable connectionChecker;
+    private SysApi sysApi;
+    private LedHelper ledHelper;
 
-    private final String serverUrl;
-    private final String robotSerial;
-    private static RobotSocketManager instance;
-    private LedHelper ledHelper = new LedHelper();
-
-    private RobotSocketManager(String serverUrl, String robotSerial) {
-        this.serverUrl = serverUrl;
-        this.robotSerial = robotSerial;
-        initializeClient();
-        setupPingMechanism();
-    }
-
-    public static synchronized RobotSocketManager getInstance(String serverUrl, String robotSerial) {
-        if (instance == null) {
-            instance = new RobotSocketManager(serverUrl, robotSerial);
-        }
-        return instance;
-    }
-
-    public static synchronized RobotSocketManager getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("RobotSocketManager not initialized. Call getInstance(String, String) first.");
-        }
-        return instance;
-    }
-
-    // Method to check if instance is initialized
-    public static boolean isInitialized() {
-        return instance != null;
-    }
-
-    @Override
-    public void setView(WebSocketContract.View view) {
-        this.view = view;
-    }
-
-    private void initializeClient() {
-        client = createUnsafeOkHttpClient();
-        request = new Request.Builder()
-                .url(serverUrl + "/" + robotSerial)
-                .build();
-    }
-
-    private OkHttpClient createUnsafeOkHttpClient() {
+    private static OkHttpClient getUnsafeOkHttpClient() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
                     }
             };
 
@@ -103,96 +55,99 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-            return new OkHttpClient.Builder()
-                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                    .hostnameVerifier((hostname, session) -> true)
-                    .readTimeout(0, TimeUnit.MILLISECONDS)
-                    .pingInterval(PING_INTERVAL_MS, TimeUnit.MILLISECONDS)
-                    .retryOnConnectionFailure(true)
-                    .build();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+            builder.hostnameVerifier((hostname, session) -> true);
+            builder.readTimeout(0, TimeUnit.MILLISECONDS);
+            builder.pingInterval(PING_INTERVAL_MS, TimeUnit.MILLISECONDS);
+            builder.retryOnConnectionFailure(true);
 
+            return builder.build();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create OkHttpClient", e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void setupPingMechanism() {
-        pingRunnable = new Runnable() {
+    public RobotSocketManager(String serverUrl, RobotSocketController robotController) {
+        this.robotController = robotController;
+        ledHelper = new LedHelper();
+        sysApi = SysApi.get();
+
+        // Use unsafe client to allow self-signed certificates
+        client = getUnsafeOkHttpClient();
+
+        String serial = getRobotSerialNumber();
+        request = new Request.Builder()
+                .url(serverUrl + "/" + serial)
+                .build();
+
+        setupConnectionChecker();
+        connect();
+    }
+
+    private String getRobotSerialNumber() {
+        String serialNumber = sysApi.readRobotSid();;
+        if (serialNumber == null || serialNumber.isEmpty()) {
+            serialNumber = "unknown_serial";
+        }
+        return serialNumber;
+    }
+
+    private void setupConnectionChecker() {
+        connectionChecker = new Runnable() {
             @Override
             public void run() {
-                if (isConnected && webSocket != null) {
-                    // Ping is handled automatically by OkHttp with pingInterval
-                    Log.d(TAG, "Ping check - connection active");
+                if (isConnected) {
+                    ledHelper.notifyState(1);
+                    connect();
                 }
-                handler.postDelayed(this, PING_INTERVAL_MS);
+                handler.postDelayed(this, PING_INTERVAL_MS); // Check every ping interval
             }
         };
     }
 
-    @Override
     public void connect() {
-        if (isConnected) {
-            Log.d(TAG, "Already connected, skipping connection attempt");
-            return;
-        }
+        if (isConnected) return;
 
-        handler.removeCallbacks(pingRunnable);
-        handler.post(pingRunnable);
+        handler.removeCallbacks(connectionChecker);
+        handler.post(connectionChecker);
 
-        try {
-            webSocket = client.newWebSocket(request, new SocketListener());
-            ledHelper.notifyState(0, "ok");
-            Log.d(TAG, "Connection attempt initiated");
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to create WebSocket connection", e);
-            handleConnectionFailure("Connection creation failed: " + e.getMessage());
-            ledHelper.notifyState(1);
-        }
-    }
-
-    @Override
-    public void disconnect() {
-        shouldReconnect = false;
-        cleanup();
-
-        if (webSocket != null) {
-            webSocket.close(1000, "Disconnected by user");
-        }
-
-        if (view != null) {
-            view.onDisconnected();
-        }
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        if (webSocket != null && isConnected) {
-            boolean success = webSocket.send(message);
-            Log.d(TAG, "Send message: " + message + " | success: " + success);
-
-            if (!success && view != null) {
-                view.onError("Failed to send message");
+        webSocket = client.newWebSocket(request,  new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, Response response) {
+                isConnected = true;
+                //ttsHandler.doTTS("Connected", "en");
+                Log.d(TAG, "WebSocket connected");
+                ledHelper.notifyState(0);
             }
-        } else {
-            Log.w(TAG, "Cannot send message, WebSocket not connected");
-            if (view != null) {
-                view.onError("WebSocket not connected");
-            }
-        }
-    }
 
-    @Override
-    public boolean isConnected() {
-        return isConnected;
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+                ledHelper.notifyState(0);
+                if (robotController != null) {
+                    Log.i(TAG, "Received message: " + text);
+                    robotController.handleCommand(text, "en");
+                }
+            }
+
+            @Override
+            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+                handleConnectionFailure(t.getMessage());
+                //ttsHandler.doTTS("Failed", "en");
+            }
+
+            @Override
+            public void onClosed(WebSocket webSocket, int code, String reason) {
+                handleConnectionFailure("Connection closed: " + reason);
+                //ttsHandler.doTTS("Closed", "en");
+            }
+        });
     }
 
     private void handleConnectionFailure(String error) {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
-
-        if (view != null) {
-            view.onError(error);
-        }
+        ledHelper.notifyState(2);
 
         if (shouldReconnect) {
             scheduleReconnect();
@@ -202,96 +157,41 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
     private void scheduleReconnect() {
         try {
             Log.i(TAG, "Scheduling reconnect in " + RECONNECT_DELAY_MS + "ms");
-            handler.removeCallbacksAndMessages(null);
+            handler.removeCallbacksAndMessages(null); // Clear any pending reconnects
             handler.postDelayed(() -> {
+                //notifyState(1);
                 if (!isConnected && shouldReconnect) {
                     Log.i(TAG, "Attempting to reconnect");
+                    //vp.playTTs("Attempting to reconnect", Priority.HIGH, null);
                     connect();
                 }
             }, RECONNECT_DELAY_MS);
         } catch (Exception e) {
-            Log.e(TAG, "Reconnect scheduling error", e);
+            Log.e(TAG, "Reconnect scheduling error: " + e.toString());
         }
     }
 
-    private void cleanup() {
+    public void sendMessage(String message) {
+        if (webSocket != null && isConnected) {
+            boolean success = webSocket.send(message);
+            Log.d(TAG, "Send message: " + message + " | success: " + success);
+        } else {
+            Log.w(TAG, "Cannot send message, WebSocket not connected.");
+        }
+    }
+
+    public void disconnect() {
+        shouldReconnect = false;
         handler.removeCallbacksAndMessages(null);
+        if (webSocket != null) {
+            webSocket.close(1000, "Disconnected by user");
+        }
         if (client != null) {
             client.dispatcher().executorService().shutdown();
         }
     }
 
-    @Override
-    public void sendBinaryMessage(byte[] message) {
-        if (webSocket != null && isConnected) {
-            boolean success = webSocket.send(okio.ByteString.of(message));
-            Log.d(TAG, "Send binary message, length: " + message.length + " | success: " + success);
-
-            if (!success && view != null) {
-                view.onError("Failed to send binary message");
-            }
-        } else {
-            Log.w(TAG, "Cannot send binary message, WebSocket not connected");
-        }
-    }
-
-    public void sendRobotRequest(String type, int[] asrData, byte[] imageData,
-                                 Map<String, String> params, String speech) {
-        byte[] protobufData = ProtobufConverter.requestToProtoBytes(type, asrData, imageData, params, speech);
-        if (protobufData != null) {
-            sendBinaryMessage(protobufData);
-        } else {
-            Log.e(TAG, "Failed to create protobuf data for request");
-            if (view != null) {
-                view.onError("Failed to create protobuf message");
-            }
-        }
-    }
-
-    public void sendSimpleRequest(String type, Map<String, String> params) {
-        sendRobotRequest(type, null, null, params, null);
-    }
-
-    private class SocketListener extends WebSocketListener {
-        @Override
-        public void onOpen(WebSocket webSocket, Response response) {
-            isConnected = true;
-            Log.d(TAG, "WebSocket connected successfully");
-
-            if (view != null) {
-                view.onConnected();
-            }
-        }
-
-        @Override
-        public void onMessage(WebSocket webSocket, String text) {
-            Log.i(TAG, "Received text message: " + text);
-
-            if (view != null) {
-                view.onMessageReceived(text);
-            }
-        }
-
-        @Override
-        public void onMessage(WebSocket webSocket, okio.ByteString bytes) {
-            Log.i(TAG, "Received binary message, length: " + bytes.size());
-
-            // Handle binary response (if your server sends protobuf responses)
-            if (view != null) {
-                // Convert to string for text responses, or handle as binary
-                String textResponse = bytes.utf8();
-                view.onMessageReceived(textResponse);
-            }
-        }
-
-        @Override
-        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            handleConnectionFailure("Connection failed: " + t.getMessage());
-        }
-
-        @Override
-        public void onClosed(WebSocket webSocket, int code, String reason) {
-            handleConnectionFailure("Connection closed: " + reason + " (code: " + code + ")");
-        }
+    public boolean isConnected() {
+        return isConnected;
     }
 }
