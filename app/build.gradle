@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.protobuf'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -50,6 +50,16 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/proto'
+            }
+            java {
+                srcDirs 'src/main/java', 'build/generated/source/proto/main/java'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -88,4 +98,19 @@ dependencies {
 
     // WebRTC
     implementation 'com.infobip:google-webrtc:1.0.0035529'
+
+    implementation 'com.google.mlkit:translate:17.0.3'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.4.0'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { }
+            }
+        }
+    }
 }

@@ -11,6 +11,8 @@ import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 import com.ubtrobot.speech.AbstractRecognizer;
 import com.ubtrobot.speech.RecognitionOption;
@@ -29,7 +31,6 @@ public class DemoRecognizer extends AbstractRecognizer {
     private static final String TAG = "RECOGNIZING";
     private final TencentVadRecorder recorder;
     private static final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final STTApi sttApi = ApiClient.getPythonInstance().create(STTApi.class);
     private final Handler timeoutHandler;
     private Runnable timeoutRunnable;
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
@@ -112,39 +113,59 @@ public class DemoRecognizer extends AbstractRecognizer {
 
         byte[] fullRecording = getFullRecording();
         outputStream.reset();
-        STTRequest request = new STTRequest(fullRecording);
+        //STTRequest request = new STTRequest(fullRecording);
 
-        sttApi.doSTT(request).enqueue(new Callback<NLPResponse>() {
-            @Override
-            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        NLPResponse nlpResponse = response.body();
-                        String type = nlpResponse.getType();
-                        NLPResponse.DataContainer data = nlpResponse.getData();
-                        // Convert DataContainer -> JSON string
-                        String jsonString = new Gson().toJson(data);
-
-                        // Convert JSON string -> JSONObject
-                        JSONObject jsonData = new JSONObject(jsonString);
-                        // Use CommandHandler instead of switch case
-                        ledHelper.notifyState(0);
-                        commandHandler.handleCommand(type, jsonData, nlpResponse.getLang());
-
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error processing response: " + e.getMessage());
-                        recorder.start();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NLPResponse> call, Throwable t) {
-                Log.e(TAG, "Response failure: " + t);
-            }
-        });
+//        sttApi.doSTT(request).enqueue(new Callback<NLPResponse>() {
+//            @Override
+//            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    try {
+//                        NLPResponse nlpResponse = response.body();
+//                        String type = nlpResponse.getType();
+//                        NLPResponse.DataContainer data = nlpResponse.getData();
+//                        // Convert DataContainer -> JSON string
+//                        String jsonString = new Gson().toJson(data);
+//
+//                        // Convert JSON string -> JSONObject
+//                        JSONObject jsonData = new JSONObject(jsonString);
+//                        // Use CommandHandler instead of switch case
+//                        ledHelper.notifyState(0);
+//                        commandHandler.handleCommand(type, jsonData, nlpResponse.getLang());
+//
+//                    } catch (Exception e) {
+//                        Log.e(TAG, "Error processing response: " + e.getMessage());
+//                        recorder.start();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<NLPResponse> call, Throwable t) {
+//                Log.e(TAG, "Response failure: " + t);
+//            }
+//        });
+        byte[] protobufMessage = new RobotMessageBuilder()
+                .setType("asr_data")
+                .setAsrData(convertBytesToIntArray(fullRecording))
+                .build();
+        if(RobotSocketManager.isInitialized()){
+            RobotSocketManager.getInstance().sendBinaryMessage(protobufMessage);
+            ledHelper.notifyState(0);
+        } else {
+            Log.e(TAG, "Socket not initialized");
+        }
     }
+    public int[] convertBytesToIntArray(byte[] data) {
+        if (data == null) {
+            return new int[0];
+        }
 
+        int[] result = new int[data.length];
+        for (int i = 0; i < data.length; i++) {
+            result[i] = data[i]; // This automatically converts byte to int
+        }
+        return result;
+    }
     @Override
     protected void resolveRecognizing(RecognitionResult done) {
         super.resolveRecognizing(done);
