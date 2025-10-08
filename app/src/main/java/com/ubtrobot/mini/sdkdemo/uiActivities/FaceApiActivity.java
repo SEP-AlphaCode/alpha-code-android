@@ -15,6 +15,7 @@ import com.ubtechinc.sauron.api.FaceTrackListener;
 import com.ubtechinc.sauron.api.SauronApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.R;
+import com.ubtrobot.mini.sdkdemo.custom.CustomFaceApi;
 
 import java.util.List;
 
