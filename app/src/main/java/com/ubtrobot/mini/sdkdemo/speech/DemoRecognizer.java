@@ -31,7 +31,6 @@ public class DemoRecognizer extends AbstractRecognizer {
     private static final String TAG = "RECOGNIZING";
     private final TencentVadRecorder recorder;
     private static final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final STTApi sttApi = ApiClient.getPythonInstance().create(STTApi.class);
     private final Handler timeoutHandler;
     private Runnable timeoutRunnable;
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
