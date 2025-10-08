@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.socket.AutoStartManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiActivity;
@@ -33,8 +34,10 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        TTSHandler.init(Utils.getContext().getApplicationContext());
-        checkWriteSettingsPermission(this);
+        Context appContext = Utils.getContext().getApplicationContext();
+        TTSHandler.init(appContext);
+        AutoStartManager.startWebSocketService(appContext);
+        //checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
 
         forceConnect.setOnClickListener(l -> {
