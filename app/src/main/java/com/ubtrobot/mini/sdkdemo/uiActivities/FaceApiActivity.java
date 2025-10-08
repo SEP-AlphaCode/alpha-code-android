@@ -21,7 +21,6 @@ import java.util.List;
 public class FaceApiActivity extends Activity {
     private static final String TAG = "FaceActivity";
     private FaceApi faceApi;
-    private CustomFaceApi customApi;
     private EditText name;
 
     @Override
@@ -37,7 +36,6 @@ public class FaceApiActivity extends Activity {
      */
     private void initRobot() {
         faceApi = FaceApi.get();
-        customApi = CustomFaceApi.getInstance();
     }
 
     /**
@@ -124,7 +122,7 @@ public class FaceApiActivity extends Activity {
         if(String.valueOf(name.getText()).isEmpty()){
             return;
         }
-        customApi.apiFaceRegister("user_li", String.valueOf(name.getText()), new ResponseListener<String>() {
+        faceApi.apiFaceRegister("user_li", String.valueOf(name.getText()), new ResponseListener<String>() {
 
             @Override
             public void onResponseSuccess(String msg) {
@@ -143,7 +141,7 @@ public class FaceApiActivity extends Activity {
      * Exit the face registration process
      */
     public void faceRegisterStop(View view) {
-        customApi.stopRegister("user_li", new ResponseListener<Void>() {
+        faceApi.stopRegister("user_li", new ResponseListener<Void>() {
             @Override
             public void onResponseSuccess(Void aVoid) {
                 Log.i(TAG, "faceRegisterStop call successful!");

@@ -155,7 +155,7 @@ dependencies {
     implementation(name: 'weinalib-5.0.1', ext: 'aar')
     implementation(name: 'wakeup-5.0.0', ext: 'aar')
 
-    implementation 'com.google.mlkit:translate:17.0.3'
+//    implementation 'com.google.mlkit:translate:16.1.2'
 }
 
 protobuf {
