@@ -21,6 +21,7 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.ubtech.utilcode.utils.FileUtils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.R;
@@ -28,13 +29,17 @@ import com.ubtrobot.mini.sdkdemo.apis.QRCodeApi;
 import com.ubtrobot.mini.sdkdemo.apis.OsmoApi;
 import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.custom.tts.EnglishTTS;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 
 import org.json.JSONObject;
 
 import java.io.File;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -50,11 +55,6 @@ import retrofit2.Response;
 public class TakePicApiActivity extends Activity {
     private static final String TAG = "TakePicApiActivity";
     private TakePicApi takePicApi;
-    private EnglishTTS tts;
-    QRCodeApi activityApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
-    OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
-    private CommandHandler commandHandler = new CommandHandler();
-
 
 
     @Override
@@ -78,16 +78,13 @@ public class TakePicApiActivity extends Activity {
      */
     private void initRobot() {
         takePicApi = TakePicApi.get();
-        tts = EnglishTTS.getInstance();
     }
 
     /**
      * 拍照(立即)
-     *
-     *
      */
     public void takePicImmediately(String action, String lang) {
-        if(takePicApi == null){
+        if (takePicApi == null) {
             initRobot();
         }
         if (takePicApi != null) {
@@ -115,71 +112,20 @@ public class TakePicApiActivity extends Activity {
                         Log.e(TAG, "File not exists: " + realPath);
                     }
 
-                    switch (action){
+                    switch (action) {
                         case "osmo-card":
-                            RequestBody requestFile = RequestBody.create(
-                                    MediaType.parse("image/jpeg"),
-                                    file
-                            );
-
-                            // Create MultipartBody.Part to send
-                            MultipartBody.Part body =
-                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-                            // Call API
-                            osmoApi.recognizeActionCardFromImage(body).enqueue(new Callback<ActionResponseDto>() {
-                                @Override
-                                public void onResponse(Call<ActionResponseDto> call, Response<ActionResponseDto> response) {
-                                    if (response.isSuccessful() && response.body() != null) {
-                                        try {
-                                            Log.i(TAG, "Action cards: " + response.body().action_cards);
-                                            Log.i(TAG, "Actions: " + response.body().actions);
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else {
-                                        Log.e(TAG, "Data is null or response is not successful");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ActionResponseDto> call, Throwable t) {
-                                    Log.e(TAG, "Error when call API: " + t.getMessage());
-                                }
-                            });
+                            byte[] messageContent = new RobotMessageBuilder()
+                                    .setType(RobotRequestTypes.PARSE_OSMO)
+                                    .setImageData(FileUtils.readFile2Bytes(file))
+                                    .build();
+                            RobotSocketManager.getInstance().sendBinaryMessage(messageContent);
                             break;
                         case "qr-code":
-                            // Decode the QR code from the image file
-                            String qrContent = decodeQRCodeFromFile(realPath);
-                            if (qrContent != null) {
-                                Log.i(TAG, "Qr Code content: " + qrContent);
-                                // Call api to get QR code details
-                                activityApi.getQrCodeByCode(qrContent).enqueue(new Callback<QRCodeActivityResponse>() {
-                                    @Override
-                                    public void onResponse(Call<QRCodeActivityResponse> call, Response<QRCodeActivityResponse> response) {
-                                        if (response.isSuccessful() && response.body() != null) {
-                                            try {
-                                                JSONObject data = new JSONObject(new Gson().toJson(response.body().getData()));
-                                                // Put string JSON to DoActivity
-                                                commandHandler.handleCommand(response.body().getType(), data, lang);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                            Log.i(TAG, "Data: " + response.body().getData());
-                                        } else {
-                                            Log.e(TAG, "Data is null or response is not successful");
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<QRCodeActivityResponse> call, Throwable t) {
-                                        Log.e(TAG, "Error when call API: " + t.getMessage());
-                                    }
-                                });
-                            } else {
-                                Log.i(TAG, "Cannot decode QR code, file does not exist: " + realPath);
-                            }
+                            messageContent = new RobotMessageBuilder()
+                                    .setType(RobotRequestTypes.PARSE_QR)
+                                    .setImageData(FileUtils.readFile2Bytes(file))
+                                    .build();
+                            RobotSocketManager.getInstance().sendBinaryMessage(messageContent);
                             break;
                     }
                 }
@@ -213,34 +159,6 @@ public class TakePicApiActivity extends Activity {
                 Log.i(TAG, "takePicWithFaceDetect接口调用失败,errorCode======" + errorCode + ",errorMsg======" + errorMsg);
             }
         });
-    }
-
-    private String decodeQRCodeFromFile(String filePath) {
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        if (bitmap == null) {
-            Log.e(TAG, "Can not load file from path: " + filePath);
-            return null;
-        }
-
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int[] pixels = new int[width * height];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        LuminanceSource source = new RGBLuminanceSource(width, height, pixels);
-        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
-        Reader reader = new MultiFormatReader();
-
-        try {
-            Result result = reader.decode(binaryBitmap);
-            return result.getText();
-        } catch (NotFoundException e) {
-            Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
-            tts.doTTS("Qr code not found in the image, please try again.");
-            return null;
-        } catch (Exception e) {
-            Log.e(TAG, "Error when decode QR Code: " + e.getMessage());
-            return null;
-        }
     }
 
     @Override
