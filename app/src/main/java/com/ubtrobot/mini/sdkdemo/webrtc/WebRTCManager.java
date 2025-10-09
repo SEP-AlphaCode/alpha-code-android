@@ -25,6 +25,7 @@ public class WebRTCManager {
 
     public interface Callback {
         void onIceCandidate(IceCandidate candidate);
+
         void onLocalDescription(SessionDescription sdp);
     }
 
@@ -59,6 +60,8 @@ public class WebRTCManager {
     private void initSurface() {
         localView.init(rootEglBase.getEglBaseContext(), null);
         localView.setZOrderMediaOverlay(false);
+        localView.setMirror(false); // Add this line
+        localView.setEnableHardwareScaler(true); // Add this line for better scaling
     }
 
     public void startLocalMedia(Context ctx) {
@@ -69,12 +72,32 @@ public class WebRTCManager {
             return;
         }
 
-        cameraCapturer = new Camera2Capturer(ctx, devices[0], null);
+        // Find the front camera (usually the one that needs mirroring)
+        String cameraId = devices[0];
+        boolean isFrontCamera = false;
+        for (String device : devices) {
+            if (enumerator.isFrontFacing(device)) {
+                cameraId = device;
+                isFrontCamera = true;
+                break;
+            }
+        }
+
+        // ADD THIS: Set mirroring based on camera type
+        if (localView != null) {
+            localView.setMirror(isFrontCamera);
+        }
+
+        cameraCapturer = new Camera2Capturer(ctx, cameraId, null);
         surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread", rootEglBase.getEglBaseContext());
         videoSource = factory.createVideoSource(false);
         cameraCapturer.initialize(surfaceTextureHelper, ctx, videoSource.getCapturerObserver());
 
-        try { cameraCapturer.startCapture(640, 480, 30); } catch (Exception e) { e.printStackTrace(); }
+        try {
+            cameraCapturer.startCapture(640, 480, 30);
+        } catch (Exception e) {
+            Log.e(TAG, "Error starting camera capture", e);
+        }
 
         localVideoTrack = factory.createVideoTrack("ARDAMSv0", videoSource);
         localVideoTrack.addSink(localView);
@@ -135,6 +158,8 @@ public class WebRTCManager {
             if (factory != null) factory.dispose();
             if (localView != null) localView.release();
             if (rootEglBase != null) rootEglBase.release();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

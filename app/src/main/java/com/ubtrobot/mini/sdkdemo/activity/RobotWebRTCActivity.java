@@ -2,6 +2,7 @@ package com.ubtrobot.mini.sdkdemo.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
@@ -11,6 +12,7 @@ import com.ubtrobot.mini.sdkdemo.webrtc.*;
 
 import org.json.JSONObject;
 import org.webrtc.IceCandidate;
+import org.webrtc.RendererCommon;
 import org.webrtc.SessionDescription;
 import org.webrtc.SurfaceViewRenderer;
 
@@ -28,7 +30,7 @@ public class RobotWebRTCActivity extends AppCompatActivity {
 
     private WebRTCManager rtcManager;
     private static final String webSocketUrl = BuildConfig.API_WEBSOCKET;
-
+    private SurfaceViewRenderer localView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,8 @@ public class RobotWebRTCActivity extends AppCompatActivity {
         SurfaceViewRenderer localView = findViewById(R.id.localView);
         Button btnStart = findViewById(R.id.btnStart);
         Button btnStop = findViewById(R.id.btnStop);
+
+        setupSurfaceView();
 
         rtcManager = new WebRTCManager(this, localView, new WebRTCManager.Callback() {
             @Override
@@ -113,5 +117,22 @@ public class RobotWebRTCActivity extends AppCompatActivity {
         if (rtcManager != null) rtcManager.release();
         SignalingSocketManager signaling = SignalingSocketManager.getInstance(webSocketUrl + "/signaling/" + SystemHandler.get().getSerialNumber() + "/robot");
         signaling.disconnect();
+    }
+
+    private void setupSurfaceView() {
+        if (localView != null) {
+            // Set scaling type to maintain aspect ratio
+            localView.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
+            // Enable hardware scaler for better performance
+            localView.setEnableHardwareScaler(true);
+            // Initially set no mirroring (will be adjusted based on camera)
+            localView.setMirror(false);
+
+            // Add layout listener to handle orientation changes
+            localView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                // Force redraw when layout changes (orientation/size change)
+                localView.requestLayout();
+            });
+        }
     }
 }
