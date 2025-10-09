@@ -8,8 +8,6 @@ import org.webrtc.PeerConnection;
 import org.webrtc.RtpReceiver;
 import org.webrtc.RtpTransceiver;
 
-import java.util.List;
-
 public class SimplePeerObserver implements PeerConnection.Observer {
 
     private final String TAG = "SimplePeerObserver";
