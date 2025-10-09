@@ -25,4 +25,8 @@ public class RobotRequestTypes {
      * Required fields: image
      */
     public static final String PARSE_QR = "parse-qr";
+    /**
+     * A boot time ping to establish the connection
+     */
+    public static final String PING = "ping";
 }
