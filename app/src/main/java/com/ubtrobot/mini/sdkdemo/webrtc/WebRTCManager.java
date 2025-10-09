@@ -116,7 +116,7 @@ public class WebRTCManager {
         videoCapturer.initialize(surfaceTextureHelper, ctx, videoSource.getCapturerObserver());
 
         // Start capture
-        videoCapturer.startCapture(1920, 1080, 30);
+        videoCapturer.startCapture(640, 480, 30);
 
         localVideoTrack = factory.createVideoTrack("ARDAMSv0", videoSource);
         localVideoTrack.addSink(localView);
