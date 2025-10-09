@@ -40,12 +40,29 @@ public class ObjectDetectHandler {
             @Override
             public void onResponse(Call<DetectClosestResponse> call, Response<DetectClosestResponse> response) {
                 DetectClosestResponse result = response.body();
-                String sentence = buildDetectionSentence(result.closest_objects);
-                if(lang.equals("en")){
-                    tts.doTTS(sentence, lang);
+                if(result.closest_objects.isEmpty()){
+                    if(lang.equals("en")){
+                        tts.doTTS("I don't see anything. Please try again", lang);
+                    } else {
+                        tts.doTTS("Tôi không thấy gì cả. Vui lòng thử lại", lang);
+                    }
                     return;
                 }
+                String objectName = result.closest_objects.get(0).label;
+                stt.describeObjectDetectResult(objectName, lang).enqueue(new Callback<NLPResponse>() {
+                    @Override
+                    public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
+                        NLPResponse nlpResponse = response.body();
+                        String text = nlpResponse.getData().getText();
+                        tts.doTTS(text, lang);
+                    }
 
+                    @Override
+                    public void onFailure(Call<NLPResponse> call, Throwable t) {
+                        Log.e(TAG, "NLP request failed: " + t.getMessage(), t);
+                        LogManager.log(LogLevel.ERROR, TAG, "NLP request failed: " + t.getMessage());
+                    }
+                });
             }
 
             @Override

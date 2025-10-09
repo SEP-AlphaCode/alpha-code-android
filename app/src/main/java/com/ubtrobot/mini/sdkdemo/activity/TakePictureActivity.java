@@ -17,6 +17,7 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.ubtech.utilcode.utils.FileUtils;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtechinc.sauron.api.TakePicApi;
 import com.ubtrobot.commons.ResponseListener;
@@ -26,9 +27,12 @@ import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.models.response.ActionResponseDto;
 import com.ubtrobot.mini.sdkdemo.models.response.QRCodeActivityResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 
 import org.json.JSONObject;
 
@@ -47,8 +51,6 @@ public class TakePictureActivity {
     private CommandHandler commandHandler = new CommandHandler();
     private TTSHandler tts;
     QRCodeApi activityApi = ApiClient.getSpringInstance().create(QRCodeApi.class);
-    OsmoApi osmoApi = ApiClient.getPythonInstance().create(OsmoApi.class);
-
 
     public static TakePictureActivity get() {
         return TakePictureActivity.Holder._api;
@@ -65,7 +67,7 @@ public class TakePictureActivity {
     }
 
     public void takePicImmediately(String action, String lang) {
-        if(takePicApi == null){
+        if (takePicApi == null) {
             initRobot();
         }
         if (takePicApi != null) {
@@ -79,7 +81,7 @@ public class TakePictureActivity {
                         }
                     } catch (Exception e) {
                         Log.w(TAG, "Cannot show toast, context not available: " + e.getMessage());
-                        LogManager.log(LogLevel.WARN, TAG,"Cannot show toast, context not available: " + e.getMessage());
+                        LogManager.log(LogLevel.WARN, TAG, "Cannot show toast, context not available: " + e.getMessage());
                     }
 
                     // Change the path from "/ubtrobot/camera/xxx" to "/sdcard/ubtrobot/camera/xxx"
@@ -90,44 +92,49 @@ public class TakePictureActivity {
                         Log.i(TAG, "File exists: " + realPath);
                     } else {
                         Log.e(TAG, "File not exists: " + realPath);
-                        LogManager.log(LogLevel.ERROR, TAG,"File not exists: " + realPath);
+                        LogManager.log(LogLevel.ERROR, TAG, "File not exists: " + realPath);
                     }
 
-                    switch (action){
+                    switch (action) {
                         case "osmo-card":
-                            RequestBody requestFile = RequestBody.create(
-                                    MediaType.parse("image/jpeg"),
-                                    file
-                            );
-
-                            // Create MultipartBody.Part to send
-                            MultipartBody.Part body =
-                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+//                            RequestBody requestFile = RequestBody.create(
+//                                    MediaType.parse("image/jpeg"),
+//                                    file
+//                            );
+//
+//                            // Create MultipartBody.Part to send
+//                            MultipartBody.Part body =
+//                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
                             // Call API
-                            osmoApi.recognizeActionCardFromImage(body).enqueue(new Callback<ActionResponseDto>() {
-                                @Override
-                                public void onResponse(Call<ActionResponseDto> call, Response<ActionResponseDto> response) {
-                                    if (response.isSuccessful() && response.body() != null) {
-                                        try {
-                                            Log.i(TAG, "Action cards: " + response.body().action_cards);
-                                            Log.i(TAG, "Actions: " + response.body().actions);
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else {
-                                        Log.e(TAG, "Data is null or response is not successful");
-                                        LogManager.log(LogLevel.ERROR, TAG,"Data is null or response is not successful");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ActionResponseDto> call, Throwable t) {
-                                    Log.e(TAG, "Error when call API: " + t.getMessage());
-                                    LogManager.log(LogLevel.ERROR, TAG,"Error when call API: " + t.getMessage());
-                                }
-                            });
+//                            osmoApi.recognizeActionCardFromImage(body).enqueue(new Callback<ActionResponseDto>() {
+//                                @Override
+//                                public void onResponse(Call<ActionResponseDto> call, Response<ActionResponseDto> response) {
+//                                    if (response.isSuccessful() && response.body() != null) {
+//                                        try {
+//                                            Log.i(TAG, "Action cards: " + response.body().action_cards);
+//                                            Log.i(TAG, "Actions: " + response.body().actions);
+//
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    } else {
+//                                        Log.e(TAG, "Data is null or response is not successful");
+//                                        LogManager.log(LogLevel.ERROR, TAG,"Data is null or response is not successful");
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<ActionResponseDto> call, Throwable t) {
+//                                    Log.e(TAG, "Error when call API: " + t.getMessage());
+//                                    LogManager.log(LogLevel.ERROR, TAG,"Error when call API: " + t.getMessage());
+//                                }
+//                            });
+                            byte[] messageContent = new RobotMessageBuilder()
+                                    .setType(RobotRequestTypes.PARSE_OSMO)
+                                    .setImageData(FileUtils.readFile2Bytes(file))
+                                    .build();
+                            RobotSocketManager.getInstance().sendBinaryMessage(messageContent);
                             break;
                         case "qr-code":
                             // Decode the QR code from the image file
@@ -147,22 +154,22 @@ public class TakePictureActivity {
                                                 e.printStackTrace();
                                             }
                                         } else {
-                                            String text = lang.equals("en")  ? "Cannot recognize the QR code, please try again." : "Không thể nhận diện mã QR, làm ơn thử lại.";
+                                            String text = lang.equals("en") ? "Cannot recognize the QR code, please try again." : "Không thể nhận diện mã QR, làm ơn thử lại.";
                                             tts.doTTS(text, lang);
                                             Log.e(TAG, "Data is null or response is not successful");
-                                            LogManager.log(LogLevel.ERROR, TAG,"Data is null or response is not successful");
+                                            LogManager.log(LogLevel.ERROR, TAG, "Data is null or response is not successful");
                                         }
                                     }
 
                                     @Override
                                     public void onFailure(Call<QRCodeActivityResponse> call, Throwable t) {
                                         Log.e(TAG, "Error when call API: " + t.getMessage());
-                                        LogManager.log(LogLevel.ERROR, TAG,"Error when call API: " + t.getMessage());
+                                        LogManager.log(LogLevel.ERROR, TAG, "Error when call API: " + t.getMessage());
                                     }
                                 });
                             } else {
                                 Log.i(TAG, "Cannot decode QR code, file does not exist: " + realPath);
-                                LogManager.log(LogLevel.WARN, TAG,"Cannot decode QR code, file does not exist: " + realPath);
+                                LogManager.log(LogLevel.WARN, TAG, "Cannot decode QR code, file does not exist: " + realPath);
                             }
                             break;
                     }
@@ -171,48 +178,12 @@ public class TakePictureActivity {
                 @Override
                 public void onFailure(int errorCode, @NonNull String errorMsg) {
                     Log.i(TAG, "Take picture failed, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
-                    LogManager.log(LogLevel.ERROR, TAG,"Take picture failed, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
+                    LogManager.log(LogLevel.ERROR, TAG, "Take picture failed, errorCode=" + errorCode + ", errorMsg=" + errorMsg);
                 }
             });
         } else {
             Log.e(TAG, "TakePicApi is still null after initialization attempt");
-            LogManager.log(LogLevel.ERROR, TAG,"TakePicApi is still null after initialization attempt");
-        }
-    }
-
-    private String decodeQRCodeFromFile(String filePath, String lang) {
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        if (bitmap == null) {
-            Log.e(TAG, "Can not load file from path: " + filePath);
-            LogManager.log(LogLevel.ERROR, TAG,"Can not load file from path: " + filePath);
-            return null;
-        }
-
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int[] pixels = new int[width * height];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        LuminanceSource source = new RGBLuminanceSource(width, height, pixels);
-        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
-        Reader reader = new MultiFormatReader();
-
-        try {
-            Result result = reader.decode(binaryBitmap);
-            return result.getText();
-        } catch (NotFoundException e) {
-            Log.e(TAG, "Qr code not found in the image: " + e.getMessage());
-            LogManager.log(LogLevel.ERROR, TAG,"Qr code not found in the image: " + e.getMessage());
-            if(lang.equals("en")){
-                tts.doTTS("Qr code not found in the image, please try again.", "en");
-            }
-            else {
-                tts.doTTS("Không tìm thấy qr code. Làm ơn thử lại.", "vi");
-            }
-            return null;
-        } catch (Exception e) {
-            Log.e(TAG, "Error when decode QR Code: " + e.getMessage());
-            LogManager.log(LogLevel.ERROR, TAG,"Error when decode QR Code: " + e.getMessage());
-            return null;
+            LogManager.log(LogLevel.ERROR, TAG, "TakePicApi is still null after initialization attempt");
         }
     }
 }

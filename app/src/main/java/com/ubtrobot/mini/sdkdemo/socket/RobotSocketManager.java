@@ -235,6 +235,47 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         }
     }
 
+    @Override
+    public void sendMessage(String message, WebSocketContract.ResultCallback callback) {
+        if (webSocket != null && isConnected) {
+            boolean success = webSocket.send(message);
+            Log.d(TAG, "Send message with callback: " + message + " | success: " + success);
+            if (callback != null) {
+                if (success) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure("Failed to send message");
+                }
+            }
+        } else {
+            Log.w(TAG, "Cannot send message with callback, WebSocket not connected");
+            if (callback != null) {
+                callback.onFailure("WebSocket not connected");
+            }
+        }
+    }
+
+    @Override
+    public void sendBinaryMessage(byte[] message, WebSocketContract.ResultCallback callback) {
+        if (webSocket != null && isConnected) {
+            boolean success = webSocket.send(okio.ByteString.of(message));
+            Log.d(TAG, "Send binary message with callback, length: " + message.length + " | success: " + success);
+            if (callback != null) {
+                if (success) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure("Failed to send binary message");
+                }
+            }
+        } else {
+            Log.w(TAG, "Cannot send binary message with callback, WebSocket not connected");
+            if (callback != null) {
+                callback.onFailure("WebSocket not connected");
+            }
+        }
+    }
+
+
     public void sendRobotRequest(String type, int[] asrData, byte[] imageData,
                                  Map<String, String> params, String speech) {
         byte[] protobufData = ProtobufConverter.requestToProtoBytes(type, asrData, imageData, params, speech);
