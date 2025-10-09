@@ -40,16 +40,7 @@ android {
     lintOptions {
         abortOnError false
     }
-}
 
-repositories {
-    google()
-    mavenCentral()
-    maven { url "https://jitpack.io" }
-    maven { url "https://maven.webrtc.org" }   // thêm repo chính thức WebRTC
-    flatDir {
-        dirs 'libs'
-    }
     sourceSets {
         main {
             proto {
@@ -60,6 +51,17 @@ repositories {
             }
         }
     }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    maven { url "https://maven.webrtc.org" }   // thêm repo chính thức WebRTC
+    flatDir {
+        dirs 'libs'
+    }
+
 }
 
 dependencies {
@@ -98,8 +100,6 @@ dependencies {
 
     // WebRTC
     implementation 'com.infobip:google-webrtc:1.0.0035529'
-
-    implementation 'com.google.mlkit:translate:17.0.3'
 }
 
 protobuf {

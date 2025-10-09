@@ -6,11 +6,8 @@ import android.os.Looper;
 
 import com.google.gson.Gson;
 import com.ubtechinc.mini.weinalib.TencentVadRecorder;
-import com.ubtrobot.mini.sdkdemo.apis.STTApi;
 import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
-import com.ubtrobot.mini.sdkdemo.models.requests.STTRequest;
-import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
-import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
@@ -113,39 +110,8 @@ public class DemoRecognizer extends AbstractRecognizer {
 
         byte[] fullRecording = getFullRecording();
         outputStream.reset();
-        //STTRequest request = new STTRequest(fullRecording);
-
-//        sttApi.doSTT(request).enqueue(new Callback<NLPResponse>() {
-//            @Override
-//            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    try {
-//                        NLPResponse nlpResponse = response.body();
-//                        String type = nlpResponse.getType();
-//                        NLPResponse.DataContainer data = nlpResponse.getData();
-//                        // Convert DataContainer -> JSON string
-//                        String jsonString = new Gson().toJson(data);
-//
-//                        // Convert JSON string -> JSONObject
-//                        JSONObject jsonData = new JSONObject(jsonString);
-//                        // Use CommandHandler instead of switch case
-//                        ledHelper.notifyState(0);
-//                        commandHandler.handleCommand(type, jsonData, nlpResponse.getLang());
-//
-//                    } catch (Exception e) {
-//                        Log.e(TAG, "Error processing response: " + e.getMessage());
-//                        recorder.start();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NLPResponse> call, Throwable t) {
-//                Log.e(TAG, "Response failure: " + t);
-//            }
-//        });
         byte[] protobufMessage = new RobotMessageBuilder()
-                .setType("asr_data")
+                .setType(RobotRequestTypes.PROCESS_SPEECH)
                 .setAsrData(convertBytesToIntArray(fullRecording))
                 .build();
         if(RobotSocketManager.isInitialized()){

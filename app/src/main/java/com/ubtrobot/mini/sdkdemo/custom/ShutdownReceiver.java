@@ -12,8 +12,14 @@ import android.util.Log;
 import com.ubtrobot.mini.sdkdemo.apis.WebsocketApi;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 import com.ubtrobot.sys.SysApi;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,17 +44,22 @@ public class ShutdownReceiver extends BroadcastReceiver {
         SharedPreferences prefs = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         prefs.edit().putLong("last_shutdown_time", System.currentTimeMillis()).apply();
         String serial = SysApi.get().readRobotSid();
-        ws.disconnect(serial).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
+//        ws.disconnect(serial).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//            }
+//        });
+        byte[] message = new RobotMessageBuilder()
+                .addParameter("serial", serial)
+                .setType(RobotRequestTypes.NOTIFY_SHUTDOWN)
+                .build();
+        RobotSocketManager.getInstance().sendBinaryMessage(message);
         LogManager.log(LogLevel.INFO, TAG, "Robot " + serial + " is shutting down");
     }
 }
