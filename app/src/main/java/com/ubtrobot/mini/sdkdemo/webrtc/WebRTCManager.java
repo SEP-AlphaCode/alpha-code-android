@@ -94,7 +94,7 @@ public class WebRTCManager {
         cameraCapturer.initialize(surfaceTextureHelper, ctx, videoSource.getCapturerObserver());
 
         try {
-            cameraCapturer.startCapture(640, 480, 30);
+            cameraCapturer.startCapture(1920, 1080, 30);
         } catch (Exception e) {
             Log.e(TAG, "Error starting camera capture", e);
         }
