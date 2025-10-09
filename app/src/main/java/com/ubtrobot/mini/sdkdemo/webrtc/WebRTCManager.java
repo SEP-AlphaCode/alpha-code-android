@@ -17,7 +17,7 @@ public class WebRTCManager {
     private VideoTrack localVideoTrack;
     private AudioTrack localAudioTrack;
     private SurfaceTextureHelper surfaceTextureHelper;
-    private Camera2Capturer cameraCapturer;
+    private CameraVideoCapturer videoCapturer;
     private VideoSource videoSource;
     private AudioSource audioSource;
 
@@ -25,7 +25,6 @@ public class WebRTCManager {
 
     public interface Callback {
         void onIceCandidate(IceCandidate candidate);
-
         void onLocalDescription(SessionDescription sdp);
     }
 
@@ -60,44 +59,64 @@ public class WebRTCManager {
     private void initSurface() {
         localView.init(rootEglBase.getEglBaseContext(), null);
         localView.setZOrderMediaOverlay(false);
-        localView.setMirror(false); // Add this line
-        localView.setEnableHardwareScaler(true); // Add this line for better scaling
+        localView.setMirror(false);
+        localView.setEnableHardwareScaler(true);
     }
 
     public void startLocalMedia(Context ctx) {
-        Camera2Enumerator enumerator = new Camera2Enumerator(ctx);
-        String[] devices = enumerator.getDeviceNames();
-        if (devices.length == 0) {
+        // Use CameraEnumerator instead of Camera2Enumerator
+        CameraEnumerator enumerator = new Camera1Enumerator(true); // true for captureToTexture
+
+        String[] deviceNames = enumerator.getDeviceNames();
+        if (deviceNames.length == 0) {
             Log.e(TAG, "No camera found");
             return;
         }
 
-        // Find the front camera (usually the one that needs mirroring)
-        String cameraId = devices[0];
-        boolean isFrontCamera = false;
-        for (String device : devices) {
-            if (enumerator.isFrontFacing(device)) {
-                cameraId = device;
-                isFrontCamera = true;
+        // Find front camera
+        String cameraDeviceName = null;
+        boolean isFrontFacing = false;
+
+        for (String deviceName : deviceNames) {
+            if (enumerator.isFrontFacing(deviceName)) {
+                cameraDeviceName = deviceName;
+                isFrontFacing = true;
                 break;
             }
         }
 
-        // ADD THIS: Set mirroring based on camera type
-        if (localView != null) {
-            localView.setMirror(isFrontCamera);
+        // If no front camera found, use first available camera
+        if (cameraDeviceName == null && deviceNames.length > 0) {
+            cameraDeviceName = deviceNames[0];
+            isFrontFacing = enumerator.isFrontFacing(cameraDeviceName);
         }
 
-        cameraCapturer = new Camera2Capturer(ctx, cameraId, null);
+        if (cameraDeviceName == null) {
+            Log.e(TAG, "No usable camera found");
+            return;
+        }
+
+        // Set mirroring based on camera type
+        if (localView != null) {
+            localView.setMirror(isFrontFacing);
+        }
+
+        // Create camera capturer using Camera1 API
+        videoCapturer = enumerator.createCapturer(cameraDeviceName, null);
+
+        if (videoCapturer == null) {
+            Log.e(TAG, "Failed to create camera capturer");
+            return;
+        }
+
         surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread", rootEglBase.getEglBaseContext());
         videoSource = factory.createVideoSource(false);
-        cameraCapturer.initialize(surfaceTextureHelper, ctx, videoSource.getCapturerObserver());
 
-        try {
-            cameraCapturer.startCapture(1920, 1080, 30);
-        } catch (Exception e) {
-            Log.e(TAG, "Error starting camera capture", e);
-        }
+        // Initialize the capturer
+        videoCapturer.initialize(surfaceTextureHelper, ctx, videoSource.getCapturerObserver());
+
+        // Start capture
+        videoCapturer.startCapture(1920, 1080, 30);
 
         localVideoTrack = factory.createVideoTrack("ARDAMSv0", videoSource);
         localVideoTrack.addSink(localView);
@@ -117,13 +136,24 @@ public class WebRTCManager {
             }
         });
 
-        MediaStream stream = factory.createLocalMediaStream("ARDAMS");
-        stream.addTrack(localVideoTrack);
-        stream.addTrack(localAudioTrack);
-        peerConnection.addStream(stream);
+        if (peerConnection != null) {
+            MediaStream stream = factory.createLocalMediaStream("ARDAMS");
+            if (localVideoTrack != null) {
+                stream.addTrack(localVideoTrack);
+            }
+            if (localAudioTrack != null) {
+                stream.addTrack(localAudioTrack);
+            }
+            peerConnection.addStream(stream);
+        }
     }
 
     public void createOffer() {
+        if (peerConnection == null) {
+            Log.e(TAG, "PeerConnection is null, cannot create offer");
+            return;
+        }
+
         MediaConstraints constraints = new MediaConstraints();
         peerConnection.createOffer(new SimpleSdpObserver() {
             @Override
@@ -135,18 +165,22 @@ public class WebRTCManager {
     }
 
     public void setRemoteDescription(SessionDescription sdp) {
-        peerConnection.setRemoteDescription(new SimpleSdpObserver(), sdp);
+        if (peerConnection != null) {
+            peerConnection.setRemoteDescription(new SimpleSdpObserver(), sdp);
+        }
     }
 
     public void addIceCandidate(IceCandidate candidate) {
-        peerConnection.addIceCandidate(candidate);
+        if (peerConnection != null) {
+            peerConnection.addIceCandidate(candidate);
+        }
     }
 
     public void release() {
         try {
-            if (cameraCapturer != null) {
-                cameraCapturer.stopCapture();
-                cameraCapturer.dispose();
+            if (videoCapturer != null) {
+                videoCapturer.stopCapture();
+                videoCapturer.dispose();
             }
             if (surfaceTextureHelper != null) surfaceTextureHelper.dispose();
             if (videoSource != null) videoSource.dispose();
@@ -159,7 +193,7 @@ public class WebRTCManager {
             if (localView != null) localView.release();
             if (rootEglBase != null) rootEglBase.release();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during release", e);
         }
     }
 }
