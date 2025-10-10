@@ -19,6 +19,7 @@ import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -57,10 +58,12 @@ public class CommandHandler {
         this.systemHandler.setSocketManager(socketManager);
         this.webRTCHandler.setSocketManager(socketManager);
         this.osmoHandler = new OsmoActionsHandler();
+    }
 
+    public void handleCommand(String type, JSONObject data, String lang) throws JSONException {
         String text = data.optString("text");
         String code = data.optString("code");
-        Log.i(TAG, "type=" + type + ", data=" + data);
+
         try {
             switch (type) {
                 case "get_system_info":
@@ -134,39 +137,24 @@ public class CommandHandler {
                             osmoHandler.stopMouthLed();
                         }
 
-                    @Override
-                    public void onDone() {
-                        CameraPreviewCapture previewCapture = new CameraPreviewCapture(Utils.getContext().getApplicationContext());
-                        previewCapture.openCamera(lang);
-                    }
-
-                    @Override
+                        @Override
                         public void onError(String error) {
                             Log.e(TAG, error);
                         }
-                });
-                break;
-            case "face_recognize":
-                faceHandler.handleDetect(lang);
-                break;
-            case "face_register":
-                String name = data.optString("name");
-                Log.i(TAG, name);
-                if(name != null && !name.isEmpty()){
-                    faceHandler.handleRegister(name);
-                } else {
-                    ttsHandler.doTTS(lang.equals("en") ? "Please provide a name to register" : "Vui lòng cung cấp tên để đăng ký", lang);
-                }
-                break;
-            case "webrtc_start":
-                webRTCHandler.handleWebRTCStart(Utils.getContext().getApplicationContext());
-                break;
-            case "webrtc_stop":
-                webRTCHandler.handleWebRTCStop();
-                break;
-            default:
-                ttsHandler.doTTS(text, lang);
-                break;
+                    });
+                    break;
+                case "webrtc_start":
+                    webRTCHandler.handleWebRTCStart(Utils.getContext().getApplicationContext());
+                    break;
+                case "webrtc_stop":
+                    webRTCHandler.handleWebRTCStop();
+                    break;
+                default:
+                    ttsHandler.doTTS(text, lang);
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error handling command: " + type + ", data: " + data, e);
         }
     }
 }
