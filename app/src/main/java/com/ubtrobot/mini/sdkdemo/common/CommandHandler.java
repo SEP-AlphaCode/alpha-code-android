@@ -12,6 +12,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.FaceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.WebRTCHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 
@@ -30,6 +31,8 @@ public class CommandHandler {
     private TTSHandler ttsHandler;
     private SystemHandler systemHandler;
     private FaceHandler faceHandler;
+    private WebRTCHandler webRTCHandler;
+
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -41,6 +44,13 @@ public class CommandHandler {
         this.ttsHandler = new TTSHandler();
         this.systemHandler = SystemHandler.get();
         this.faceHandler = FaceHandler.get();
+        this.webRTCHandler = WebRTCHandler.getInstance();
+    }
+
+    // Method to set socket manager for handlers that need it
+    public void setSocketManager(com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager socketManager) {
+        this.systemHandler.setSocketManager(socketManager);
+        this.webRTCHandler.setSocketManager(socketManager);
     }
 
     public void handleCommand(String type, JSONObject data, String lang) {
@@ -108,6 +118,12 @@ public class CommandHandler {
                 } else {
                     ttsHandler.doTTS(lang.equals("en") ? "Please provide a name to register" : "Vui lòng cung cấp tên để đăng ký", lang);
                 }
+                break;
+            case "webrtc_start":
+                webRTCHandler.handleWebRTCStart(Utils.getContext().getApplicationContext());
+                break;
+            case "webrtc_stop":
+                webRTCHandler.handleWebRTCStop();
                 break;
             default:
                 ttsHandler.doTTS(text, lang);

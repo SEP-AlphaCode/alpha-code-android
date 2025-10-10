@@ -10,10 +10,13 @@ import org.json.JSONObject;
 public class RobotSocketController implements WebSocketContract.View {
     private static final String TAG = "RobotSocketController";
     private CommandHandler commandHandler;
+    private RobotSocketManager socketManager;
 
-    public RobotSocketController() {
+    public RobotSocketController(RobotSocketManager socketManager) {
+        this.socketManager = socketManager;
         this.commandHandler = new CommandHandler();
-
+        // Set the socket manager for handlers that need to send responses
+        this.commandHandler.setSocketManager(socketManager);
     }
 
     @Override

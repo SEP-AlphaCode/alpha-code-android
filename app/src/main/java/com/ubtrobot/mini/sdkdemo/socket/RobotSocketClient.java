@@ -41,9 +41,11 @@ public class RobotSocketClient extends Service {
                 serial = "unknown_serial";
             }
 
-            // Create controller and manager
-            socketController = new RobotSocketController();
+            // Create manager first
             socketManager = RobotSocketManager.getInstance(BuildConfig.API_WEBSOCKET, serial);
+
+            // Create controller with manager reference
+            socketController = new RobotSocketController(socketManager);
 
             // Connect them
             socketManager.setView(socketController);
