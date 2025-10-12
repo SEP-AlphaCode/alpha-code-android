@@ -17,6 +17,8 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.WebRTCHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -148,6 +150,10 @@ public class CommandHandler {
                     break;
                 case "webrtc_stop":
                     webRTCHandler.handleWebRTCStop();
+                    break;
+                case "process-text":
+                    byte[] msg = new RobotMessageBuilder().addParameter("text", code).setType("process-text").build();
+                    RobotSocketManager.getInstance().sendBinaryMessage(msg);
                     break;
                 default:
                     ttsHandler.doTTS(text, lang);
