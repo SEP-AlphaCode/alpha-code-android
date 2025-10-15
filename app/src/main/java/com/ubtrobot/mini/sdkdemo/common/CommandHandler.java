@@ -155,7 +155,7 @@ public class CommandHandler {
                 case "webrtc_stop":
                     webRTCHandler.handleWebRTCStop();
                     break;
-                case "process_text":
+                case "process_text": //This is for calling from Web. This isn't from within the app
                     byte[] msg = new RobotMessageBuilder().addParameter("text", code).setType("process-text").build();
                     RobotSocketManager.getInstance().sendBinaryMessage(msg);
                     break;
