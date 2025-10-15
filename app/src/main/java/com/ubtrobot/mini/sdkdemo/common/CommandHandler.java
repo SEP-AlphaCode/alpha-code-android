@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.CodingBlockHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.DanceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExpressionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
@@ -42,6 +43,8 @@ public class CommandHandler {
     private WebRTCHandler webRTCHandler;
     private OsmoActionsHandler osmoHandler;
 
+    private CodingBlockHandler codingBlockHandler;
+
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -54,6 +57,7 @@ public class CommandHandler {
         this.systemHandler = SystemHandler.get();
         this.faceHandler = FaceHandler.get();
         this.webRTCHandler = WebRTCHandler.getInstance();
+        this.codingBlockHandler = new CodingBlockHandler();
     }
     // Method to set socket manager for handlers that need it
     public void setSocketManager(com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager socketManager) {
@@ -154,6 +158,12 @@ public class CommandHandler {
                 case "process_text":
                     byte[] msg = new RobotMessageBuilder().addParameter("text", code).setType("process-text").build();
                     RobotSocketManager.getInstance().sendBinaryMessage(msg);
+                    break;
+                case "coding_block":
+                    JSONArray actions = data.optJSONArray("actions");
+                    if (actions != null) {
+                        codingBlockHandler.executeCodingBlock(actions, 0, lang);
+                    }
                     break;
                 default:
                     ttsHandler.doTTS(text, lang);
