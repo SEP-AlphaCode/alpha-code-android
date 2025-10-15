@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.ubtrobot.led.LedApi;
+import com.ubtrobot.mini.sdkdemo.BuildConfig;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 
 import java.security.cert.CertificateException;
@@ -77,6 +78,7 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         client = createUnsafeOkHttpClient();
         request = new Request.Builder()
                 .url(serverUrl + "/" + robotSerial)
+                .addHeader("x-robot-model-id", BuildConfig.ROBOT_MODEL_ID)
                 .build();
     }
 

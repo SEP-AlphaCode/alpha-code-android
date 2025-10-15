@@ -13,6 +13,7 @@ android {
         buildConfigField "String", "API_PYTHON_PATH", "\"${getLocalProperty('api.python.path', '')}\""
         buildConfigField "String", "API_WEBSOCKET", "\"${getLocalProperty('api.websocket', '')}\""
         buildConfigField "String", "API_LOGSERVICE_PATH", "\"${getLocalProperty('api.logservice.path', '')}\""
+        buildConfigField "String", "ROBOT_MODEL_ID", "\"${getLocalProperty('robot_model_id', '')}\""
 
         multiDexEnabled true
         ndk {

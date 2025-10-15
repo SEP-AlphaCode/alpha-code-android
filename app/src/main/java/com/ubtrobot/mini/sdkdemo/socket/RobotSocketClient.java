@@ -10,7 +10,6 @@ import android.util.Log;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.sys.SysApi;
-import com.ubtrobot.mini.sdkdemo.BuildConfig;
 
 public class RobotSocketClient extends Service {
     private static final String TAG = "RobotSocketClient";
