@@ -135,4 +135,35 @@ public class ExtendedActionHandler {
                 break;
         }
     }
+
+    public void handleExtendedActionWithCallback(JSONObject data, Runnable onComplete) {
+        if (data.has("actions")) {
+            JSONArray actions = data.optJSONArray("actions");
+            if (actions != null) {
+                executeActionsSequentially(actions, 0, onComplete);
+            }
+        } else {
+            String name = data.optString("code");
+            int step = data.optInt("step", 1);
+            executeAction(name, step, onComplete);
+        }
+    }
+
+    private void executeActionsSequentially(JSONArray actions, int index, Runnable onComplete) {
+        if (index >= actions.length()) {
+            if (onComplete != null) onComplete.run();
+            return;
+        }
+
+        JSONObject actionObj = actions.optJSONObject(index);
+        if (actionObj != null) {
+            String actName = actionObj.optString("code");
+            int actStep = actionObj.optInt("step", 1);
+
+            executeAction(actName, actStep, () -> executeActionsSequentially(actions, index + 1, onComplete));
+        } else {
+            executeActionsSequentially(actions, index + 1, onComplete);
+        }
+    }
+
 }
