@@ -3,6 +3,7 @@ package com.ubtrobot.mini.sdkdemo.common;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
+import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CodingBlockHandler;
@@ -29,7 +30,13 @@ import java.util.List;
 
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
-
+    private static boolean allowPlayAction = true;
+    public static boolean isAllowPlayAction(){
+        return allowPlayAction;
+    }
+    public static void notifyCleanUpDone(){
+        allowPlayAction = true;
+    }
     // Handler instances
     private ActionHandler actionHandler;
     private ExtendedActionHandler extendedActionHandler;
@@ -164,6 +171,16 @@ public class CommandHandler {
                     if (actions != null) {
                         codingBlockHandler.executeCodingBlock(actions, 0, lang);
                     }
+                    break;
+                case "stop_all_actions":
+                    if (!CommandHandler.isAllowPlayAction()) {
+                        Log.i(TAG, "Playing action isn't allowed right now");
+                        if (ActionApi.get().isPlaying()) {
+                            ActionApi.get().stopAction();
+                        }
+                        return;
+                    }
+                    allowPlayAction = false;
                     break;
                 default:
                     ttsHandler.doTTS(text, lang);

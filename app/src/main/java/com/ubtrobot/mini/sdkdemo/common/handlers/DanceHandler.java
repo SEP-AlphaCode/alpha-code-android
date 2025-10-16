@@ -16,13 +16,15 @@ import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.master.context.MasterContext;
+import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.utils.RobotUtils;
 import com.ubtrobot.mini.voice.MiniMediaPlayer;
 import com.ubtrobot.mini.voice.protos.VoiceProto;
 
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DanceHandler {
     private static final String TAG = "DanceHandler";
@@ -31,7 +33,7 @@ public class DanceHandler {
     private ExpressApi expressApi;
     private MouthLedApi mouthLedApi;
     private final Handler handler = new Handler(Looper.getMainLooper());
-
+    private final List<Runnable> scheduledActions = new ArrayList<>();
 
     public DanceHandler() {
         initRobot();
@@ -46,11 +48,11 @@ public class DanceHandler {
     public void handleDanceWithMusic(JSONObject data) {
         if (data != null) {
             Log.i(TAG, "Handling dance with music command: " + data);
-            JumpWithMusic(data);
+            jumpWithMusic(data);
         }
     }
 
-    public void JumpWithMusic(JSONObject jsonObject) {
+    public void jumpWithMusic(JSONObject jsonObject) {
         MasterContext context = RobotUtils.getMasterContext();
         VoiceProto.Source source = RobotUtils.getVoiceProtoSource();
 
@@ -119,75 +121,95 @@ public class DanceHandler {
                     b = colorObj.optInt("b", 255);
                 }
                 int finalA = a, finalR = r, finalG = g, finalB = b;
-
-                handler.postDelayed(() -> {
-                    Log.i(TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
-                    LogManager.log(LogLevel.INFO, TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
-
-                    // Set LED color with activity duration time
-                    try {
-                        mouthLedApi.startNormalModel(Color.argb(finalA, finalR, finalG, finalB),
-                                (int) (duration * 1000), Priority.NORMAL, null);
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error setting LED color", e);
-                        LogManager.log(LogLevel.ERROR, TAG, "Error setting LED color: " + e.getMessage());
-                    }
-
-                    // Run action based on type
-                    switch (type) {
-                        case "dance":
-                            actionApi.playAction(actionId, new ResponseListener<Void>() {
-                                @Override
-                                public void onResponseSuccess(Void aVoid) {
-                                    Log.i(TAG, "Action " + actionId + " completed successfully");
-                                    LogManager.log(LogLevel.INFO, TAG, "Action " + actionId + " completed successfully");
-                                }
-
-                                @Override
-                                public void onFailure(int errorCode, @NonNull String errorMessage) {
-                                    Log.e(TAG, "Action " + actionId + " failed: " + errorMessage);
-                                    LogManager.log(LogLevel.ERROR, TAG, "Action " + actionId + " failed: " + errorMessage);
-                                }
-                            });
-                            break;
-                        case "expression":
-                            try {
-                                Log.i(TAG, "Executing expression: " + actionId);
-                                expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
-                                    @Override
-                                    public void onAnimationStart() {
-                                        Log.i(TAG, "doExpress");
-                                        LogManager.log(LogLevel.INFO, TAG, "doExpress");
-                                    }
-
-                                    @Override
-                                    public void onAnimationEnd(int i) {
-                                        Log.i(TAG, "doExpress");
-                                        LogManager.log(LogLevel.INFO, TAG, "doExpress");
-                                    }
-
-                                    @Override
-                                    public void onAnimationRepeat(int loopNumber) {
-                                        Log.i(TAG, "doExpress" + loopNumber);
-                                        LogManager.log(LogLevel.INFO, TAG, "doExpress" + loopNumber);
-                                    }
-                                });
-                            } catch (Exception e) {
-                                Log.e(TAG, "Error executing expression " + actionId, e);
-                                LogManager.log(LogLevel.ERROR, TAG, "Error executing expression " + actionId + ": " + e.getMessage());
-                            }
-                            break;
-                        default:
-                            Log.w(TAG, "Unknown action type: " + type + " for action: " + actionId);
-                            LogManager.log(LogLevel.WARN, TAG, "Unknown action type: " + type + " for action: " + actionId);
-                            break;
-                    }
-
-                }, (long) (startTime * 1000));
+                Runnable runnable = () -> {
+                    doAction(actionId, startTime, duration, type, finalA, finalR, finalG, finalB);
+                };
+                scheduledActions.add(runnable);
+                handler.postDelayed(runnable, (long) (startTime * 1000));
             }
         } catch (Exception e) {
             Log.e(TAG, "Error in playScriptFromJson", e);
             LogManager.log(LogLevel.ERROR, TAG, "Error in playScriptFromJson: " + e.getMessage());
+        }
+    }
+
+    private void stopAllScheduledActions() {
+        for (Runnable r : scheduledActions) {
+            handler.removeCallbacks(r);
+        }
+        scheduledActions.clear();
+        CommandHandler.notifyCleanUpDone();
+    }
+
+    private void doAction(String actionId, double startTime, double duration, String type, int finalA, int finalR, int finalG, int finalB) {
+        if (!CommandHandler.isAllowPlayAction()) {
+            stopAllScheduledActions();
+            Log.i(TAG, "Playing action isn't allowed right now");
+            if (actionApi.isPlaying()) {
+                actionApi.stopAction();
+            }
+            return;
+        }
+        Log.i(TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
+        LogManager.log(LogLevel.INFO, TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
+
+        // Set LED color with activity duration time
+        try {
+            mouthLedApi.startNormalModel(Color.argb(finalA, finalR, finalG, finalB),
+                    (int) (duration * 1000), Priority.NORMAL, null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting LED color", e);
+            LogManager.log(LogLevel.ERROR, TAG, "Error setting LED color: " + e.getMessage());
+        }
+
+        // Run action based on type
+        switch (type) {
+            case "dance":
+                actionApi.playAction(actionId, new ResponseListener<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void aVoid) {
+                        Log.i(TAG, "Action " + actionId + " completed successfully");
+                        LogManager.log(LogLevel.INFO, TAG, "Action " + actionId + " completed successfully");
+                    }
+
+                    @Override
+                    public void onFailure(int errorCode, @NonNull String errorMessage) {
+                        Log.e(TAG, "Action " + actionId + " failed: " + errorMessage);
+                        LogManager.log(LogLevel.ERROR, TAG, "Action " + actionId + " failed: " + errorMessage);
+                    }
+                });
+                break;
+            case "expression":
+                try {
+                    Log.i(TAG, "Executing expression: " + actionId);
+                    expressApi.doExpress(actionId, 1, true, Priority.HIGH, new AnimationListener() {
+                        @Override
+                        public void onAnimationStart() {
+                            Log.i(TAG, "doExpress");
+                            LogManager.log(LogLevel.INFO, TAG, "doExpress");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(int i) {
+                            Log.i(TAG, "doExpress");
+                            LogManager.log(LogLevel.INFO, TAG, "doExpress");
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(int loopNumber) {
+                            Log.i(TAG, "doExpress" + loopNumber);
+                            LogManager.log(LogLevel.INFO, TAG, "doExpress" + loopNumber);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Error executing expression " + actionId, e);
+                    LogManager.log(LogLevel.ERROR, TAG, "Error executing expression " + actionId + ": " + e.getMessage());
+                }
+                break;
+            default:
+                Log.w(TAG, "Unknown action type: " + type + " for action: " + actionId);
+                LogManager.log(LogLevel.WARN, TAG, "Unknown action type: " + type + " for action: " + actionId);
+                break;
         }
     }
 
