@@ -35,6 +35,7 @@ public class CommandHandler {
         return allowPlayAction;
     }
     public static void notifyCleanUpDone(){
+        Log.i(TAG, "Can play action again now");
         allowPlayAction = true;
     }
     // Handler instances
