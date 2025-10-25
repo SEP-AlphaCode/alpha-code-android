@@ -1,9 +1,11 @@
 package com.ubtrobot.mini.sdkdemo.common;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.action.ActionApi;
+import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CodingBlockHandler;
@@ -21,6 +23,8 @@ import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
+import com.ubtrobot.motion.protos.Motion;
+import com.ubtrobot.motor.MotorApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,13 +35,17 @@ import java.util.List;
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
     private static boolean allowPlayAction = true;
-    public static boolean isAllowPlayAction(){
+
+    public static boolean isAllowPlayAction() {
         return allowPlayAction;
     }
-    public static void notifyCleanUpDone(){
+
+    public static void notifyCleanUpDone() {
         Log.i(TAG, "Can play action again now");
         allowPlayAction = true;
+        ActionApi.get().playAction("stand_up", null);
     }
+
     // Handler instances
     private ActionHandler actionHandler;
     private ExtendedActionHandler extendedActionHandler;
@@ -67,6 +75,7 @@ public class CommandHandler {
         this.webRTCHandler = WebRTCHandler.getInstance();
         this.codingBlockHandler = new CodingBlockHandler();
     }
+
     // Method to set socket manager for handlers that need it
     public void setSocketManager(com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager socketManager) {
         this.systemHandler.setSocketManager(socketManager);
@@ -178,6 +187,7 @@ public class CommandHandler {
                         Log.i(TAG, "Playing action isn't allowed right now");
                         if (ActionApi.get().isPlaying()) {
                             ActionApi.get().stopAction();
+
                         }
                         return;
                     }

@@ -143,6 +143,7 @@ public class DanceHandler {
 
     private void doAction(String actionId, double startTime, double duration, String type, int finalA, int finalR, int finalG, int finalB) {
         if (!CommandHandler.isAllowPlayAction()) {
+            miniPlayer.stop();
             stopAllScheduledActions();
             Log.i(TAG, "Playing action isn't allowed right now");
             if (actionApi.isPlaying()) {
