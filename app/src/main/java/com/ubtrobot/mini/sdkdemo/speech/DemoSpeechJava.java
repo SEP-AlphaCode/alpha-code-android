@@ -70,7 +70,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     private RecognizerListener mRecognizerListener;
     private SynthesizerListener mSynthesizerListener;
     private UnderstanderListener mUnderstanderListener;
-
+    private MasterSystemService service;
     private final SkillManager mSkillManager = new SkillManager();
 
     private DemoSpeechJava() {
@@ -118,13 +118,12 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
     }
 
     public void init(final MasterSystemService service) {
+        this.service = service;
         // Load the wake-up sound effect in advance
         WakeupAudioPlayer.get(appContext);
 
-        final MasterSystemService hostService = service;
-
         WeiNaMicApi.get().addDoaAngleCallback(angle -> {
-            hostService.publishCarefully(
+            service.publishCarefully(
                     ServiceConstants.PATH_MICROPHONE_ARRAY_WAKEUP_ANGLE,
                     ParcelableParam.create(new MicrophoneWakeupAngle((int) angle))
             );
@@ -132,12 +131,13 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             MicApiHelper.setMicLockAngle(angle, false);
             shakeHead();
         });
+        WeiNaMicApi.get().startRecord();
 
         mRecognizerListener = new RecognizerListener() {
             @Override
             public void onRecognizingFailure(RecognitionException e) {
                 int code = (e.getExtCode() != 0) ? e.getExtCode() : e.getCode();
-                hostService.publishCarefully(
+                service.publishCarefully(
                         ServiceConstants.ACTION_SPEECH_ASR_STATE,
                         ParcelableParam.create(new ASRState(e.getMessage(), code))
                 );
@@ -154,7 +154,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                 if (progress != null) {
                     switch (progress.getProgress()) {
                         case BaseProgress.PROGRESS_BEGAN:
-                            hostService.publishCarefully(
+                            service.publishCarefully(
                                     ServiceConstants.ACTION_SPEECH_ASR_STATE,
                                     ParcelableParam.create(new ASRState(BaseProgress.PROGRESS_BEGAN))
                             );
@@ -162,7 +162,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
                         case BaseProgress.PROGRESS_ENDED:
                             if (recognizer != null && recognizer.isRecognizing()) {
-                                hostService.publishCarefully(
+                                service.publishCarefully(
                                         ServiceConstants.ACTION_SPEECH_ASR_STATE,
                                         ParcelableParam.create(new ASRState(BaseProgress.PROGRESS_ENDED))
                                 );
@@ -187,14 +187,14 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                 if (progress != null) {
                     switch (progress.getProgress()) {
                         case BaseProgress.PROGRESS_BEGAN:
-                            hostService.publishCarefully(
+                            service.publishCarefully(
                                     ServiceConstants.ACTION_SPEECH_TTS_STATE,
                                     ParcelableParam.create(new TTsState(BaseProgress.PROGRESS_BEGAN))
                             );
                             break;
 
                         case BaseProgress.PROGRESS_ENDED:
-                            hostService.publishCarefully(
+                            service.publishCarefully(
                                     ServiceConstants.ACTION_SPEECH_TTS_STATE,
                                     ParcelableParam.create(new TTsState(BaseProgress.PROGRESS_ENDED))
                             );
@@ -220,12 +220,12 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             public void onUnderstandingFailure(UnderstandingException e) {
                 int code = (e.getExtCode() != 0) ? e.getExtCode() : e.getCode();
                 if (code == 403) {
-                    hostService.publishCarefully(
+                    service.publishCarefully(
                             ServiceConstants.ACTION_SPEECH_ASR_STATE,
                             ParcelableParam.create(new ASRState(e.getMessage(), ASRState.CODE_UNAUTHENTICATED))
                     );
                 } else {
-                    hostService.publishCarefully(
+                    service.publishCarefully(
                             ServiceConstants.ACTION_SPEECH_ASR_STATE,
                             ParcelableParam.create(new ASRState(e.getMessage(), e.getCode()))
                     );
@@ -236,7 +236,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
             @Override
             public void onUnderstandingResult(UnderstandingResult result) {
-                hostService.publishCarefully(
+                service.publishCarefully(
                         ServiceConstants.ACTION_SPEECH_ASR_STATE,
                         ParcelableParam.create(new ASRState("recognized"))
                 );
@@ -245,7 +245,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
         final WeiNaWakeUpDetector wakeUpDetector = new WeiNaWakeUpDetector(new WeiNaRecorder(false));
         wakeUpDetector.registerListener(wakeUp -> {
-            handleWakeup(hostService, wakeUp, service);
+            handleWakeup(service, wakeUp, service);
         });
 
         DingDangManager.INSTANCE.load(appContext, success -> {
@@ -273,7 +273,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                         .setWakeUpDetector(wakeUpDetector)
                         .build();
 
-                hostService.publishCarefully(
+                service.publishCarefully(
                         ServiceConstants.ACTION_SPEECH_INIT_RESULT,
                         ParcelableParam.create(new InitResult(0))
                 );
@@ -292,10 +292,10 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
     private void handleWakeup(MasterSystemService hostService, WakeUp wakeUp, MasterSystemService service) {
         LOGGER.w("publish wakeup.");
-        hostService.publishCarefully(
-                ServiceConstants.ACTION_SPEECH_WAKEUP,
-                ProtoParam.create(Speech.WakeupParam.newBuilder().build())
-        );
+//        hostService.publishCarefully(
+//                ServiceConstants.ACTION_SPEECH_WAKEUP,
+//                ProtoParam.create(Speech.WakeupParam.newBuilder().build())
+//        );
 
         hostService.publishCarefully(SpeechConstants.ACTION_WAKE_UP,
                 ParcelableParam.create(wakeUp));
@@ -308,6 +308,12 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
                 MotorApi.get().clearProtectFlag(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
             }
         });
+    }
+
+    public void wakeUp(){
+        WakeUp param = new WakeUp.Builder().setWhenNow().build();
+        handleWakeup(service, param, service);
+
     }
 
     @Override

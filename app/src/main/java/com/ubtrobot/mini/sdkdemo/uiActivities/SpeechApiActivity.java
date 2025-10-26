@@ -22,9 +22,13 @@ import com.ubtrobot.mini.sdkdemo.R;
 import com.ubtrobot.mini.sdkdemo.apis.STTApi;
 import com.ubtrobot.mini.sdkdemo.camera.CameraManager;
 import com.ubtrobot.mini.sdkdemo.common.CommandHandler;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.models.requests.NLPRequest;
 import com.ubtrobot.mini.sdkdemo.models.response.NLPResponse;
 import com.ubtrobot.mini.sdkdemo.network.ApiClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
+import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
 
 import org.json.JSONObject;
 
@@ -66,36 +70,6 @@ public class SpeechApiActivity extends Activity {
         api = ApiClient.getPythonInstance().create(STTApi.class);
 
         // --- Camera setup ---
-        surfaceView = findViewById(R.id.camera_surface);
-        surfaceHolder = surfaceView.getHolder();
-        cameraManager = new CameraManager();
-
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                checkCameraPermissionAndOpen(holder);
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraManager.closeCamera();
-            }
-        });
-
-        surfaceView.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (cameraManager.isCameraAvailable()) {
-                    int x = (int) event.getX();
-                    int y = (int) event.getY();
-                    cameraManager.focusOnPoint(x, y, surfaceView.getWidth(), surfaceView.getHeight());
-                }
-                return true;
-            }
-            return false;
-        });
     }
 
     // --- Camera permission check ---
@@ -131,42 +105,10 @@ public class SpeechApiActivity extends Activity {
 
         sendBtn.setEnabled(false); // disable button to avoid spam
 
-        api.processText(new NLPRequest(inputText)).enqueue(new Callback<NLPResponse>() {
-            @Override
-            public void onResponse(Call<NLPResponse> call, Response<NLPResponse> response) {
-                sendBtn.setEnabled(true);
-
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        NLPResponse nlpResponse = response.body();
-                        String type = nlpResponse.getType();
-                        NLPResponse.DataContainer data = nlpResponse.getData();
-
-                        String jsonString = new Gson().toJson(data);
-
-                        // Convert JSON string -> org.json.JSONObject
-                        JSONObject jsonData = new JSONObject(jsonString);
-
-                        // Handle command
-                        cmd.handleCommand(type, jsonData, nlpResponse.getLang());
-
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error processing NLP response", e);
-                        Toast.makeText(SpeechApiActivity.this, "Error processing response", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.e(TAG, "API response not successful");
-                    Toast.makeText(SpeechApiActivity.this, "API response failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NLPResponse> call, Throwable t) {
-                sendBtn.setEnabled(true);
-                Log.e(TAG, "API call failed", t);
-                Toast.makeText(SpeechApiActivity.this, "API call failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        byte[] data = new RobotMessageBuilder().setType(RobotRequestTypes.PROCESS_TEXT)
+                .addParameter("text", inputText)
+                .build();
+        RobotSocketManager.getInstance().sendBinaryMessage(data);
     }
 
     @Override

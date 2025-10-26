@@ -6,6 +6,11 @@ public class RobotRequestTypes {
      */
     public static final String PROCESS_SPEECH = "process-speech";
     /**
+     * Required fields: params
+     * - text: Text to be processed
+     */
+    public static final String PROCESS_TEXT = "process-text";
+    /**
      * Required fields:
      * 1. image
      * 2. params

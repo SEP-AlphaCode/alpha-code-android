@@ -114,13 +114,13 @@ public class EnglishTTS implements TTS {
             callbackMap.put(utteranceId, callback);
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
-        } else {
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId);
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, params);
-        }
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+    }
+
+    @Override
+    public void stopIfPlaying() {
+        if (!tts.isSpeaking()) return;
+        tts.stop();
     }
 
     @Override

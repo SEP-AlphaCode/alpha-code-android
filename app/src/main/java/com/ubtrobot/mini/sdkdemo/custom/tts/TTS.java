@@ -12,4 +12,6 @@ public interface TTS {
     void shutdown();
 
     boolean isReady();
+
+    void stopIfPlaying();
 }

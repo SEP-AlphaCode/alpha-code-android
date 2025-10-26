@@ -16,12 +16,15 @@ import com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.socket.AutoStartManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
+import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
 import com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiCRUD;
+import com.ubtrobot.mini.sdkdemo.uiActivities.MicrophoneActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.SpeechApiActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.SysEventTestActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.TakePicApiActivity;
+import com.ubtrobot.sys.SysApi;
 
 /**
  * Created by lulin.wu on 2018/6/19.
@@ -37,12 +40,22 @@ public class MainActivity extends Activity {
         Context appContext = Utils.getContext().getApplicationContext();
         TTSHandler.init(appContext);
         AutoStartManager.startWebSocketService(appContext);
-        //checkWriteSettingsPermission(this);
+        checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
-
+        Button forceWake = (Button) findViewById(R.id.force_wakeup);
         forceConnect.setOnClickListener(l -> {
             RobotSocketClient.getInstance().forceConnect();
         });
+        forceWake.setOnClickListener(v -> {
+            DemoSpeechJava.getInstance().wakeUp();
+        });
+    }
+
+    public void micTest(View view){
+        Intent intent = new Intent();
+        intent.setClass(this, MicrophoneActivity.class);
+        startActivity(intent);
+        SysApi.get().shutdown();
     }
 
     public void robotWebRTCActivity(View view){
@@ -82,12 +95,10 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
     private void checkWriteSettingsPermission(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(context)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                context.startActivity(intent);
-            }
+        if (!Settings.System.canWrite(context)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            context.startActivity(intent);
         }
     }
 }

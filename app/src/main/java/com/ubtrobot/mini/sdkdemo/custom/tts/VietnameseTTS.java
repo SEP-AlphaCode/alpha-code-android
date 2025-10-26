@@ -113,7 +113,11 @@ public class VietnameseTTS implements TTS {
             }
         });
     }
-
+    @Override
+    public void stopIfPlaying(){
+        if(!tts.isSpeaking()) return;
+        tts.stop();
+    }
     @Override
     public void doTTS(String text) {
         doTTS(text, null);

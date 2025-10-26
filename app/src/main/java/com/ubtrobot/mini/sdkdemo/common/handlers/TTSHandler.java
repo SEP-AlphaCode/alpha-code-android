@@ -3,11 +3,13 @@ package com.ubtrobot.mini.sdkdemo.common.handlers;
 import android.content.Context;
 import android.util.Log;
 
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.mini.sdkdemo.custom.tts.EnglishTTS;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.custom.tts.VietnameseTTS;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
 import com.ubtrobot.mini.sdkdemo.log.LogManager;
+import com.ubtrobot.mini.voice.VoicePool;
 
 public class TTSHandler {
     private static final String TAG = "TTSHandler";
@@ -43,11 +45,12 @@ public class TTSHandler {
 
     public void doTTS(String text, String lang) {
         if (text == null) return;
-        if (lang.equals("en")) {
-            englishTTS.doTTS(text, defaultCallback(text));
-        } else {
-            vietnameseTTS.doTTS(text, defaultCallback(text));
-        }
+        VoicePool.get().playTTs(text, Priority.HIGH, null);
+//        if (lang.equals("en")) {
+//            englishTTS.doTTS(text, defaultCallback(text));
+//        } else {
+//            vietnameseTTS.doTTS(text, defaultCallback(text));
+//        }
     }
     public void doTTS(String text, String lang, TTSCallback callback) {
         if (text == null) return;
@@ -56,5 +59,9 @@ public class TTSHandler {
         } else {
             vietnameseTTS.doTTS(text, callback);
         }
+    }
+    public void stopIfPlaying(){
+        englishTTS.stopIfPlaying();
+        vietnameseTTS.stopIfPlaying();
     }
 }

@@ -1,11 +1,14 @@
 package com.ubtrobot.mini.sdkdemo.common;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
+import com.ubtechinc.skill.SkillApi;
 import com.ubtrobot.action.ActionApi;
-import com.ubtrobot.commons.ResponseListener;
+import com.ubtrobot.action.ActionExApi;
+import com.ubtrobot.commons.Priority;
+import com.ubtrobot.express.ExpressApi;
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CameraHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.CodingBlockHandler;
@@ -23,8 +26,8 @@ import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
-import com.ubtrobot.motion.protos.Motion;
-import com.ubtrobot.motor.MotorApi;
+import com.ubtrobot.robotinit.SkillHelper;
+import com.ubtrobot.sys.SysApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -193,6 +196,9 @@ public class CommandHandler {
                     }
                     allowPlayAction = false;
                     break;
+                case "shut_down":
+                    SysApi.get().shutdown();
+                    break;
                 default:
                     ttsHandler.doTTS(text, lang);
                     break;
@@ -200,5 +206,20 @@ public class CommandHandler {
         } catch (Exception e) {
             Log.e(TAG, "Error handling command: " + type + ", data: " + data, e);
         }
+    }
+
+    private void resetEverything(){
+        ActionApi actionApi = ActionApi.get();
+        ActionExApi actionExApi = ActionExApi.get();
+        MouthLedApi ledApi = MouthLedApi.get();
+        ExpressApi expressApi = ExpressApi.get();
+
+        if(actionApi.isPlaying()){
+            actionApi.stopAction();
+            actionApi.playAction("stand_up", null);
+        }
+        ledApi.turnOff(Priority.HIGH, null);
+        ttsHandler.stopIfPlaying();
+        expressApi.stopExpress();
     }
 }
