@@ -13,15 +13,19 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ubtech.utilcode.utils.Utils;
+import com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.socket.AutoStartManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
 import com.ubtrobot.mini.sdkdemo.uiActivities.ActionApiActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.FaceApiCRUD;
 import com.ubtrobot.mini.sdkdemo.uiActivities.MicrophoneActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.SpeechApiActivity;
 import com.ubtrobot.mini.sdkdemo.uiActivities.SysEventTestActivity;
+import com.ubtrobot.mini.sdkdemo.uiActivities.TakePicApiActivity;
 import com.ubtrobot.sys.SysApi;
 
 /**
@@ -36,6 +40,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         Context appContext = Utils.getContext().getApplicationContext();
+        TTSHandler.init(appContext);
         AutoStartManager.startWebSocketService(appContext);
         checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
@@ -65,6 +70,12 @@ public class MainActivity extends Activity {
         startActivity(intent);
 
     }
+
+    public void robotWebRTCActivity(View view){
+        Intent intent = new Intent();
+        intent.setClass(this, RobotWebRTCActivity.class);
+        startActivity(intent);
+    }
     public void speechApiTest(View view) {
         Intent intent = new Intent();
         intent.setClass(this, SpeechApiActivity.class);
@@ -80,6 +91,20 @@ public class MainActivity extends Activity {
     public void sysEventTest(View view) {
         Intent intent = new Intent();
         intent.setClass(this, SysEventTestActivity.class);
+        startActivity(intent);
+    }
+
+    public void takePicApiTest(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, TakePicApiActivity.class);
+        startActivity(intent);
+    }
+    public void faceApiTest(View view){
+        Intent intent = new Intent(this, FaceApiActivity.class);
+        startActivity(intent);
+    }
+    public void faceApiCRUD(View view){
+        Intent intent = new Intent(this, FaceApiCRUD.class);
         startActivity(intent);
     }
     private void checkWriteSettingsPermission(Context context) {

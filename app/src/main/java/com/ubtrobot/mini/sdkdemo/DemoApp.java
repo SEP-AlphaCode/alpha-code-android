@@ -33,6 +33,7 @@ public class DemoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TTSHandler.init(Utils.getContext().getApplicationContext());
         PropertiesApi.setRootPath(Path.DIR_MINI_FILES_SDCARD_ROOT);
         SDKInit.initialize(this);
 
@@ -75,4 +76,15 @@ public class DemoApp extends Application {
             Log.i(TAG, "Error: " + e);
         }
     }
+
+//    @Override
+//    protected void onStartFailed(UbtSkillInfo ubtSkillInfo) {
+//
+//    }
+//
+//    @Override
+//    protected void onInterrupted() {
+//
+//    }
+
 }
