@@ -33,4 +33,24 @@ public class ActionHandler {
             });
         }
     }
+
+    public void handleAction(String actionCode, ResponseListener<Void> listener) {
+        if (actionCode != null) {
+            actionApi.playAction(actionCode, new ResponseListener<Void>() {
+                @Override
+                public void onResponseSuccess(Void aVoid) {
+                    Log.i(TAG, "Action " + actionCode + " done!");
+                    LogManager.log(LogLevel.INFO, TAG,"Action " + actionCode + " done!");
+                    listener.onResponseSuccess(aVoid);
+                }
+
+                @Override
+                public void onFailure(int i, @NonNull String s) {
+                    Log.e(TAG, "Action " + actionCode + " failed: " + s);
+                    LogManager.log(LogLevel.ERROR, TAG,"Action " + actionCode + " failed: " + s);
+                    listener.onFailure(i, s);
+                }
+            });
+        }
+    }
 }

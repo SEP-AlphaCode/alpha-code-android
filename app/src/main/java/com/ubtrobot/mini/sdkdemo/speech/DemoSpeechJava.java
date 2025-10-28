@@ -131,7 +131,7 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
             MicApiHelper.setMicLockAngle(angle, false);
             shakeHead();
         });
-        WeiNaMicApi.get().startRecord();
+//        WeiNaMicApi.get().startRecord();
 
         mRecognizerListener = new RecognizerListener() {
             @Override
@@ -292,10 +292,10 @@ public final class DemoSpeechJava extends SpeechModuleFactory {
 
     private void handleWakeup(MasterSystemService hostService, WakeUp wakeUp, MasterSystemService service) {
         LOGGER.w("publish wakeup.");
-//        hostService.publishCarefully(
-//                ServiceConstants.ACTION_SPEECH_WAKEUP,
-//                ProtoParam.create(Speech.WakeupParam.newBuilder().build())
-//        );
+        hostService.publishCarefully(
+                ServiceConstants.ACTION_SPEECH_WAKEUP,
+                ProtoParam.create(Speech.WakeupParam.newBuilder().build())
+        );
 
         hostService.publishCarefully(SpeechConstants.ACTION_WAKE_UP,
                 ParcelableParam.create(wakeUp));

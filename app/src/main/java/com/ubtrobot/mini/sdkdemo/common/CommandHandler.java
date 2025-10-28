@@ -182,7 +182,17 @@ public class CommandHandler {
                 case "coding_block":
                     JSONArray actions = data.optJSONArray("actions");
                     if (actions != null) {
-                        codingBlockHandler.executeCodingBlock(actions, 0, lang);
+                        codingBlockHandler.enqueueBlocks(actions, lang, new CodingBlockHandler.CodingBlockCallback() {
+                            @Override
+                            public void onBlockCodingStart() {
+
+                            }
+
+                            @Override
+                            public void onBlockCodingEnd() {
+
+                            }
+                        });
                     }
                     break;
                 case "stop_all_actions":

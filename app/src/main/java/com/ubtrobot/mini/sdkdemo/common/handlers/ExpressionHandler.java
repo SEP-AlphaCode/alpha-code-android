@@ -34,4 +34,9 @@ public class ExpressionHandler {
             });
         }
     }
+    public void handleExpression(String code, AnimationListener listener) {
+        if (code != null) {
+            expressApi.doExpress(code, listener);
+        }
+    }
 }
