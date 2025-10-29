@@ -202,13 +202,13 @@ public class CommandHandler {
         MouthLedApi ledApi = MouthLedApi.get();
         ExpressApi expressApi = ExpressApi.get();
 
-        ledApi.turnOff(Priority.HIGH, null);
         ttsHandler.stopIfPlaying();
         expressApi.stopExpress();
         danceHandler.stopAllScheduledActions();
         codingBlockHandler.clearQueue();
         faceHandler.stopDetect();
         faceHandler.stopRegister();
+        ledApi.turnOff(Priority.HIGH, null);
         if(actionApi.isPlaying()){
             actionApi.stopAction();
             actionApi.playAction("stand_up", null);

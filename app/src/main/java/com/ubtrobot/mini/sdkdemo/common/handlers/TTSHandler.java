@@ -45,12 +45,12 @@ public class TTSHandler {
 
     public void doTTS(String text, String lang) {
         if (text == null) return;
-        VoicePool.get().playTTs(text, Priority.HIGH, null);
-//        if (lang.equals("en")) {
-//            englishTTS.doTTS(text, defaultCallback(text));
-//        } else {
-//            vietnameseTTS.doTTS(text, defaultCallback(text));
-//        }
+//        VoicePool.get().playTTs(text, Priority.HIGH, null);
+        if (lang.equals("en")) {
+            englishTTS.doTTS(text, defaultCallback(text));
+        } else {
+            vietnameseTTS.doTTS(text, defaultCallback(text));
+        }
     }
     public void doTTS(String text, String lang, TTSCallback callback) {
         if (text == null) return;
