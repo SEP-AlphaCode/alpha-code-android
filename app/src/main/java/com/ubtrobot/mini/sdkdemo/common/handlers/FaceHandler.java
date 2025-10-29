@@ -17,6 +17,7 @@ public class FaceHandler {
     private final FaceApi faceApi = FaceApi.get();
     private TTSHandler tts = new TTSHandler();
     private static FaceHandler instance;
+    private static String currentUId = "";
 
     public static FaceHandler get(){
         if(instance == null){
@@ -60,7 +61,8 @@ public class FaceHandler {
         });
     }
     public void handleRegister(String name){
-        faceApi.apiFaceRegister(UUID.randomUUID().toString(), name, new ResponseListener<String>() {
+        currentUId = UUID.randomUUID().toString();
+        faceApi.apiFaceRegister(currentUId, name, new ResponseListener<String>() {
             @Override
             public void onResponseSuccess(String s) {
 
@@ -122,5 +124,10 @@ public class FaceHandler {
             tts.doTTS("Tôi thấy " + buildNamesSentence(knownNames, "vi") + ".", "vi", null);
         }
     }
-
+    public void stopDetect(){
+        faceApi.stopFindFace(null);
+    }
+    public void stopRegister(){
+        faceApi.stopRegister(currentUId, null);
+    }
 }

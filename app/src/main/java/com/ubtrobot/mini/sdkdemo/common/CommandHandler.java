@@ -3,7 +3,6 @@ package com.ubtrobot.mini.sdkdemo.common;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
-import com.ubtechinc.skill.SkillApi;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.action.ActionExApi;
 import com.ubtrobot.commons.Priority;
@@ -26,7 +25,6 @@ import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
-import com.ubtrobot.robotinit.SkillHelper;
 import com.ubtrobot.sys.SysApi;
 
 import org.json.JSONArray;
@@ -37,18 +35,6 @@ import java.util.List;
 
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
-    private static boolean allowPlayAction = true;
-
-    public static boolean isAllowPlayAction() {
-        return allowPlayAction;
-    }
-
-    public static void notifyCleanUpDone() {
-        Log.i(TAG, "Can play action again now");
-        allowPlayAction = true;
-        ActionApi.get().playAction("stand_up", null);
-    }
-
     // Handler instances
     private ActionHandler actionHandler;
     private ExtendedActionHandler extendedActionHandler;
@@ -196,15 +182,7 @@ public class CommandHandler {
                     }
                     break;
                 case "stop_all_actions":
-                    if (!CommandHandler.isAllowPlayAction()) {
-                        Log.i(TAG, "Playing action isn't allowed right now");
-                        if (ActionApi.get().isPlaying()) {
-                            ActionApi.get().stopAction();
-
-                        }
-                        return;
-                    }
-                    allowPlayAction = false;
+                    stopEverything();
                     break;
                 case "shut_down":
                     SysApi.get().shutdown();
@@ -218,7 +196,7 @@ public class CommandHandler {
         }
     }
 
-    private void resetEverything(){
+    private void stopEverything(){
         ActionApi actionApi = ActionApi.get();
         ActionExApi actionExApi = ActionExApi.get();
         MouthLedApi ledApi = MouthLedApi.get();
@@ -231,5 +209,9 @@ public class CommandHandler {
         ledApi.turnOff(Priority.HIGH, null);
         ttsHandler.stopIfPlaying();
         expressApi.stopExpress();
+        danceHandler.stopAllScheduledActions();
+        codingBlockHandler.clearQueue();
+        faceHandler.stopDetect();
+        faceHandler.stopRegister();
     }
 }

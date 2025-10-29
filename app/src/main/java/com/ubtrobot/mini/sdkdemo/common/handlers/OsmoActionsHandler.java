@@ -33,6 +33,13 @@ public class OsmoActionsHandler {
         void onError(String error);
     }
 
+    public void stopAllActions() {
+        if(actionApi.isPlaying()){
+            actionApi.stopAction();
+            actionApi.playAction("stand_up", null);
+        }
+    }
+
     public void executeActions(List<OsmoCardAction> actionCards, ExecutionCallback callback) {
         executeActionList(actionCards, 0, callback);
     }

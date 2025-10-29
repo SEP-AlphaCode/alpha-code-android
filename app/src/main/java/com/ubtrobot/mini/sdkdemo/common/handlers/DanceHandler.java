@@ -133,24 +133,16 @@ public class DanceHandler {
         }
     }
 
-    private void stopAllScheduledActions() {
+    public void stopAllScheduledActions() {
         for (Runnable r : scheduledActions) {
             handler.removeCallbacks(r);
         }
         scheduledActions.clear();
-        CommandHandler.notifyCleanUpDone();
+        miniPlayer.stop();
     }
 
     private void doAction(String actionId, double startTime, double duration, String type, int finalA, int finalR, int finalG, int finalB) {
-        if (!CommandHandler.isAllowPlayAction()) {
-            miniPlayer.stop();
-            stopAllScheduledActions();
-            Log.i(TAG, "Playing action isn't allowed right now");
-            if (actionApi.isPlaying()) {
-                actionApi.stopAction();
-            }
-            return;
-        }
+
         Log.i(TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
         LogManager.log(LogLevel.INFO, TAG, "Executing action: " + actionId + " at time: " + startTime + " duration: " + duration);
 
