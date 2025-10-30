@@ -184,7 +184,7 @@ public class CommandHandler {
                         });
                     }
                     break;
-                case "coding_block_running":
+                case "coding_block_status":
                     byte[] message = new RobotMessageBuilder()
                             .addParameter("status", String.valueOf(codingBlockHandler.isExecuting()))
                             .setType(RobotRequestTypes.CODING_BLOCK_STATUS)
