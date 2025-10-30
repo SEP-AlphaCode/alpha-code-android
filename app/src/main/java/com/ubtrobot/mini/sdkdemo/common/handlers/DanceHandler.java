@@ -138,7 +138,9 @@ public class DanceHandler {
             handler.removeCallbacks(r);
         }
         scheduledActions.clear();
-        miniPlayer.stop();
+        if(miniPlayer != null) {
+            miniPlayer.stop();
+        }
     }
 
     private void doAction(String actionId, double startTime, double duration, String type, int finalA, int finalR, int finalG, int finalB) {

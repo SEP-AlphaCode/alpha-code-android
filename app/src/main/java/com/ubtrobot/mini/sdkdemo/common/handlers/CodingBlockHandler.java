@@ -1,12 +1,15 @@
 package com.ubtrobot.mini.sdkdemo.common.handlers;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.listeners.AnimationListener;
+import com.ubtrobot.led.LedApi;
+import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -112,7 +115,7 @@ public class CodingBlockHandler {
         }
 
         // Notify start on first block only
-        if (blockQueue.size() == 0) { // This was the last block before we started
+        if (blockQueue.isEmpty()) { // This was the last block before we started
             currentCallback.onBlockCodingStart();
         }
 
@@ -139,11 +142,35 @@ public class CodingBlockHandler {
                 handleExtendedActionBlock(block, this::executeNextBlock);
                 break;
 
+            case "led":
+                handleLedBlock(block, this::executeNextBlock);
+                break;
+
             default:
                 Log.w(TAG, "Unknown coding block type: " + type);
                 executeNextBlock(); // Skip unknown blocks
                 break;
         }
+    }
+
+    private void handleLedBlock(JSONObject data, Runnable onComplete) {
+        // Placeholder for LED handling logic
+        JSONObject c = data.optJSONObject("color");
+        int r = c.optInt("r", 255);
+        int g = c.optInt("g", 255);
+        int b = c.optInt("b", 255);
+        int duration = data.optInt("duration", 0);
+        MouthLedApi.get().startNormalModel(Color.argb(0, r, g, b), duration * 1000, com.ubtrobot.commons.Priority.HIGH, new ResponseListener() {
+            @Override
+            public void onResponseSuccess(Object o) {
+                onComplete.run();
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+                onComplete.run();
+            }
+        });
     }
 
     private void handleTTSBlock(String text, String lang, Runnable onComplete) {

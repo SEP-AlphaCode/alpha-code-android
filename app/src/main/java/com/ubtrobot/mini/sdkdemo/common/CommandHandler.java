@@ -1,11 +1,13 @@
 package com.ubtrobot.mini.sdkdemo.common;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.action.ActionApi;
 import com.ubtrobot.action.ActionExApi;
 import com.ubtrobot.commons.Priority;
+import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.lib.mouthledapi.MouthLedApi;
 import com.ubtrobot.mini.sdkdemo.common.handlers.ActionHandler;
@@ -22,6 +24,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.WebRTCHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketManager;
@@ -181,6 +184,13 @@ public class CommandHandler {
                         });
                     }
                     break;
+                case "coding_block_running":
+                    byte[] message = new RobotMessageBuilder()
+                            .addParameter("status", String.valueOf(codingBlockHandler.isExecuting()))
+                            .setType(RobotRequestTypes.CODING_BLOCK_STATUS)
+                            .build();
+                    RobotSocketManager.getInstance().sendBinaryMessage(message);
+                    break;
                 case "stop_all_actions":
                     stopEverything();
                     break;
@@ -208,7 +218,17 @@ public class CommandHandler {
         codingBlockHandler.clearQueue();
         faceHandler.stopDetect();
         faceHandler.stopRegister();
-        ledApi.turnOff(Priority.HIGH, null);
+        ledApi.turnOff(Priority.HIGH, new ResponseListener() {
+            @Override
+            public void onResponseSuccess(Object o) {
+
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+
+            }
+        });
         if(actionApi.isPlaying()){
             actionApi.stopAction();
             actionApi.playAction("stand_up", null);

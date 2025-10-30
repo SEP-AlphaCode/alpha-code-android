@@ -19,12 +19,13 @@ public class FaceHandler {
     private static FaceHandler instance;
     private static String currentUId = "";
 
-    public static FaceHandler get(){
-        if(instance == null){
+    public static FaceHandler get() {
+        if (instance == null) {
             instance = new FaceHandler();
         }
         return instance;
     }
+
     public void handleDetect(String lang) {
         tts.doTTS(lang.equals("en") ? "Ok, let me see you" : "Được rồi, để tôi nhìn bạn nào", lang, new TTSCallback() {
             @Override
@@ -40,7 +41,7 @@ public class FaceHandler {
                         for (FaceInfo faceInfo : faceInfos) {
                             Log.i(TAG, "Detected face: " + faceInfo);
                         }
-                        if(lang.equals("en")){
+                        if (lang.equals("en")) {
                             handleFaceInfosEn(faceInfos);
                         } else {
                             handleFaceInfosVi(faceInfos);
@@ -56,11 +57,29 @@ public class FaceHandler {
 
             @Override
             public void onError() {
+                faceApi.faceRecognize(10000, new ResponseListener<List<FaceInfo>>() {
+                    @Override
+                    public void onResponseSuccess(List<FaceInfo> faceInfos) {
+                        for (FaceInfo faceInfo : faceInfos) {
+                            Log.i(TAG, "Detected face: " + faceInfo);
+                        }
+                        if (lang.equals("en")) {
+                            handleFaceInfosEn(faceInfos);
+                        } else {
+                            handleFaceInfosVi(faceInfos);
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(int i, @NonNull String s) {
+
+                    }
+                });
             }
         });
     }
-    public void handleRegister(String name){
+
+    public void handleRegister(String name) {
         currentUId = UUID.randomUUID().toString();
         faceApi.apiFaceRegister(currentUId, name, new ResponseListener<String>() {
             @Override
@@ -124,10 +143,32 @@ public class FaceHandler {
             tts.doTTS("Tôi thấy " + buildNamesSentence(knownNames, "vi") + ".", "vi", null);
         }
     }
-    public void stopDetect(){
-        faceApi.stopFindFace(null);
+
+    public void stopDetect() {
+        faceApi.stopFindFace(new ResponseListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void unused) {
+
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+
+            }
+        });
     }
-    public void stopRegister(){
-        faceApi.stopRegister(currentUId, null);
+
+    public void stopRegister() {
+        faceApi.stopRegister(currentUId, new ResponseListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void unused) {
+
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+
+            }
+        });
     }
 }

@@ -34,4 +34,9 @@ public class RobotRequestTypes {
      * A boot time ping to establish the connection
      */
     public static final String PING = "ping";
+    /**
+     * Required fields: params
+     * - status: is coding block running (true, false)
+     */
+    public static final String CODING_BLOCK_STATUS = "coding-block-status";
 }
