@@ -16,6 +16,8 @@ import com.ubtech.utilcode.utils.Utils;
 import com.ubtrobot.mini.sdkdemo.activity.RobotWebRTCActivity;
 import com.ubtrobot.commons.ResponseListener;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.socket.AutoStartManager;
 import com.ubtrobot.mini.sdkdemo.socket.RobotSocketClient;
 import com.ubtrobot.mini.sdkdemo.speech.DemoSpeechJava;
@@ -42,6 +44,10 @@ public class MainActivity extends Activity {
         Context appContext = Utils.getContext().getApplicationContext();
         TTSHandler.init(appContext);
         AutoStartManager.startWebSocketService(appContext);
+
+        // Test log to verify remote logging is working
+        LogManager.log(LogLevel.INFO, "MainActivity", "App started successfully", "app_lifecycle", "app_start");
+
         checkWriteSettingsPermission(this);
         Button forceConnect = (Button) findViewById(R.id.force_connect);
         Button forceWake = (Button) findViewById(R.id.force_wakeup);

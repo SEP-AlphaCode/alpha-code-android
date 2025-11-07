@@ -38,7 +38,7 @@ public class DemoApp extends Application {
         SDKInit.initialize(this);
 
         // Initialize LogManager for remote logging
-//        LogManager.init();
+        LogManager.init();
         Log.i(TAG, "LogManager initialized");
 
         initSpeech();

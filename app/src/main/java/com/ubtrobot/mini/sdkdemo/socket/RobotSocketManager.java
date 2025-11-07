@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.ubtrobot.led.LedApi;
 import com.ubtrobot.mini.sdkdemo.BuildConfig;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.utils.LedHelper;
 
 import java.security.cert.CertificateException;
@@ -191,6 +193,7 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
     private void handleConnectionFailure(String error) {
         isConnected = false;
         Log.e(TAG, "WebSocket error: " + error);
+        LogManager.log(LogLevel.ERROR, "websocket", "WebSocket error: " + error, "websocket_connection", "error");
 
         if (view != null) {
             view.onError(error);
@@ -300,6 +303,7 @@ public class RobotSocketManager implements WebSocketContract.Presenter {
         public void onOpen(WebSocket webSocket, Response response) {
             isConnected = true;
             Log.d(TAG, "WebSocket connected successfully");
+            LogManager.log(LogLevel.INFO, "websocket", "WebSocket connected to server", "websocket_connection", "connected");
 
             if (view != null) {
                 view.onConnected();
