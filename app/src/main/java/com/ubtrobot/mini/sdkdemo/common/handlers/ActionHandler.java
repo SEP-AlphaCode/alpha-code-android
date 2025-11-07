@@ -22,13 +22,14 @@ public class ActionHandler {
                 @Override
                 public void onResponseSuccess(Void aVoid) {
                     Log.i(TAG, "Action " + actionCode + " done!");
-                    LogManager.log(LogLevel.INFO, TAG,"Action " + actionCode + " done!");
+                    // Log tự động có accountLessonId nếu đang trong submission
+                    LogManager.log(LogLevel.INFO, "action", "Action " + actionCode + " done!", "action", actionCode);
                 }
 
                 @Override
                 public void onFailure(int i, @NonNull String s) {
                     Log.e(TAG, "Action " + actionCode + " failed: " + s);
-                    LogManager.log(LogLevel.ERROR, TAG,"Action " + actionCode + " failed: " + s);
+                    LogManager.log(LogLevel.ERROR, "action", "Action " + actionCode + " failed: " + s, "action", actionCode);
                 }
             });
         }
@@ -40,14 +41,14 @@ public class ActionHandler {
                 @Override
                 public void onResponseSuccess(Void aVoid) {
                     Log.i(TAG, "Action " + actionCode + " done!");
-                    LogManager.log(LogLevel.INFO, TAG,"Action " + actionCode + " done!");
+                    LogManager.log(LogLevel.INFO, "action", "Action " + actionCode + " done!", "action", actionCode);
                     listener.onResponseSuccess(aVoid);
                 }
 
                 @Override
                 public void onFailure(int i, @NonNull String s) {
                     Log.e(TAG, "Action " + actionCode + " failed: " + s);
-                    LogManager.log(LogLevel.ERROR, TAG,"Action " + actionCode + " failed: " + s);
+                    LogManager.log(LogLevel.ERROR, "action", "Action " + actionCode + " failed: " + s, "action", actionCode);
                     listener.onFailure(i, s);
                 }
             });

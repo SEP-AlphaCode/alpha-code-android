@@ -19,11 +19,13 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.FaceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.OsmoActionsHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.SubmissionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.WebRTCHandler;
 import com.ubtrobot.mini.sdkdemo.custom.CameraPreviewCapture;
 import com.ubtrobot.mini.sdkdemo.custom.tts.TTSCallback;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 import com.ubtrobot.mini.sdkdemo.models.RobotRequestTypes;
 import com.ubtrobot.mini.sdkdemo.models.response.OsmoCardAction;
 import com.ubtrobot.mini.sdkdemo.socket.RobotMessageBuilder;
@@ -53,6 +55,8 @@ public class CommandHandler {
 
     private CodingBlockHandler codingBlockHandler;
 
+    private SubmissionHandler submissionHandler;
+
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -66,6 +70,7 @@ public class CommandHandler {
         this.faceHandler = FaceHandler.get();
         this.webRTCHandler = WebRTCHandler.getInstance();
         this.codingBlockHandler = new CodingBlockHandler();
+        this.submissionHandler = new SubmissionHandler();
     }
 
     // Method to set socket manager for handlers that need it
@@ -81,6 +86,14 @@ public class CommandHandler {
 
         try {
             switch (type) {
+                case "submission_start":
+                    submissionHandler.handleSubmissionStart(data, lang);
+                    break;
+
+                case "submission_end":
+                    submissionHandler.handleSubmissionEnd(data, lang);
+                    break;
+
                 case "get_system_info":
                     systemHandler.sendRobotStatus();
                     break;

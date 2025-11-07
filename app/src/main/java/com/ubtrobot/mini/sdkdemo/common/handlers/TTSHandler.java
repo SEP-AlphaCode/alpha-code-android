@@ -21,7 +21,8 @@ public class TTSHandler {
             @Override
             public void onStart() {
                 Log.i(TAG, "TTS started: " + text);
-                LogManager.log(LogLevel.INFO, TAG, "TTS started: " + text);
+                // Log tự động có accountLessonId nếu đang trong submission
+                LogManager.log(LogLevel.INFO, "speech", "TTS started: " + text, "speech", null);
             }
 
             @Override
@@ -32,7 +33,7 @@ public class TTSHandler {
             @Override
             public void onError() {
                 Log.e(TAG, "Error playing TTS: " + text);
-                LogManager.log(LogLevel.ERROR, TAG, "Error playing TTS: " + text);
+                LogManager.log(LogLevel.ERROR, "speech", "Error playing TTS: " + text, "speech", null);
             }
         };
     }
@@ -45,13 +46,13 @@ public class TTSHandler {
 
     public void doTTS(String text, String lang) {
         if (text == null) return;
-//        VoicePool.get().playTTs(text, Priority.HIGH, null);
         if (lang.equals("en")) {
             englishTTS.doTTS(text, defaultCallback(text));
         } else {
             vietnameseTTS.doTTS(text, defaultCallback(text));
         }
     }
+
     public void doTTS(String text, String lang, TTSCallback callback) {
         if (text == null) return;
         if (lang.equals("en")) {
@@ -60,6 +61,7 @@ public class TTSHandler {
             vietnameseTTS.doTTS(text, callback);
         }
     }
+
     public void stopIfPlaying(){
         englishTTS.stopIfPlaying();
         vietnameseTTS.stopIfPlaying();
