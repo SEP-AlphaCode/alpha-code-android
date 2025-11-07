@@ -22,7 +22,8 @@ public class ExtendedActionHandler {
 
     public void handleExtendedAction(JSONObject data) {
         Log.i(TAG, "handleExtendedAction: " + data);
-        LogManager.log(LogLevel.INFO, TAG, "handleExtendedAction: " + data);
+        String actionCode = data.optString("code", "unknown");
+        LogManager.log(LogLevel.INFO, "extended_action", "Extended action " + actionCode + " started", "extended_action", actionCode);
 
         if (data.has("actions")) {
             JSONArray actions = data.optJSONArray("actions");
@@ -51,7 +52,7 @@ public class ExtendedActionHandler {
             int actStep = actionObj.optInt("step", 1);
 
             Log.i(TAG, "Executing action " + actName + " step=" + actStep);
-            LogManager.log(LogLevel.INFO, TAG, "Executing action " + actName + " step=" + actStep);
+            LogManager.log(LogLevel.INFO, "extended_action", "Extended action " + actName + " step=" + actStep, "extended_action", actName);
 
             executeAction(actName, actStep, () -> {
                 // After current action is done, execute the next one
@@ -73,7 +74,7 @@ public class ExtendedActionHandler {
             @Override
             public void onActionCompleted() {
                 Log.i(TAG, "Extended action " + name + " done!");
-                LogManager.log(LogLevel.INFO, TAG, "Extended action " + name + " done!");
+                LogManager.log(LogLevel.INFO, "extended_action", "Extended action " + name + " done!", "extended_action", name);
                 if (onComplete != null) onComplete.run();
             }
 
@@ -90,7 +91,7 @@ public class ExtendedActionHandler {
             @Override
             public void onActionFailure(int i, @NonNull String s) {
                 Log.e(TAG, "Extended action " + name + " failed: " + s);
-                LogManager.log(LogLevel.ERROR, TAG, "Extended action " + name + " failed: " + s);
+                LogManager.log(LogLevel.ERROR, "extended_action", "Extended action " + name + " failed: " + s, "extended_action", name);
                 if (onComplete != null) onComplete.run(); // still call onComplete on failure
             }
         };

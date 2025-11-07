@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
+import com.ubtrobot.mini.sdkdemo.log.LogLevel;
+import com.ubtrobot.mini.sdkdemo.log.LogManager;
 
 public class ExpressionHandler {
     private static final String TAG = "ExpressionHandler";
@@ -24,7 +26,11 @@ public class ExpressionHandler {
                 @Override
                 public void onAnimationEnd(int i) {
                     Log.i(TAG, "On anim end: " + i);
-
+                    if (i == 0) {
+                        LogManager.log(LogLevel.INFO, "expression", "Expression " + code + " done!", "expression", code);
+                    } else {
+                        LogManager.log(LogLevel.ERROR, "expression", "Expression " + code + " failed with code: " + i, "expression", code);
+                    }
                 }
 
                 @Override

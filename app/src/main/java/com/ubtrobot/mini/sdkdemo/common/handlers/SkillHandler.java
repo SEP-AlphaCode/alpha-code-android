@@ -24,15 +24,18 @@ public class SkillHandler {
     }
 
     public void handleSkill() {
+        final String skillName = SkillApi.SKILL_NAME.DANCE_SKIRT.name();
         skillApi.startSkill(SkillApi.SKILL_NAME.DANCE_SKIRT, null, new ResponseListener<Void>() {
             @Override
             public void onResponseSuccess(Void aVoid) {
                 Log.i(TAG,"onResponseSuccess");
+                LogManager.log(LogLevel.INFO, "skill", "Skill " + skillName + " done!", "skill", skillName);
             }
 
             @Override
             public void onFailure(int i, @NonNull String s) {
                 Log.i(TAG,"onFailure i = " + i);
+                LogManager.log(LogLevel.ERROR, "skill", "Skill " + skillName + " failed: " + s, "skill", skillName);
             }
         });
     }
@@ -43,13 +46,13 @@ public class SkillHandler {
                 @Override
                 public void onResponse(Request request, Response response) {
                     Log.i(TAG, "start success.");
-                    LogManager.log(LogLevel.INFO,TAG,"Play skill success: " + skillIntentName);
+                    LogManager.log(LogLevel.INFO, "skill", "Skill " + skillIntentName + " done!", "skill", skillIntentName);
                 }
 
                 @Override
                 public void onFailure(Request request, CallException e) {
                     Log.i(TAG, e.getMessage());
-                    LogManager.log(LogLevel.ERROR,TAG,"Play skill failed: " + skillIntentName + ", error: " + e.getMessage());
+                    LogManager.log(LogLevel.ERROR, "skill", "Skill " + skillIntentName + " failed: " + e.getMessage(), "skill", skillIntentName);
                 }
             });
         }
