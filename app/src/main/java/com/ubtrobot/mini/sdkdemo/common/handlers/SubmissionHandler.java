@@ -26,8 +26,8 @@ public class SubmissionHandler {
             if (accountLessonId == null || accountLessonId.isEmpty()) {
                 Log.e(TAG, "account_lesson_id is missing in submission_start");
                 ttsHandler.doTTS(
-                        lang.equals("en") ? "Error: Account lesson ID is required" :
-                                "Lỗi: Không tìm thấy ID bài học",
+                        lang.equals("vi") ? "Lỗi: Không tìm thấy ID bài học" :
+                                "Error: Account lesson ID is required",
                         lang
                 );
                 return;
@@ -40,8 +40,8 @@ public class SubmissionHandler {
 
             // Thông báo cho người dùng
             ttsHandler.doTTS(
-                    lang.equals("en") ? "Submission started. I'm ready to record your actions." :
-                            "Bắt đầu ghi nhận bài làm. Tôi đã sẵn sàng.",
+                    lang.equals("vi") ? "Bắt đầu ghi nhận bài làm. Tôi đã sẵn sàng." :
+                            "Submission started. I'm ready to record your actions.",
                     lang
             );
 
@@ -59,8 +59,8 @@ public class SubmissionHandler {
             if (!LogManager.isSubmissionActive()) {
                 Log.w(TAG, "No active submission to end");
                 ttsHandler.doTTS(
-                        lang.equals("en") ? "No active submission found" :
-                                "Không tìm thấy bài làm đang hoạt động",
+                        lang.equals("vi") ? "Không tìm thấy bài làm đang hoạt động" :
+                                "No active submission found",
                         lang
                 );
                 return;
@@ -74,8 +74,8 @@ public class SubmissionHandler {
 
             // Thông báo hoàn tất
             ttsHandler.doTTS(
-                    lang.equals("en") ? "Your work has been submitted successfully!" :
-                            "Bài làm của bạn đã được gửi!",
+                    lang.equals("vi") ? "Bài làm của bạn đã được gửi!" :
+                            "Your work has been submitted successfully!",
                     lang
             );
 

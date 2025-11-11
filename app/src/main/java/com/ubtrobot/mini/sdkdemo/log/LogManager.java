@@ -127,10 +127,16 @@ public class LogManager {
         // Send to remote server if enabled
         if (enableRemoteLogging && remoteHandler != null) {
             try {
+                // Nếu đang trong submission, thì tag phải là "submission"
+                String finalTag = tag;
+                if (currentAccountLessonId != null) {
+                    finalTag = "submission";
+                }
+
                 LogEntry logEntry = new LogEntry(
                     robotId,
                     level.getValue(),
-                    tag,
+                    finalTag,  // Sử dụng finalTag đã được chuyển đổi
                     message,
                     System.currentTimeMillis(),
                     currentAccountLessonId,  // Tự động lấy từ static variable
