@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.ubtrobot.sys.SysApi;
 
+import java.util.Objects;
+
 public class LogManager {
     private static final String TAG = "RobotLog";
 
@@ -129,7 +131,7 @@ public class LogManager {
             try {
                 // Nếu đang trong submission, thì tag phải là "submission"
                 String finalTag = tag;
-                if (currentAccountLessonId != null) {
+                if (currentAccountLessonId != null && !Objects.equals(tag, "submission_start") && !Objects.equals(tag, "submission_end")) {
                     finalTag = "submission";
                 }
 
