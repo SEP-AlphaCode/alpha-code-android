@@ -37,7 +37,7 @@ public class RobotSocketController implements WebSocketContract.View {
             JSONObject json = new JSONObject(message);
             String type = json.optString("type");
             JSONObject data = json.optJSONObject("data");
-            String lang = json.optString("lang", "en");
+            String lang = json.optString("lang", "vi");
 
             Log.i(TAG, "Processing command - type: " + type + ", data: " + data);
             commandHandler.handleCommand(type, data, lang);
