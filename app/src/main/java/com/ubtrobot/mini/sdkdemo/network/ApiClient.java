@@ -19,6 +19,8 @@ public class ApiClient {
     private static Retrofit pythonRetrofit;
     private static Retrofit logServiceRetrofit;
 
+    private static Retrofit robotServiceRetrofit;
+
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
@@ -48,16 +50,15 @@ public class ApiClient {
         }
     }
 
-    // Cho Spring API
-    public static Retrofit getSpringInstance() {
-        if (springRetrofit == null) {
-            springRetrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.API_SPRING_PATH)
+    public static Retrofit getRobotServiceInstance() {
+        if (robotServiceRetrofit == null) {
+            robotServiceRetrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.API_ROBOT_SERVICE_PATH)
                     .client(getUnsafeOkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return springRetrofit;
+        return robotServiceRetrofit;
     }
 
     // Cho Python API

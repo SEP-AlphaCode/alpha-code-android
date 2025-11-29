@@ -19,6 +19,7 @@ import com.ubtrobot.mini.sdkdemo.common.handlers.ExtendedActionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.FaceHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.OsmoActionsHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SkillHandler;
+import com.ubtrobot.mini.sdkdemo.common.handlers.SmartHomeHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SubmissionHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.SystemHandler;
 import com.ubtrobot.mini.sdkdemo.common.handlers.TTSHandler;
@@ -37,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
 
 public class CommandHandler {
     private static final String TAG = "CommandHandler";
@@ -57,6 +59,8 @@ public class CommandHandler {
 
     private SubmissionHandler submissionHandler;
 
+    private SmartHomeHandler smartHomeHandler;
+
     public CommandHandler() {
         // Initialize all handlers
         this.actionHandler = new ActionHandler();
@@ -71,6 +75,7 @@ public class CommandHandler {
         this.webRTCHandler = WebRTCHandler.getInstance();
         this.codingBlockHandler = new CodingBlockHandler();
         this.submissionHandler = new SubmissionHandler();
+        this.smartHomeHandler = new SmartHomeHandler();
     }
 
     // Method to set socket manager for handlers that need it
@@ -83,9 +88,15 @@ public class CommandHandler {
     public void handleCommand(String type, JSONObject data, String lang) throws JSONException {
         String text = data.optString("text");
         String code = data.optString("code");
+        Log.e(TAG, data.toString());
+
+
 
         try {
             switch (type) {
+                case "smart_home":
+                    smartHomeHandler.smartHomeControl("34c54c72-7287-48d2-a3c4-25083633f8b8", data.optString("name"), data.optString("message"), lang);
+                    break;
                 case "submission_start":
                     submissionHandler.handleSubmissionStart(data, lang);
                     break;
