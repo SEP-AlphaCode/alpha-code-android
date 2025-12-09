@@ -95,7 +95,7 @@ public class CommandHandler {
         try {
             switch (type) {
                 case "smart_home":
-                    smartHomeHandler.smartHomeControl("34c54c72-7287-48d2-a3c4-25083633f8b8", data.optString("name"), data.optString("message"), lang);
+                    smartHomeHandler.smartHomeControl(data.optString("id"), data.optString("name"), data.optString("message"), lang);
                     break;
                 case "submission_start":
                     submissionHandler.handleSubmissionStart(data, lang);
@@ -169,6 +169,14 @@ public class CommandHandler {
                 case "osmo_card":
                     JSONArray actionsArray = data.getJSONArray("actions");
                     List<OsmoCardAction> list = OsmoCardAction.parseActionsArray(actionsArray);
+                    if(list.isEmpty()){
+                        Log.e(TAG, "No valid Osmo actions found");
+                        ttsHandler.doTTS(
+                                lang.equals("vi") ? "Không tìm thấy thẻ Osmo nào cả" : "I couldn't find any Osmo card",
+                                lang
+                        );
+                        return;
+                    }
                     osmoHandler.executeActions(list, new OsmoActionsHandler.ExecutionCallback() {
                         @Override
                         public void onCompleted() {
