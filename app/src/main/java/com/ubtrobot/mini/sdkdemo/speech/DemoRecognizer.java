@@ -32,8 +32,7 @@ public class DemoRecognizer extends AbstractRecognizer {
     private Runnable timeoutRunnable;
     private static final long SILENCE_TIMEOUT_MS = 5000; // 5 seconds timeout
     private boolean isRecording = false;
-    private CommandHandler commandHandler;
-    private LedHelper ledHelper;
+    private final LedHelper ledHelper;
     public DemoRecognizer(TencentVadRecorder recorder) {
         this.recorder = recorder;
         this.timeoutHandler = new Handler(Looper.getMainLooper());
@@ -57,8 +56,6 @@ public class DemoRecognizer extends AbstractRecognizer {
             Log.i(TAG, "Speech end");
             stopRecordingAndProcess();
         });
-
-        this.commandHandler = new CommandHandler();
     }
 
     @Override
@@ -73,7 +70,6 @@ public class DemoRecognizer extends AbstractRecognizer {
     protected void stopRecognizing() {
         isRecording = false;
         cancelSilenceTimeout();
-        recorder.stop();
         try {
             outputStream.close();
         } catch (IOException e) {
@@ -86,7 +82,8 @@ public class DemoRecognizer extends AbstractRecognizer {
         timeoutRunnable = () -> {
             Log.i(TAG, "Silence timeout reached, stopping recording");
             if (isRecording) {
-                stopRecordingAndProcess();
+//                stopRecordingAndProcess();
+                recorder.stop();
             }
         };
         timeoutHandler.postDelayed(timeoutRunnable, SILENCE_TIMEOUT_MS);
@@ -105,8 +102,7 @@ public class DemoRecognizer extends AbstractRecognizer {
 
     private void stopRecordingAndProcess() {
         isRecording = false;
-        cancelSilenceTimeout();
-        recorder.stop();
+        resetSilenceTimeout();
 
         byte[] fullRecording = getFullRecording();
         outputStream.reset();
