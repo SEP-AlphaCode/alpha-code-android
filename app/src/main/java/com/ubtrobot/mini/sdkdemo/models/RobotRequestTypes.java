@@ -22,6 +22,10 @@ public class RobotRequestTypes {
      */
     public static final String PARSE_OSMO = "parse-osmo";
     /**
+     * Required fields: image
+     */
+    public static final String PARSE_VIDEO_GENERATE = "parse-video";
+    /**
      * Required fields: params
      * - serial: Serial of the robot
      */

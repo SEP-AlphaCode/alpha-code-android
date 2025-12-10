@@ -54,6 +54,36 @@ public class CameraHandler {
         });
     }
 
+    public void handleVideoGenerate(String text, String lang){
+        final String message = (text == null || text.trim().isEmpty())
+                ? "Please place the picture under my feet in my view. Now I will bend down to capture it."
+                : text;
+
+        tts.doTTS(message, lang, new TTSCallback() {
+            @Override
+            public void onStart() {
+                Log.i(TAG, "TTS started: " + message);
+                LogManager.log(LogLevel.ERROR, TAG, "TTS started: " + message);
+            }
+
+            @Override
+            public void onDone() {
+                Log.i(TAG, "After voice played successfully");
+                actionApi.playCustomizeAction("takelowpic", null);
+
+                handler.postDelayed(() -> {
+                    takePictureActivity.takePicImmediately("video-capture", lang);
+                }, 3000); // Delay 3 seconds before taking picture
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "Error playing TTS: " + message);
+                LogManager.log(LogLevel.ERROR, TAG, "Error playing TTS: " + message);
+            }
+        });
+    }
+
     public void handleOsmoCard(String text, String lang) {
         final String message = (text == null || text.trim().isEmpty())
                 ? "Please place the OSMO card under my feet in my view. Now I will bend down to scan it."

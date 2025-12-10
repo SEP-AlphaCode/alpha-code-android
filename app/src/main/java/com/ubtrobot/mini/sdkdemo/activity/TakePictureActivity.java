@@ -106,6 +106,13 @@ public class TakePictureActivity {
                                     .build();
                             RobotSocketManager.getInstance().sendBinaryMessage(messageContent);
                             break;
+                        case "video-capture":
+                            messageContent = new RobotMessageBuilder()
+                                    .setType(RobotRequestTypes.PARSE_VIDEO_GENERATE)
+                                    .setImageData(FileUtils.readFile2Bytes(file))
+                                    .build();
+                            RobotSocketManager.getInstance().sendBinaryMessage(messageContent);
+                            break;
                     }
                 }
 
