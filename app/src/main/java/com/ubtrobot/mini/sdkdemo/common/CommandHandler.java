@@ -94,6 +94,9 @@ public class CommandHandler {
 
         try {
             switch (type) {
+                case "video_capture":
+                    cameraHandler.handleVideoGenerate(text, lang);
+                    break;
                 case "smart_home":
                     smartHomeHandler.smartHomeControl("34c54c72-7287-48d2-a3c4-25083633f8b8", data.optString("name"), data.optString("message"), lang);
                     break;
