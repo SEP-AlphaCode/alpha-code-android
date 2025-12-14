@@ -2,6 +2,7 @@ package com.ubtrobot.mini.sdkdemo.common.handlers;
 
 import android.util.Log;
 
+import com.ubtrobot.commons.Priority;
 import com.ubtrobot.express.ExpressApi;
 import com.ubtrobot.express.listeners.AnimationListener;
 import com.ubtrobot.mini.sdkdemo.log.LogLevel;
@@ -42,7 +43,7 @@ public class ExpressionHandler {
     }
     public void handleExpression(String code, AnimationListener listener) {
         if (code != null) {
-            expressApi.doExpress(code, listener);
+            expressApi.doExpress(code, 1, true, Priority.HIGH, listener);
         }
     }
 }
