@@ -122,12 +122,13 @@ public class CodingBlockHandler {
         String type = block.optString("type");
         String code = block.optString("code");
         String text = block.optString("text");
+        String lang = block.optString("lang", currentLang);
 
         Log.i(TAG, "Executing block type: " + type + ", remaining: " + blockQueue.size());
 
         switch (type) {
             case "tts":
-                handleTTSBlock(text, currentLang, this::executeNextBlock);
+                handleTTSBlock(text, lang, this::executeNextBlock);
                 break;
 
             case "expression":
@@ -155,6 +156,7 @@ public class CodingBlockHandler {
 
     private void handleLedBlock(JSONObject data, Runnable onComplete) {
         // Placeholder for LED handling logic
+        Log.i(TAG, "Handling LED block: " + data);
         JSONObject c = data.optJSONObject("color");
         int r = c.optInt("r", 255);
         int g = c.optInt("g", 255);
@@ -169,6 +171,7 @@ public class CodingBlockHandler {
             @Override
             public void onFailure(int i, @NonNull String s) {
                 onComplete.run();
+                Log.e(TAG, "LED block failed: " + s);
             }
         });
     }

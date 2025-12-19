@@ -86,6 +86,11 @@ public class CommandHandler {
     }
 
     public void handleCommand(String type, JSONObject data, String lang) throws JSONException {
+        if(type == null || type.isEmpty()){
+            Log.e(TAG, "Invalid type");
+            return;
+        }
+
         String text = data.optString("text");
         String code = data.optString("code");
         Log.e(TAG, data.toString());
